@@ -21,34 +21,37 @@
             $ta = $(ta),
             mirror = $('<textarea>').addClass(className || 'autosizejs')[0],
             originalHeight = $ta.height(),
-            i;
+            maxHeight = $ta.css('maxHeight'),
+            i,
+            active = false;
+
+            maxHeight = maxHeight === 'none' ? 0 : parseInt(maxHeight, 10);
 
             // Using mainly bare JS in this function because it is going
             // to fire very often while typing, and needs to very efficient.
-            function adjust(e) {
-                mirror.value = ta.value;
+            function adjust() {
+                // the active flag keeps IE from tripping all over itself.  Otherwise
+                // actions in the adjust function will cause IE to call adjust again.
+                if (!active) {
+                    active = true;
 
-                // Update the width in case the original textarea has
-                // a percent based width, which could change at any time.
-                mirror.style.width = $ta.css('width');
+                    mirror.value = ta.value;
 
-                if (e && e.keyCode !== undefined) {
-                    // Little work-arounds to fix the height for IE.
-                    if (e.keyCode === 13 && e.type === 'keydown') {
-                        mirror.value += '\n';
-                    } else {
-                        mirror.value += 'x';
-                    }
-                    // Set to 0 to fix an issue in IE7 / IE8 where bad
-                    // scrollTop data is returned when the textarea is 
-                    // taller than the viewport.
+                    // Update the width in case the original textarea has
+                    // a percent based width, which could change at any time.
+                    mirror.style.width = $ta.css('width');
+
+                    // Needed for IE to reliably return the correct scrollHeight
                     mirror.scrollTop = 0;
-                }
 
-                // Set a very high value for scrollTop to be sure the 
-                // mirror is scrolled all the way to the bottom.
-                mirror.scrollTop = 9e4;
-                ta.style.height = ta.style.maxHeight = mirror.scrollTop + 'px';
+                    // Set a very high value for scrollTop to be sure the 
+                    // mirror is scrolled all the way to the bottom.
+                    mirror.scrollTop = 9e4;
+
+                    ta.style.height = mirror.scrollTop + 'px';
+                    
+                    active = false;
+                }
             }
 
             // mirror is a duplicate textarea located off-screen that
@@ -62,34 +65,12 @@
             }
             $('body').append(mirror);
 
-            $ta.css({
-                overflow: 'hidden',
-                minHeight: originalHeight
-            });
-
             $(window).resize(adjust);
 
-            // Using the oninput event is more efficient than binding to 
-            // onkeyup and onkeydown and can support actions like drag/drop 
-            // copy/paste, spelling-correct, etc.
+            $ta
+                .css({minHeight: originalHeight, overflow: 'hidden'})
+                .bind('onpropertychange' in ta ? 'propertychange' : 'input', adjust);
 
-            // oninput is not supported in IE6-IE8, and in IE9 the event does 
-            // not fire for deletions so key presses reluctantly used for IE.
-            if ('onpropertychange' in ta) {
-                if ('oninput' in ta) {
-                    // IE9
-                    $ta.bind('keyup input', adjust);
-                } else {
-                    // IE6-8
-                    $ta.bind('keyup keydown', adjust);
-                    // IE does not give the right scrollTop when adjust
-                    // is originally called, it has to be called twice.
-                    adjust();
-                }
-            } else {
-                $ta.bind('input', adjust);
-            }
-            
             // Call adjust in case the textarea already contains text.
             adjust();
         });
