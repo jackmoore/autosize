@@ -17,8 +17,7 @@
             'letterSpacing',
             'textTransform',
             'wordSpacing'
-        ],
-        i = copyStyle.length;
+        ];
 
         return this.each(function () {
             var 
@@ -31,7 +30,8 @@
             mirror = $(copy).addClass(className || 'autosizejs')[0],
             minHeight = $ta.height(),
             maxHeight = parseInt($ta.css('maxHeight'), 10) || 9e4,
-            active;
+            active,
+            i = copyStyle.length;
 
             // Using mainly bare JS in this function because it is going
             // to fire very often while typing, and needs to very efficient.
