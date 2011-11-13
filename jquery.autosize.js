@@ -113,12 +113,6 @@
 
             // Call adjust in case the textarea already contains text.
             adjust();
-
-            // If the textarea is deleted from the DOM, also remove the mirror.
-            // Unsupported in IE prior to version 9.
-            $ta.bind('DOMNodeRemoved', function(){
-                $(mirror).remove();
-            });
         });
     };
 }(jQuery));
