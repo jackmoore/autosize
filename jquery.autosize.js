@@ -1,4 +1,4 @@
-// Autosize 1.2 - jQuery plugin for textareas
+// Autosize 1.3 - jQuery plugin for textareas
 // (c) 2011 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -29,9 +29,12 @@
             }),
             mirror = $(copy).addClass(className || 'autosizejs')[0],
             minHeight = $ta.height(),
-            maxHeight = parseInt($ta.css('maxHeight'), 10) || 9e4,
+            maxHeight = parseInt($ta.css('maxHeight'), 10),
             active,
             i = copyStyle.length;
+
+            // Opera returns '-1px' when max-height is set to 'none'.
+            maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
             // Using mainly bare JS in this function because it is going
             // to fire very often while typing, and needs to very efficient.
@@ -95,11 +98,10 @@
 
             if ('onpropertychange' in ta) {
                 if ('oninput' in ta) {
-                    // This catches IE9.  It does not fire onpropertychange or oninput for deletions,
+                    // Detects IE9.  IE9 does not fire onpropertychange or oninput for deletions,
                     // so binding to onkeyup to catch most of those occassions.  There is no way that I
                     // know of to detect something like 'cut' in IE9.
-                    ta.oninput = adjust;
-                    ta.onkeyup = adjust;
+                    ta.oninput = ta.onkeyup = adjust;
                 } else {
                     // IE7 / IE8
                     ta.onpropertychange = adjust;
@@ -111,6 +113,12 @@
 
             // Call adjust in case the textarea already contains text.
             adjust();
+
+            // If the textarea is deleted from the DOM, also remove the mirror.
+            // Unsupported in IE prior to version 9.
+            $ta.bind('DOMNodeRemoved', function(){
+                $(mirror).remove();
+            });
         });
     };
 }(jQuery));
