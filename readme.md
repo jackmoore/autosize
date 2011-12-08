@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.5 - December 7, 2011
+* fixed a regression in detecting FireFox support
+
 ### Version 1.4 - November 22, 2011
 * added branching to exclude old browsers (FF3- & Safari4-)
 

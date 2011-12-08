@@ -1,4 +1,4 @@
-// Autosize 1.4 - jQuery plugin for textareas
+// Autosize 1.5 - jQuery plugin for textareas
 // (c) 2011 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -20,7 +20,9 @@
     onpropertychange = 'onpropertychange',
     test = $(copy)[0];
 
-    if (oninput in test || onpropertychange in test) {
+    test.setAttribute(oninput, "return");
+
+    if ($.isFunction(test[oninput]) || onpropertychange in test) {
         $.fn.autosize = function (className) {
             return this.each(function () {
                 var 
