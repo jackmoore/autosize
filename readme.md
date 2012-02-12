@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.6 - February 11, 2011
+* added binding to allow autosize to be triggered manually.  Example:
+  $('#myTextArea').trigger('autosize');
+
 ### Version 1.5 - December 7, 2011
 * fixed a regression in detecting FireFox support
 

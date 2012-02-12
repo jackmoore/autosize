@@ -1,4 +1,4 @@
-// Autosize 1.5 - jQuery plugin for textareas
+// Autosize 1.6 - jQuery plugin for textareas
 // (c) 2011 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -115,6 +115,9 @@
                 }
 
                 $(window).resize(adjust);
+
+                // Allow for manual triggering if needed.
+                $ta.bind('adjust', adjust);
 
                 // Call adjust in case the textarea already contains text.
                 adjust();
