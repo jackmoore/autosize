@@ -5,7 +5,7 @@
 (function ($, undefined) {
     var 
     hidden = 'hidden',
-    copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
+    copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; word-wrap:break-word; height:0 !important; min-height:0 !important; padding: 0 !important; border: 0 !important; overflow:hidden">',
     // line-height is omitted because IE7/IE8 doesn't return the correct value.
     copyStyle = [
         'fontFamily',
@@ -33,7 +33,7 @@
                     wordWrap: 'break-word'
                 }),
                 mirror = $(copy).addClass(className || 'autosizejs')[0],
-                minHeight = $ta.height(),
+                minHeight = 0,
                 maxHeight = parseInt($ta.css('maxHeight'), 10),
                 active,
                 i = copyStyle.length;
@@ -50,14 +50,14 @@
                     if (!active) {
                         active = true;
 
-                        mirror.value = ta.value;
-
+                        mirror.value = ta.value.length > 0 ? ta.value : '.';
+                        
                         mirror.style.overflowY = ta.style.overflowY;
 
                         // Update the width in case the original textarea has
                         // a percent based width, which could change at any time.
-                        mirror.style.width = $ta.css('width');
-
+                        // Always use content width (ignore box-sizing)
+                        mirror.style.width = $ta.width() + 'px';
 
                         // Needed for IE to reliably return the correct scrollHeight
                         mirror.scrollTop = 0;
@@ -67,6 +67,10 @@
                         mirror.scrollTop = 9e4;
 
                         height = mirror.scrollTop;
+
+                        // add vertical border and padding height (not included in scrollTop)
+                        height += $ta.outerHeight() - $ta.height();
+
                         overflow = hidden;
                         if (height > maxHeight) {
                             height = maxHeight;
