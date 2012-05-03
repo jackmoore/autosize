@@ -1,11 +1,11 @@
-// Autosize 1.6 - jQuery plugin for textareas
+// Autosize 1.7 - jQuery plugin for textareas
 // (c) 2011 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
 (function ($, undefined) {
     var 
     hidden = 'hidden',
-    copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
+    copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
     // line-height is omitted because IE7/IE8 doesn't return the correct value.
     copyStyle = [
         'fontFamily',
@@ -36,7 +36,8 @@
                 minHeight = $ta.height(),
                 maxHeight = parseInt($ta.css('maxHeight'), 10),
                 active,
-                i = copyStyle.length;
+                i = copyStyle.length,
+                boxOffset = $ta.css('box-sizing') === 'border-box' ? $ta.outerHeight() - $ta.height() : 0
 
                 // Opera returns '-1px' when max-height is set to 'none'.
                 maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
@@ -78,7 +79,7 @@
 
                         // Setting the minHeight and maxHeight will restrict webkit resize 
                         // to only resizing the width.
-                        ta.style.height = ta.style.minHeight = ta.style.maxHeight = height + 'px';
+                        ta.style.height = ta.style.minHeight = ta.style.maxHeight = height + boxOffset + 'px';
                         
                         // This small timeout gives IE a chance to draw it's scrollbar
                         // before adjust can be run again (prevents an infinite loop).

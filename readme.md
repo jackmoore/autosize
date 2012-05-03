@@ -4,7 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
-### Version 1.6 - February 11, 2011
+### Version 1.7 - May 3, 2012
+* Now supports box-sizing:border-box
+
+### Version 1.6 - February 11, 2012
 * added binding to allow autosize to be triggered manually.  Example:
   $('#myTextArea').trigger('autosize');
 
