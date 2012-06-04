@@ -39,6 +39,9 @@
                 i = copyStyle.length,
                 boxOffset = $ta.css('box-sizing') === 'border-box' ? $ta.outerHeight() - $ta.height() : 0
 
+                // Restrict user resizing (Webkit) to width only
+                $ta.css('resize', 'horizontal');
+
                 // Opera returns '-1px' when max-height is set to 'none'.
                 maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
@@ -56,9 +59,9 @@
                         mirror.style.overflowY = ta.style.overflowY;
 
                         // Update the width in case the original textarea has
-                        // a percent based width, which could change at any time.
+                        // a percent based width, which could change at any time,
+                        // or has been user-resized in webkit.
                         mirror.style.width = $ta.css('width');
-
 
                         // Needed for IE to reliably return the correct scrollHeight
                         mirror.scrollTop = 0;
@@ -77,9 +80,7 @@
                         }
                         ta.style.overflowY = overflow;
 
-                        // Setting the minHeight and maxHeight will restrict webkit resize 
-                        // to only resizing the width.
-                        ta.style.height = ta.style.minHeight = ta.style.maxHeight = height + boxOffset + 'px';
+                        ta.style.height = height + boxOffset + 'px';
                         
                         // This small timeout gives IE a chance to draw it's scrollbar
                         // before adjust can be run again (prevents an infinite loop).
