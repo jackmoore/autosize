@@ -7,7 +7,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ### Version 1.8 - June 7, 2012
 * Added conditional so that autosize cannot be applied twice to the same element
 * When autosize is applied to an element, it will have a data property that links it to the mirrored textarea element.  This will make it easier to keep track of and remove unneeded mirror elements.  Example:
+
     $('textarea.example').data('mirror').remove(); // delete the mirror
+
     $('textarea.example').remove(); // delete the original
 
 ### Version 1.7 - May 3, 2012
