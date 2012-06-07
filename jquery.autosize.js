@@ -25,6 +25,9 @@
     if ($.isFunction(test[oninput]) || onpropertychange in test) {
         $.fn.autosize = function (className) {
             return this.each(function () {
+                if ($(this).data("used") == true) return;
+                $(this).data("used", true);
+
                 var 
                 ta = this,
                 $ta = $(ta).css({
