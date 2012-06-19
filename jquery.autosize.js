@@ -14,7 +14,8 @@
 		'fontStyle',
 		'letterSpacing',
 		'textTransform',
-		'wordSpacing'
+		'wordSpacing',
+		'textIndent'
 	],
 	oninput = 'oninput',
 	onpropertychange = 'onpropertychange',
