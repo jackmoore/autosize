@@ -1,11 +1,12 @@
-// Autosize 1.8 - jQuery plugin for textareas
+// Autosize 1.9 - jQuery plugin for textareas
 // (c) 2011 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
 (function ($, undefined) {
 	var 
 	hidden = 'hidden',
-	copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
+	borderBox = 'border-box',
+	copy = '<textarea style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
 	// line-height is omitted because IE7/IE8 doesn't return the correct value.
 	copyStyle = [
 		'fontFamily',
@@ -35,7 +36,12 @@
 				active,
 				i = copyStyle.length,
 				resize,
-				boxOffset = $ta.css('box-sizing') === 'border-box' ? $ta.outerHeight() - $ta.height() : 0;
+				boxOffset = 0;
+
+				if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
+					console.log($ta.outerHeight(), $ta.height());
+					boxOffset = $ta.outerHeight() - $ta.height();
+				}
 
 				if ($ta.data('mirror') || $ta.data('ismirror')) {
 					// if autosize has already been applied, exit.
