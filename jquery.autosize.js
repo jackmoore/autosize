@@ -39,7 +39,6 @@
 				boxOffset = 0;
 
 				if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
-					console.log($ta.outerHeight(), $ta.height());
 					boxOffset = $ta.outerHeight() - $ta.height();
 				}
 
