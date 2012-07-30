@@ -1,11 +1,12 @@
-// Autosize 1.9.1 - jQuery plugin for textareas
-// (c) 2011 Jack Moore - jacklmoore.com
+// Autosize 1.10 - jQuery plugin for textareas
+// (c) 2012 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
 (function ($) {
 	var
 	hidden = 'hidden',
 	borderBox = 'border-box',
+	lineHeight = 'lineHeight',
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
 	// line-height is omitted because IE7/IE8 doesn't return the correct value.
 	copyStyle = [
@@ -22,9 +23,18 @@
 	onpropertychange = 'onpropertychange',
 	test = $(copy)[0];
 
+	// For testing support in old FireFox
 	test.setAttribute(oninput, "return");
 
 	if ($.isFunction(test[oninput]) || onpropertychange in test) {
+
+		// test that line-height can be accurately copied to avoid
+		// incorrect value reporting in old IE and old Opera
+		$(test).css(lineHeight, '99px');
+		if ($(test).css(lineHeight) === '99px') {
+			copyStyle.push(lineHeight);
+		}
+
 		$.fn.autosize = function (className) {
 			return this.each(function () {
 				var

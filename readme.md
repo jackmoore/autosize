@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.10 - July 30, 2012
+* Added 'lineHeight' to the list of styles considered for size detection.
+
 ### Version 1.9 - June 19, 2012
 * Added 'textIndent' to the list of styles considered for size detection.
 * Added vender prefixes to box-sizing detection
