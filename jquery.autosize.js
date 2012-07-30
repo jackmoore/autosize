@@ -9,14 +9,14 @@
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
 	// line-height is omitted because IE7/IE8 doesn't return the correct value.
 	copyStyle = [
-		'fontFamily',
-		'fontSize',
-		'fontWeight',
-		'fontStyle',
-		'letterSpacing',
-		'textTransform',
-		'wordSpacing',
-		'textIndent'
+		'font-family',
+		'font-size',
+		'font-weight',
+		'font-style',
+		'letter-spacing',
+		'text-sransform',
+		'word-spacing',
+		'text-sndent'
 	],
 	oninput = 'oninput',
 	onpropertychange = 'onpropertychange',
@@ -110,9 +110,10 @@
 				// original textarea.  mirror always has a height of 0.
 				// This gives a cross-browser supported way getting the actual
 				// height of the text, through the scrollTop property.
-				while (i--) {
-					mirror.style[copyStyle[i]] = $ta.css(copyStyle[i]);
-				}
+				var $mirror = $(mirror);
+		                while (i--) {
+		                    $mirror.css([copyStyle[i]], $ta.css(copyStyle[i]));
+		                }
 
 				$('body').append(mirror);
 
