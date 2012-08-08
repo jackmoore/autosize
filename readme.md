@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.11 - August 8, 2012
+* Added workaround to get Chrome to reflow default text better.
+
 ### Version 1.10 - July 30, 2012
 * Added 'lineHeight' to the list of styles considered for size detection.
 

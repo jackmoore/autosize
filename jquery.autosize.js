@@ -1,4 +1,4 @@
-// Autosize 1.10 - jQuery plugin for textareas
+// Autosize 1.11 - jQuery plugin for textareas
 // (c) 2012 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -7,7 +7,7 @@
 	hidden = 'hidden',
 	borderBox = 'border-box',
 	lineHeight = 'lineHeight',
-	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden">',
+	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;">',
 	// line-height is omitted because IE7/IE8 doesn't return the correct value.
 	copyStyle = [
 		'fontFamily',
@@ -145,6 +145,9 @@
 
 				// Allow for manual triggering if needed.
 				$ta.bind('autosize', adjust);
+
+				// Hack to get Chrome to reflow it's text.
+				$ta.text($ta.text());
 
 				// Call adjust in case the textarea already contains text.
 				adjust();
