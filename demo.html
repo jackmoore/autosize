@@ -10,7 +10,11 @@
 		<script src='jquery.autosize.js'></script>
 		<script>
 			$(function(){
-				$('textarea').autosize();
+				$('textarea').autosize({
+					callback: function(){
+						alert('Hey! my height has changed! Sweet!');
+					}
+				});
 			});
 		</script>
 	</head>

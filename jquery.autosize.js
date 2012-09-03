@@ -35,14 +35,17 @@
 			copyStyle.push(lineHeight);
 		}
 
-		$.fn.autosize = function (className) {
+		$.fn.autosize = function (opts) {
 			return this.each(function () {
 				var
 				ta = this,
 				$ta = $(ta),
 				mirror,
-				minHeight = $ta.height(),
-				maxHeight = parseInt($ta.css('maxHeight'), 10),
+				minHeight 			= $ta.height(),
+				maxHeight 			= parseInt($ta.css('maxHeight'), 10),
+				currentHeight 		= minHeight,
+				onChangeCallback 	= opts.callback || function(){},
+				className			= opts.className || "autosizejs",
 				active,
 				i = copyStyle.length,
 				resize,
@@ -58,7 +61,7 @@
 					// if autosize is being applied to a mirror element, exit.
 					return;
 				} else {
-					mirror = $(copy).data('ismirror', true).addClass(className || 'autosizejs')[0];
+					mirror = $(copy).data('ismirror', true).addClass(className)[0];
 
 					resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
 
@@ -103,7 +106,6 @@
 							height = minHeight;
 						}
 						ta.style.overflowY = overflow;
-
 						ta.style.height = height + boxOffset + 'px';
 						
 						// This small timeout gives IE a chance to draw it's scrollbar
@@ -111,6 +113,12 @@
 						setTimeout(function () {
 							active = false;
 						}, 1);
+
+						// Fire the callback and save new height
+						if(currentHeight != height){
+							currentHeight = height;
+							onChangeCallback();
+						}
 					}
 				}
 
