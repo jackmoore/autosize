@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.12 - September 3, 2012
+* Fixed a bug I introduced in the last update.
+
 ### Version 1.11 - August 8, 2012
 * Added workaround to get Chrome to reflow default text better.
 
