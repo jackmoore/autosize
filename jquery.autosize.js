@@ -60,13 +60,11 @@
 				} else {
 					mirror = $(copy).data('ismirror', true).addClass(className || 'autosizejs')[0];
 
-					resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
-
 					$ta.data('mirror', $(mirror)).css({
 						overflow: hidden,
 						overflowY: hidden,
 						wordWrap: 'break-word',
-						resize: resize
+						resize: 'none'
 					});
 				}
 
