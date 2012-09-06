@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.13 - September 4, 2012
+* Removed the resize handle which is made obsolete by this plugin.
+
 ### Version 1.12 - September 3, 2012
 * Fixed a bug I introduced in the last update.
 
