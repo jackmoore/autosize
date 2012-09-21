@@ -1,4 +1,4 @@
-// Autosize 1.12 - jQuery plugin for textareas
+// Autosize 1.13 - jQuery plugin for textareas
 // (c) 2012 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -36,8 +36,7 @@
 		}
 
 		$.fn.autosize = function (options) {
-			if (typeof options == 'string') options = { className: options };
-			var className = options.className;
+			options = options || {};
 
 			return this.each(function () {
 				var
@@ -50,7 +49,8 @@
 				i = copyStyle.length,
 				resize,
 				boxOffset = 0,
-				value = ta.value;
+				value = ta.value,
+				callback = $.isFunction(options.callback);
 
 				if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 					boxOffset = $ta.outerHeight() - $ta.height();
@@ -61,7 +61,7 @@
 					// if autosize is being applied to a mirror element, exit.
 					return;
 				} else {
-					mirror = $(copy).data('ismirror', true).addClass(className || 'autosizejs')[0];
+					mirror = $(copy).data('ismirror', true).addClass(options.className || 'autosizejs')[0];
 
 					resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
 
@@ -79,13 +79,14 @@
 				// Using mainly bare JS in this function because it is going
 				// to fire very often while typing, and needs to very efficient.
 				function adjust() {
-					var height, overflow;
+					var height, overflow, original;
 					// the active flag keeps IE from tripping all over itself.  Otherwise
 					// actions in the adjust function will cause IE to call adjust again.
 					if (!active) {
 						active = true;
 						mirror.value = ta.value;
 						mirror.style.overflowY = ta.style.overflowY;
+						original = parseInt(ta.style.height,10);
 
 						// Update the width in case the original textarea width has changed
 						mirror.style.width = $ta.css('width');
@@ -105,18 +106,21 @@
 						} else if (height < minHeight) {
 							height = minHeight;
 						}
+						height += boxOffset;
 						ta.style.overflowY = overflow;
 
-						ta.style.height = height + boxOffset + 'px';
+						if (original !== height) {
+							ta.style.height = height + 'px';
+							if (callback) {
+								options.callback.call(ta);
+							}
+						}
 						
 						// This small timeout gives IE a chance to draw it's scrollbar
 						// before adjust can be run again (prevents an infinite loop).
 						setTimeout(function () {
 							active = false;
 						}, 1);
-
-						if (typeof options.callback == "function")
-							options.callback.call(this);
 					}
 				}
 
