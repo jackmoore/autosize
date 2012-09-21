@@ -35,7 +35,10 @@
 			copyStyle.push(lineHeight);
 		}
 
-		$.fn.autosize = function (className) {
+		$.fn.autosize = function (options) {
+			if (typeof options == 'string') options = { className: options };
+			var className = options.className;
+
 			return this.each(function () {
 				var
 				ta = this,
@@ -111,6 +114,9 @@
 						setTimeout(function () {
 							active = false;
 						}, 1);
+
+						if (typeof options.callback == "function")
+							options.callback.call(this);
 					}
 				}
 
@@ -156,7 +162,7 @@
 		};
 	} else {
 		// Makes no changes for older browsers (FireFox3- and Safari4-)
-		$.fn.autosize = function () {
+		$.fn.autosize = function (callback) {
 			return this;
 		};
 	}
