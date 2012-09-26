@@ -63,7 +63,7 @@
 				} else {
 					mirror = $(copy).data('ismirror', true).addClass(options.className || 'autosizejs')[0];
 
-					resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
+					resize = $ta.css('resize') === 'none' ? 'horizontal' : $ta.css('resize');
 
 					$ta.data('mirror', $(mirror)).css({
 						overflow: hidden,
