@@ -80,6 +80,7 @@
 				// to fire very often while typing, and needs to very efficient.
 				function adjust() {
 					var height, overflow, original;
+
 					// the active flag keeps IE from tripping all over itself.  Otherwise
 					// actions in the adjust function will cause IE to call adjust again.
 					if (!active) {
@@ -148,17 +149,17 @@
 				} else {
 					// Modern Browsers
 					ta[oninput] = adjust;
+
+					// The textarea overflow is now hidden.  But Chrome doesn't reflow the text after the scrollbars are removed.
+					// This is a hack to get Chrome to reflow it's text.
+					ta.value = '';
+					ta.value = value;
 				}
 
 				$(window).resize(adjust);
 
 				// Allow for manual triggering if needed.
 				$ta.bind('autosize', adjust);
-
-				// The textarea overflow is now hidden.  But Chrome doesn't reflow the text after the scrollbars are removed.
-				// This is a hack to get Chrome to reflow it's text.
-				ta.value = '';
-				ta.value = value;
 
 				// Call adjust in case the textarea already contains text.
 				adjust();
