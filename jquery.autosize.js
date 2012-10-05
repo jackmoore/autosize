@@ -79,6 +79,12 @@
 				// Using mainly bare JS in this function because it is going
 				// to fire very often while typing, and needs to very efficient.
 				function adjust() {
+					// Spanish: Prevenir ajuste cuando está vacía y quitar el texto que tenga(Enters o espacios)
+					//English: Prevent adjust when is empty and remove text value(Enter or spaces)
+					if(!$.trim($ta.val())) {
+						$ta.val('');
+						return;
+					}
 					var height, overflow, original;
 
 					// the active flag keeps IE from tripping all over itself.  Otherwise
