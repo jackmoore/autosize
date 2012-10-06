@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.14 - October 6, 2012
+* Added 'append' option for appending whitespace to the end of the height calculation (an extra newline improves the apperance when animating).
+* Added a demonstration of animating the height change using a CSS transition.
+
 ### Version 1.13 - September 21, 2012
 * Added optional callback that fires after resize.
 

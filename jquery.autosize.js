@@ -4,6 +4,11 @@
 
 (function ($) {
 	var
+	defaults = {
+		className: 'autosizejs',
+		append: "",
+		callback: false
+	},
 	hidden = 'hidden',
 	borderBox = 'border-box',
 	lineHeight = 'lineHeight',
@@ -36,7 +41,7 @@
 		}
 
 		$.fn.autosize = function (options) {
-			options = options || {};
+			options = $.extend({}, defaults, options || {});
 
 			return this.each(function () {
 				var
@@ -61,7 +66,7 @@
 					// if autosize is being applied to a mirror element, exit.
 					return;
 				} else {
-					mirror = $(copy).data('ismirror', true).addClass(options.className || 'autosizejs')[0];
+					mirror = $(copy).data('ismirror', true).addClass(options.className)[0];
 
 					resize = $ta.css('resize') === 'none' ? 'none' : 'horizontal';
 
@@ -85,7 +90,7 @@
 					// actions in the adjust function will cause IE to call adjust again.
 					if (!active) {
 						active = true;
-						mirror.value = ta.value;
+						mirror.value = ta.value + options.append;
 						mirror.style.overflowY = ta.style.overflowY;
 						original = parseInt(ta.style.height,10);
 
