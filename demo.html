@@ -4,17 +4,29 @@
 		<meta charset='utf-8'/>
 		<title>Textarea Autosize Demo</title>
 		<style>
-			textarea { border:1px solid #ccc; }
+			textarea { 
+				border:1px solid #ccc; 
+			}
+
+			#animated {
+				vertical-align: top; 
+				transition: height 0.2s;
+				-webkit-transition: height 0.2s; 
+				-moz-transition: height 0.2s; 
+			}
+
 		</style>
 		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
 		<script src='jquery.autosize.js'></script>
 		<script>
 			$(function(){
-				$('textarea').autosize();
+				$('#normal').autosize();
+				$('#animated').autosize({append: "\n"});
 			});
 		</script>
 	</head>
 	<body>
-		<textarea></textarea>
+		<textarea id='normal'>Not animated.</textarea>
+		<textarea id='animated'>With CSS transition.</textarea>
 	</body>
 </html>
