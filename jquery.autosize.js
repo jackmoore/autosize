@@ -97,7 +97,7 @@
 						// Update the width in case the original textarea width has changed
 						mirror.style.width = $ta.css('width');
 
-						// Needed for IE to reliably return the correct scrollHeight
+						// Needed for IE7 to reliably return the correct scrollHeight
 						mirror.scrollTop = 0;
 
 						// Set a very high value for scrollTop to be sure the
@@ -172,7 +172,7 @@
 		};
 	} else {
 		// Makes no changes for older browsers (FireFox3- and Safari4-)
-		$.fn.autosize = function (callback) {
+		$.fn.autosize = function () {
 			return this;
 		};
 	}
