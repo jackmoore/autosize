@@ -57,6 +57,11 @@
 				value = ta.value,
 				callback = $.isFunction(options.callback);
 
+        // if minimum height is 0 or lower then the element hasn't been rendered yet so exit.
+        if (minHeight <= 0) {
+          return;
+        }
+
 				if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 					boxOffset = $ta.outerHeight() - $ta.height();
 				}
