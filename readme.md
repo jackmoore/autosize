@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.15 - November 16, 2012
+* Reworked to only create a single mirror element, instead of one for each textarea.
+* Dropped feature detection for FF3 and Safari 4.
+
 ### Version 1.14 - October 6, 2012
 * Added 'append' option for appending whitespace to the end of the height calculation (an extra newline improves the apperance when animating).
 * Added a demonstration of animating the height change using a CSS transition.
