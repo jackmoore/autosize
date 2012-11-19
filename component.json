@@ -1,5 +1,6 @@
 {
   "name": "jquery-autosize",
+  "version": "1.15.0",
   "main": "./jquery.autosize.js",
   "dependencies": {
     "jquery": ">=1.4.2"
