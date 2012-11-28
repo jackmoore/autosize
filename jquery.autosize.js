@@ -1,4 +1,4 @@
-// Autosize 1.15.1 - jQuery plugin for textareas
+// Autosize 1.15.2 - jQuery plugin for textareas
 // (c) 2012 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 
@@ -46,7 +46,9 @@
 	$.fn.autosize = function (options) {
 		options = $.extend({}, defaults, options || {});
 
-		$(mirror).appendTo('body');
+		if (mirror.parentNode !== document.body) {
+			$(document.body).append(mirror);
+		}
 
 		return this.each(function () {
 			var
