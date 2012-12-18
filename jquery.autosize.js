@@ -55,7 +55,6 @@
 			ta = this,
 			$ta = $(ta),
 			minHeight = $ta.height(),
-			maxHeight = parseInt($ta.css('maxHeight'), 10),
 			active,
 			resize,
 			boxOffset = 0,
@@ -79,9 +78,6 @@
 				wordWrap: 'break-word',
 				resize: resize
 			}).data('autosize', true);
-
-			// Opera returns '-1px' when max-height is set to 'none'.
-			maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;
 
 			function initMirror() {
 				mirrored = ta;
@@ -125,6 +121,9 @@
 					mirror.scrollTop = 9e4;
 
 					height = mirror.scrollTop;
+					var maxHeight = parseInt($ta.css('maxHeight'), 10);
+					// Opera returns '-1px' when max-height is set to 'none'.
+					maxHeight = maxHeight && maxHeight > 0 ? maxHeight : 9e4;		
 					if (height > maxHeight) {
 						height = maxHeight;
 						overflow = 'scroll';
