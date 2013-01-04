@@ -6,7 +6,7 @@
 	var
 	defaults = {
 		className: 'autosizejs',
-		append: "",
+		append: '',
 		callback: false
 	},
 	hidden = 'hidden',
@@ -15,7 +15,7 @@
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX (http://www.jacklmoore.com/autosize#comment-851)
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-9999px; left:-9999px; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;"/>',
-	
+
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
 	copyStyle = [
 		'fontFamily',
@@ -29,7 +29,7 @@
 	],
 	oninput = 'oninput',
 	onpropertychange = 'onpropertychange',
-	
+
 	// to keep track which textarea is being mirrored when adjust() is called.
 	mirrored,
 
@@ -135,7 +135,7 @@
 							options.callback.call(ta);
 						}
 					}
-					
+
 					// This small timeout gives IE a chance to draw it's scrollbar
 					// before adjust can be run again (prevents an infinite loop).
 					setTimeout(function () {

@@ -56,7 +56,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 * fixed a regression in 1.1 that broke autosize for IE9.
 
 ### Version 1.1 - November 10, 2011
-* autosize now follows the max-height of textareas.  OverflowY will be set to scroll once the content height exceeds max-height. 
+* autosize now follows the max-height of textareas.  OverflowY will be set to scroll once the content height exceeds max-height.
 
 ### Version 1.0 - November 7, 2011
 * first release
