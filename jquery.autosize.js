@@ -54,7 +54,7 @@
 			var
 			ta = this,
 			$ta = $(ta),
-			minHeight = $ta.height(),
+			minHeight,
 			active,
 			resize,
 			boxOffset = 0,
@@ -64,6 +64,9 @@
 				// exit if autosize has already been applied, or if the textarea is the mirror element.
 				return;
 			}
+
+ 			minHeight = parseInt($ta.css('minHeight'), 10);
+			minHeight = minHeight || $ta.height();
 
 			if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 				boxOffset = $ta.outerHeight() - $ta.height();
