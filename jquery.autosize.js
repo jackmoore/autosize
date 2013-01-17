@@ -65,8 +65,7 @@
 				return;
 			}
 
- 			minHeight = parseInt($ta.css('minHeight'), 10);
-			minHeight = minHeight || $ta.height();
+			minHeight = parseInt($ta.css('minHeight'), 10) || $ta.height();
 
 			if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 				boxOffset = $ta.outerHeight() - $ta.height();
@@ -113,7 +112,8 @@
 					original = parseInt(ta.style.height,10);
 
 					// Update the width in case the original textarea width has changed
-					mirror.style.width = ($ta.width() < 0 ? 0 : $ta.width()) + 'px';
+					// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
+					mirror.style.width = Math.max($ta.width(), 0) + 'px';
 
 					// The following three lines can be replaced with `height = mirror.scrollHeight` when dropping IE7 support.
 					mirror.scrollTop = 0;
