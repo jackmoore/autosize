@@ -113,7 +113,7 @@
 					original = parseInt(ta.style.height,10);
 
 					// Update the width in case the original textarea width has changed
-					mirror.style.width = $ta.width() + 'px';
+					mirror.style.width = ($ta.width() < 0 ? 0 : $ta.width()) + 'px';
 
 					// The following three lines can be replaced with `height = mirror.scrollHeight` when dropping IE7 support.
 					mirror.scrollTop = 0;
