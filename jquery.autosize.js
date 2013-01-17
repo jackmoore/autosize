@@ -1,4 +1,4 @@
-// Autosize 1.16.0 - jQuery plugin for textareas
+// Autosize 1.16.1 - jQuery plugin for textareas
 // (c) 2013 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 (function ($) {
