@@ -1,4 +1,4 @@
-// Autosize 1.16.1 - jQuery plugin for textareas
+// Autosize 1.16.2 - jQuery plugin for textareas
 // (c) 2013 Jack Moore - jacklmoore.com
 // license: www.opensource.org/licenses/mit-license.php
 (function ($) {
@@ -64,11 +64,11 @@
 				return;
 			}
 
-			minHeight = parseInt($ta.css('minHeight'), 10) || $ta.height();
-
 			if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
+
+			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset, $ta.height());
 
 			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
 

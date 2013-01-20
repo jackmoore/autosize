@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Version 1.16 - 2013/1/20
+* Minor fixes.
+
 ### Version 1.15 - November 16, 2012
 * Reworked to only create a single mirror element, instead of one for each textarea.
 * Dropped feature detection for FF3 and Safari 4.
