@@ -7,7 +7,7 @@
 		"textarea",
 		"ui"
 	],
-	"version": "1.16.2",
+	"version": "1.16.3",
 	"author": {
 		"name": "Jack Moore",
 		"url": "http://www.jacklmoore.com"
@@ -20,5 +20,7 @@
 	],
 	"homepage": "http://jacklmoore.com/autosize",
 	"demo": "http://jacklmoore.com/autosize",
-	"dependencies": { "jquery": ">=1.4" }
+	"dependencies": {
+		"jquery": ">=1.4"
+	}
 }

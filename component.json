@@ -1,8 +1,8 @@
 {
-  "name": "jquery-autosize",
-  "version": "1.16.2",
-  "main": "./jquery.autosize.js",
-  "dependencies": {
-    "jquery": ">=1.4"
-  }
+	"name": "jquery-autosize",
+	"version": "1.16.3",
+	"main": "./jquery.autosize.js",
+	"dependencies": {
+		"jquery": ">=1.4"
+	}
 }
