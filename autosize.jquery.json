@@ -1,16 +1,17 @@
 {
 	"name": "autosize",
 	"title": "Autosize",
-	"description": "enables automatic height for textarea elements",
+	"description": "Allows textarea elements to automatically adjust their height based on user input.",
 	"keywords": [
 		"form",
 		"textarea",
 		"ui"
 	],
-	"version": "1.16.3",
+	"version": "1.16.4",
 	"author": {
 		"name": "Jack Moore",
-		"url": "http://www.jacklmoore.com"
+		"url": "http://www.jacklmoore.com",
+		"email": "jack@colorpowered.com"
 	},
 	"licenses": [
 		{
