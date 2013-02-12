@@ -1,9 +1,10 @@
 /*
-	jQuery Autosize v1.16.4
+	jQuery Autosize v1.16.5
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-01-29
+	updated: 2013-02-11
 	license: http://www.opensource.org/licenses/mit-license.php
 */
+
 
 (function ($) {
 	var
@@ -165,10 +166,16 @@
 				ta[oninput] = adjust;
 			}
 
-			$(window).resize(adjust);
+			$(window).resize(function(){
+				active = false;
+				adjust();
+			});
 
 			// Allow for manual triggering if needed.
-			$ta.bind('autosize', adjust);
+			$ta.bind('autosize', function(){
+				active = false;
+				adjust();
+			});
 
 			// Call adjust in case the textarea already contains text.
 			adjust();
