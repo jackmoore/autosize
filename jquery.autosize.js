@@ -5,8 +5,15 @@
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 
-
-(function ($) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
 	var
 	defaults = {
 		className: 'autosizejs',
@@ -181,4 +188,4 @@
 			adjust();
 		});
 	};
-}(window.jQuery || window.Zepto));
+}));
