@@ -4,7 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
-### v1.16.4 - 2013/2/11
+### v1.16.6 - 2013/3/12
+* Replaced jQuery shorthand methods with on() in anticipation of jQuery 2.0 conditional builds
+
+### v1.16.5 - 2013/3/12
 * Fixed a bug where triggering the autosize event immediately after assigning autosize had no effect.
 
 ### v1.16.4 - 2013/1/29
