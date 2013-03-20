@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.7 - 2013/3/20
+* Added workaround for a very edge-case iOS bug (Fixes #58).
+
 ### v1.16.6 - 2013/3/12
 * Replaced jQuery shorthand methods with on() in anticipation of jQuery 2.0 conditional builds
 
