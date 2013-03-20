@@ -18,6 +18,8 @@
 	borderBox = 'border-box',
 	lineHeight = 'lineHeight',
 
+	ie678 = (navigator.userAgent.match(/MSIE [678]\./) !== null),
+
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX (http://www.jacklmoore.com/autosize#comment-851)
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;"/>',
 
@@ -120,10 +122,13 @@
 					// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
 					mirror.style.width = Math.max($ta.width(), 0) + 'px';
 
-					// The following three lines can be replaced with `height = mirror.scrollHeight` when dropping IE7 support.
-					mirror.scrollTop = 0;
-					mirror.scrollTop = 9e4;
-					height = mirror.scrollTop;
+					if (ie678) {
+						mirror.scrollTop = 0;
+						mirror.scrollTop = 9e4;
+						height = mirror.scrollTop;
+					} else {
+						height = mirror.scrollHeight;
+					}
 
 					var maxHeight = parseInt($ta.css('maxHeight'), 10);
 					// Opera returns '-1px' when max-height is set to 'none'.
