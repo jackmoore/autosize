@@ -147,7 +147,7 @@
 					if (original !== height) {
 						ta.style.height = height + 'px';
 						if (callback) {
-							options.callback.call(ta);
+							options.callback.call(ta,ta);
 						}
 					}
 
