@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="demo">
   <head>
     <meta charset='utf-8'/>
     <title>Textarea Autosize Demo for AngularJs</title>
@@ -15,19 +15,22 @@
         transition: height 0.2s;
       }
     </style>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
     <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js'></script>
+    <!-- Put jQuery before angular load for replace angular jQLite. -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
     <script src='../jquery.autosize.js'></script>
     <script src='./directive.js'></script>
+  </head>
+  <body>
+    <textarea autosize>Not animated.</textarea>
+    <textarea autosize="{append: '\n'}" id="animated">With CSS transition.</textarea>
+
     <script>
+      var app = angular.module('demo', ['textarea-autosize']);
       // $(function(){
       //   $('#normal').autosize();
       //   $('#animated').autosize({append: "\n"});
       // });
     </script>
-  </head>
-  <body>
-    <textarea id='normal'>Not animated.</textarea>
-    <textarea id='animated'>With CSS transition.</textarea>
   </body>
 </html>
