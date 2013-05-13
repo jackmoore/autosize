@@ -1,10 +1,10 @@
 ;'use strict';
-angular.module('textarea-autosize', []).directive('autosize', function factory() {
+angular.module('textarea-autosize', []).directive('jqueryAutosize', function factory() {
   return {
       restrict: 'A',
       compile: function(elem, attrs, transcludeFn) {
           return function link (scope, element, attrs) {
-            element.autosize(scope.$eval(attrs.autosize));
+            element.autosize(scope.$eval(attrs.jqueryAutosize));
           };
       }
   };

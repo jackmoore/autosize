@@ -20,11 +20,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
     <script src='../jquery.autosize.js'></script>
     <script src='./directive.js'></script>
-    <script src="http://127.0.0.1:82/con/assets/js/f5.js"></script>
   </head>
   <body ng-controller="testCtrl">
-    <textarea autosize>Not animated.</textarea>
-    <textarea autosize="{append: '\n', callback: autosized}" id="animated">With CSS transition.</textarea>
+    <textarea jquery-autosize>Not animated.</textarea>
+    <textarea jquery-autosize="{append: '\n', callback: autosized}" id="animated">With CSS transition.</textarea>
 
     <script>
       var app = angular.module('demo', ['textarea-autosize']);
