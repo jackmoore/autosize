@@ -1,10 +1,9 @@
 /*!
-	jQuery Autosize v1.16.7
+	jQuery Autosize v1.16.9
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-03-20
+	updated: 2013-05-20
 	license: http://www.opensource.org/licenses/mit-license.php
 */
-
 
 (function ($) {
 	var
@@ -19,7 +18,7 @@
 	supportsScrollHeight,
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX (http://www.jacklmoore.com/autosize#comment-851)
-	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; width: 0; overflow:hidden;"/>',
+	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;"/>',
 
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
 	copyStyle = [

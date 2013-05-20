@@ -4,6 +4,12 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.9 - 2013/5/20
+* Reverted change from 1.16.8 as it caused an issue in IE8. (Fixes #69)
+
+### v1.16.8 - 2013/5/7
+* Fixed issue where autosize was creating a horizontal scrollbar for a user
+
 ### v1.16.7 - 2013/3/20
 * Added workaround for a very edge-case iOS bug (Fixes #58).
 
