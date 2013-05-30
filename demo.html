@@ -5,28 +5,30 @@
 		<title>Textarea Autosize Demo</title>
 		<style>
 			textarea {
-				border:1px solid #ccc;
+				border:2px solid #ccc;
+				padding: 10px;
+				vertical-align: top;
 			}
 
-			#animated {
-				vertical-align: top;
+			.animated {
 				-webkit-transition: height 0.2s;
 				-moz-transition: height 0.2s;
 				transition: height 0.2s;
 			}
 
 		</style>
-		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js'></script>
 		<script src='jquery.autosize.js'></script>
 		<script>
 			$(function(){
-				$('#normal').autosize();
-				$('#animated').autosize({append: "\n"});
+				$('.normal').autosize();
+				$('.animated').autosize({append: "\n"});
 			});
 		</script>
 	</head>
 	<body>
-		<textarea id='normal'>Not animated.</textarea>
-		<textarea id='animated'>With CSS transition.</textarea>
+		<textarea class='normal'>Not animated.</textarea>
+		<textarea class='normal'>The coconut palm (also, cocoanut), Cocos nucifera, is a member of the family Arecaceae (palm family). It is the only accepted species in the genus Cocos.[2] The term coconut can refer to the entire coconut palm, the seed, or the fruit, which, botanically, is a drupe, not a nut. The spelling cocoanut is an archaic form of the word.[3] The term is derived from 16th-century Portuguese and Spanish coco, meaning "head" or "skull",[4] from the three small holes on the coconut shell that resemble human facial features.</textarea>
+		<textarea class='animated'>With CSS transition.</textarea>
 	</body>
 </html>

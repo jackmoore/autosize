@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.10 - 2013/5/30
+* Dropped scrollHeight for scrollTop. This fixed a height problem relating to padding. (Fixes #70)
+* Re-added workaround to get Chrome to reflow text after hiding overflow.
+
 ### v1.16.9 - 2013/5/20
 * Reverted change from 1.16.8 as it caused an issue in IE8. (Fixes #69)
 
