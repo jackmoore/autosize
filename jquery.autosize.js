@@ -173,9 +173,11 @@
 				ta[oninput] = adjust;
 			}
 
-			$(window).on('resize', function(){
-				active = false;
-				adjust();
+			$(window).on('resize', function(e){
+				if(e.target === window){
+					active = false;
+					adjust();
+				}
 			});
 
 			// Allow for manual triggering if needed.
