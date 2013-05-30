@@ -10,7 +10,8 @@
 	defaults = {
 		className: 'autosizejs',
 		append: '',
-		callback: false
+		callback: false,
+		maxHeight: null
 	},
 	hidden = 'hidden',
 	borderBox = 'border-box',
@@ -143,7 +144,7 @@
 					height += boxOffset;
 					ta.style.overflowY = overflow || hidden;
 
-					if (original !== height) {
+					if (original !== height && (!options.maxHeight || height <= options.maxHeight)) {
 						ta.style.height = height + 'px';
 						if (callback) {
 							options.callback.call(ta,ta);
