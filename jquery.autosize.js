@@ -1,10 +1,9 @@
 /*!
-	jQuery Autosize v1.16.10
+	jQuery Autosize v1.16.11
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-05-30
+	updated: 2013-05-31
 	license: http://www.opensource.org/licenses/mit-license.php
 */
-
 
 (function ($) {
 	var
@@ -74,6 +73,7 @@
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
 
+			// IE8 and lower return 'auto', which parses to NaN, if no min-height is set.
 			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset || 0, $ta.height());
 
 			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
