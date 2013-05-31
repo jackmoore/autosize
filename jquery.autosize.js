@@ -1,5 +1,5 @@
 /*!
-	jQuery Autosize v1.16.11
+	jQuery Autosize v1.16.12
 	(c) 2013 Jack Moore - jacklmoore.com
 	updated: 2013-05-31
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -59,7 +59,6 @@
 			$ta = $(ta),
 			minHeight,
 			maxHeight,
-			active,
 			resize,
 			boxOffset = 0,
 			callback = $.isFunction(options.callback);
@@ -101,9 +100,11 @@
 
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
-				var value = ta.value;
-				ta.value = '';
-				ta.value = value;
+				if (oninput in ta) {
+					var value = ta.value;
+					ta.value = '';
+					ta.value = value;
+				}
 			}
 
 			// Using mainly bare JS in this function because it is going
@@ -115,48 +116,37 @@
 					initMirror();
 				}
 
-				// the active flag keeps IE from tripping all over itself.  Otherwise
-				// actions in the adjust function will cause IE to call adjust again.
-				if (!active) {
-					active = true;
-					mirror.value = ta.value + options.append;
-					mirror.style.overflowY = ta.style.overflowY;
-					original = parseInt(ta.style.height,10);
+				mirror.value = ta.value + options.append;
+				mirror.style.overflowY = ta.style.overflowY;
+				original = parseInt(ta.style.height,10);
 
-					// Update the width in case the original textarea width has changed
-					// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
-					mirror.style.width = Math.max($ta.width(), 0) + 'px';
+				// Update the width in case the original textarea width has changed
+				// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
+				mirror.style.width = Math.max($ta.width(), 0) + 'px';
 
-					// Needed for IE8 and lower to reliably return the correct scrollTop
-					mirror.scrollTop = 0;
+				// Needed for IE8 and lower to reliably return the correct scrollTop
+				mirror.scrollTop = 0;
 
-					mirror.scrollTop = 9e4;
+				mirror.scrollTop = 9e4;
 
-					// Using scrollTop rather than scrollHeight because scrollHeight is non-standard and includes padding.
-					height = mirror.scrollTop;
+				// Using scrollTop rather than scrollHeight because scrollHeight is non-standard and includes padding.
+				height = mirror.scrollTop;
 
-					if (maxHeight && height > maxHeight) {
-						height = maxHeight;
-						overflow = 'scroll';
-					} else if (height < minHeight) {
-						height = minHeight;
+				if (maxHeight && height > maxHeight) {
+					height = maxHeight;
+					overflow = 'scroll';
+				} else if (height < minHeight) {
+					height = minHeight;
+				}
+
+				height += boxOffset;
+				ta.style.overflowY = overflow || hidden;
+
+				if (original !== height) {						
+					ta.style.height = height + 'px';
+					if (callback) {
+						options.callback.call(ta,ta);
 					}
-
-					height += boxOffset;
-					ta.style.overflowY = overflow || hidden;
-
-					if (original !== height) {						
-						ta.style.height = height + 'px';
-						if (callback) {
-							options.callback.call(ta,ta);
-						}
-					}
-
-					// This small timeout gives IE a chance to draw it's scrollbar
-					// before adjust can be run again (prevents an infinite loop).
-					setTimeout(function () {
-						active = false;
-					}, 1);
 				}
 			}
 
@@ -168,7 +158,11 @@
 					ta[oninput] = ta.onkeyup = adjust;
 				} else {
 					// IE7 / IE8
-					ta[onpropertychange] = adjust;
+					ta[onpropertychange] = function(){
+						if(event.propertyName === 'value'){
+							adjust();
+						}
+					};
 				}
 			} else {
 				// Modern Browsers

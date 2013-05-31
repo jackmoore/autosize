@@ -4,8 +4,11 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.12 - 2013/5/31
+* Much better efficiency and smoothness for IE8 and lower.
+
 ### v1.16.11 - 2013/5/31
-* Fixed a default height issue in IE8.
+* Fixed a default height issue in IE8 and lower.
 
 ### v1.16.10 - 2013/5/30
 * Dropped scrollHeight for scrollTop. This fixed a height problem relating to padding. (Fixes #70)
@@ -33,7 +36,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 * Added minified file back to repository
 
 ### v1.16.2 - 2013/1/20
-* Minor boxsizing issue dealing with min-heights.
+* Minor box-sizing issue dealing with min-heights.
 
 ### v1.16.1 - 2013/1/20
 * Added to plugins.jquery.com
