@@ -74,7 +74,7 @@
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
 
-			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset, $ta.height());
+			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset || 0, $ta.height());
 
 			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
 
