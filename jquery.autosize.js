@@ -102,8 +102,10 @@
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
 				if (oninput in ta) {
 					var value = ta.value;
+					var carretPos = $(ta).prop('selectionStart');
 					ta.value = '';
 					ta.value = value;
+					if (carretPos) $(ta).get(0).setSelectionRange(carretPos,carrentPos);
 				}
 			}
 
