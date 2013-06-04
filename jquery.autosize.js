@@ -1,7 +1,7 @@
 /*!
-	jQuery Autosize v1.16.12
+	jQuery Autosize v1.16.13
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-05-31
+	updated: 2013-06-04
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -101,9 +101,10 @@
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
 				if (oninput in ta) {
-					var value = ta.value;
-					ta.value = '';
-					ta.value = value;
+					var width = ta.style.width;
+					ta.style.width = '0px';
+					var discard = ta.offsetWidth; // trigger a reflow
+					ta.style.width = width;
 				}
 			}
 

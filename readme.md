@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.13 - 2013/6/4
+* Fixed a Chrome cursor position issue introduced with the reflow workaround added in 1.16.10.
+
 ### v1.16.12 - 2013/5/31
 * Much better efficiency and smoothness for IE8 and lower.
 
