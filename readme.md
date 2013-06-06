@@ -2,6 +2,10 @@
 
 Small jQuery plugin to allow dynamic resizing of textarea height, so that it grows as based on visitor input.  To use, just call the `.autosize()` method on any textarea element. Example `$('textarea').autosize();`.  See the [project page](http://jacklmoore.com/autosize/) for documentation, caveats, and a demonstration.  Released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
+## Limitations
+
+Note well the fine print on the demo page regarding resizing your textareas (you can find it in the ""Note: Hidden Textarea Elements"" section at the bottom of the project page): you need to specify sizes in an 'absolute' notation such as px; using a 'relative' notation such as 95% will probably result in incomplete resizing. This is because the ghost textarea used for resizing is stored at the document level and therefore may have a different maximum size than your textarea. If you see your textareas with some of the text still hidden, that''s probably what''s happening. It took me a while to figure this one out.
+
 ## Changelog
 
 ### v1.16.13 - 2013/6/4
