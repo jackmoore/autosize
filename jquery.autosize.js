@@ -10,7 +10,7 @@
 		className: 'autosizejs',
 		append: '',
 		callback: false,
-		responsive: true
+		resizeDelay: 10
 	},
 	hidden = 'hidden',
 	borderBox = 'border-box',
@@ -170,9 +170,9 @@
 				ta[oninput] = adjust;
 			}
 
-			// This event can be unbound if using non-responsive (fixed-width) textarea elements.
-			// Uses a timeout and width check to reduce the amount of times adjust needs to be called.
-			if (options.responsive) {
+			// Set options.resizeDelay to false if using fixed-width textarea elements.
+			// Uses a timeout and width check to reduce the amount of times adjust needs to be called after window resize.
+			if (options.resizeDelay !== false) {
 				var timeout;
 				var width = $(ta).width();
 				$(window).on('resize.autosize', function() {
@@ -181,7 +181,7 @@
 						if ($(ta).width() !== width) {
 							adjust();
 						}
-					}, 10);
+					}, parseInt(options.resizeDelay,10));
 				});
 			}
 

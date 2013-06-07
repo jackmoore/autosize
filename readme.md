@@ -5,7 +5,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ## Changelog
 
 ### v1.16.15 - 2013/6/7
-* Reduced how frequently autosize is triggered when resizing the window.  Added responsive property so that autosizing on resize can be easily disabled.
+* Reduced how frequently autosize is triggered when resizing the window. Added resizeDelay property so that the frequency can be adjusted or disabled.
 
 ### v1.16.14 - 2013/6/6
 * Fixed an issue with autosize working poorly if the mirror element has a transition applied to it's width.
