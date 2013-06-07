@@ -1,17 +1,16 @@
 /*!
-	jQuery Autosize v1.16.14
+	jQuery Autosize v1.16.15
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-06-06
+	updated: 2013-06-07
 	license: http://www.opensource.org/licenses/mit-license.php
 */
-
-
 (function ($) {
 	var
 	defaults = {
 		className: 'autosizejs',
 		append: '',
-		callback: false
+		callback: false,
+		responsive: true
 	},
 	hidden = 'hidden',
 	borderBox = 'border-box',
@@ -171,16 +170,23 @@
 				ta[oninput] = adjust;
 			}
 
-			$(window).on('resize', function(){
-				active = false;
-				adjust();
-			});
+			// This event can be unbound if using non-responsive (fixed-width) textarea elements.
+			// Uses a timeout and width check to reduce the amount of times adjust needs to be called.
+			if (options.responsive) {
+				var timeout;
+				var width = $(ta).width();
+				$(window).on('resize.autosize', function() {
+					clearTimeout(timeout);
+					timeout = setTimeout(function(){
+						if ($(ta).width() !== width) {
+							adjust();
+						}
+					}, 10);
+				});
+			}
 
 			// Allow for manual triggering if needed.
-			$ta.on('autosize', function(){
-				active = false;
-				adjust();
-			});
+			$ta.on('autosize', adjust);
 
 			// Call adjust in case the textarea already contains text.
 			adjust();
