@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.14 - 2013/6/6
+* Fixed an issue with autosize working poorly if the mirror element has a transition applied to it's width.
+
 ### v1.16.13 - 2013/6/4
 * Fixed a Chrome cursor position issue introduced with the reflow workaround added in 1.16.10.
 

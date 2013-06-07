@@ -1,9 +1,10 @@
 /*!
-	jQuery Autosize v1.16.13
+	jQuery Autosize v1.16.14
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-06-04
+	updated: 2013-06-06
 	license: http://www.opensource.org/licenses/mit-license.php
 */
+
 
 (function ($) {
 	var
@@ -17,7 +18,7 @@
 	lineHeight = 'lineHeight',
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX
-	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden;"/>',
+	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>',
 
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
 	copyStyle = [
