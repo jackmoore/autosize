@@ -1,5 +1,5 @@
 /*!
-	jQuery Autosize v1.16.15
+	jQuery Autosize v1.16.16
 	(c) 2013 Jack Moore - jacklmoore.com
 	updated: 2013-06-11
 	license: http://www.opensource.org/licenses/mit-license.php
