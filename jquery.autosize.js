@@ -1,7 +1,7 @@
 /*!
 	jQuery Autosize v1.16.15
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-06-07
+	updated: 2013-06-11
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 (function ($) {
@@ -15,6 +15,7 @@
 	hidden = 'hidden',
 	borderBox = 'border-box',
 	lineHeight = 'lineHeight',
+	useSubpixels,
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>',
@@ -45,6 +46,9 @@
 		copyStyle.push(lineHeight);
 	}
 	mirror.style.lineHeight = '';
+
+	// test for subpixel rendering
+	useSubpixels = mirror.getBoundingClientRect().width !== undefined;
 
 	$.fn.autosize = function (options) {
 		options = $.extend({}, defaults, options || {});
@@ -111,7 +115,7 @@
 			// Using mainly bare JS in this function because it is going
 			// to fire very often while typing, and needs to very efficient.
 			function adjust() {
-				var height, overflow, original;
+				var height, overflow, original, width;
 
 				if (mirrored !== ta) {
 					initMirror();
@@ -121,9 +125,17 @@
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
 
-				// Update the width in case the original textarea width has changed
-				// A floor of 0 is needed because IE8 returns a negative value for hidden textareas, raising an error.
-				mirror.style.width = Math.max($ta.width(), 0) + 'px';
+				if (useSubpixels) {
+					// The mirror width much exactly match the textarea width, so using getBoundingClientRect because it doesn't round the subpixel value.
+					width = ta.getBoundingClientRect().width;
+					$.each($(ta).css(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']), function(){
+						width -= parseInt(this, 10);
+					});
+					mirror.style.width = width + 'px';
+				}
+				else {
+					mirror.style.width = Math.max($ta.width(), 0) + 'px';
+				}
 
 				// Needed for IE8 and lower to reliably return the correct scrollTop
 				mirror.scrollTop = 0;

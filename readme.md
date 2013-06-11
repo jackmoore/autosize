@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.16 - 2013/6/11
+* Fixed an issue where the calculated height might be slightly off in modern browsers when the width of the textarea has a subpixel value.
+
 ### v1.16.15 - 2013/6/7
 * Reduced how frequently autosize is triggered when resizing the window. Added resizeDelay property so that the frequency can be adjusted or disabled.
 
