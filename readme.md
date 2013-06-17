@@ -4,6 +4,12 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### Master
+* If you would like to force a mirror to be reconstructed (perhaps you have changed the original textarea's styles at runtime) you can fire the `autosize.textareaStyleChanged` event on the original textarea. Example:
+
+        $('textarea.example').css('text-indent', 25);
+        $('textarea.example').trigger('autosize.textareaStyleChanged');
+
 ### v1.16.17 - 2013/6/12
 * Fixed a compatability issue with jQuery versions before 1.9 introduced in the previous update.
 
