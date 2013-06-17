@@ -197,6 +197,7 @@
 
 			// Allow for manual triggering if needed.
 			$ta.on('autosize', adjust);
+			$ta.on('autosize.textareaStyleChanged', function() { mirrored = null; adjust(); });
 
 			// Call adjust in case the textarea already contains text.
 			adjust();
