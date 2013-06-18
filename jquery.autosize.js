@@ -1,5 +1,5 @@
 /*!
-	jQuery Autosize v1.16.19
+	jQuery Autosize v1.16.20
 	(c) 2013 Jack Moore - jacklmoore.com
 	updated: 2013-06-18
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -52,9 +52,8 @@
 			var
 			ta = this,
 			$ta = $(ta),
-			minHeight,
 			maxHeight,
-			resize,
+			minHeight,
 			boxOffset = 0,
 			callback = $.isFunction(options.callback);
 
@@ -70,14 +69,21 @@
 			// IE8 and lower return 'auto', which parses to NaN, if no min-height is set.
 			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset || 0, $ta.height());
 
-			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
+			// Save the original styles in case autosize is removed
+			$ta.data('autosize', {
+				height: ta.style.height,
+				overflow: ta.style.overflow,
+				overflowY: ta.style.overflowY,
+				wordWrap: ta.style.wordWrap,
+				resize: ta.style.resize
+			});
 
 			$ta.css({
 				overflow: 'hidden',
 				overflowY: 'hidden',
-				wordWrap: 'break-word',
-				resize: resize
-			}).data('autosize', true);
+				wordWrap: 'break-word', // horizontal overflow is hidden, so break-word is necessary for handling words longer than the textarea width
+				resize: ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal'
+			});
 
 			function initMirror() {
 				var styles = {}, ignore;
@@ -213,12 +219,8 @@
 				$ta
 					.off('autosize')
 					.off('.autosize')
-					.removeData('autosize')
-					.css({
-						overflow: '',
-						overflowY: '',
-						height: minHeight
-					});
+					.css($ta.data('autosize'))
+					.removeData('autosize');
 			});
 
 			// Call adjust in case the textarea already contains text.
