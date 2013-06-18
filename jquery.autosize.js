@@ -1,5 +1,5 @@
 /*!
-	jQuery Autosize v1.16.18
+	jQuery Autosize v1.16.19
 	(c) 2013 Jack Moore - jacklmoore.com
 	updated: 2013-06-18
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -168,18 +168,18 @@
 					// Detects IE9.  IE9 does not fire onpropertychange or oninput for deletions,
 					// so binding to onkeyup to catch most of those occasions.  There is no way that I
 					// know of to detect something like 'cut' in IE9.
-					ta.oninput = ta.onkeyup = adjust;
+					$ta.on('input.autosize keyup.autosize', adjust);
 				} else {
 					// IE7 / IE8
-					ta.onpropertychange = function(){
+					$ta.on('propertychange.autosize', function(){
 						if(event.propertyName === 'value'){
 							adjust();
 						}
-					};
+					});
 				}
 			} else {
 				// Modern Browsers
-				ta.oninput = adjust;
+				$ta.on('input.autosize', adjust);
 			}
 
 			// Set options.resizeDelay to false if using fixed-width textarea elements.
@@ -203,7 +203,23 @@
 
 			// Event for manual triggering that also forces the styles to update as well.
 			// Should only be needed if one of typography styles of the textarea change, and the textarea is already the target of the adjust method.
-			$ta.on('autosize.includeStyle', function() { mirrored = null; adjust(); });
+			$ta.on('autosize.includeStyle', function() { 
+				mirrored = null; 
+				adjust(); 
+			});
+
+			$ta.on('autosize.destroy', function(){
+				mirrored = null;
+				$ta
+					.off('autosize')
+					.off('.autosize')
+					.removeData('autosize')
+					.css({
+						overflow: '',
+						overflowY: '',
+						height: minHeight
+					});
+			});
 
 			// Call adjust in case the textarea already contains text.
 			adjust();

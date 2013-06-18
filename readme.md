@@ -4,8 +4,12 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.16.19 - 2013/6/18
+* Added event for removing autosize from a textarea element:
+	$('textarea.example').trigger('autosize.destroy');
+
 ### v1.16.18 - 2013/6/18
-* Added an event for manually triggering resize that also accounts for typographic styles that have changed on the textarea element. Example:
+* Added event for manually triggering resize that also accounts for typographic styles that have changed on the textarea element. Example:
 	$('textarea.example').css('text-indent', 25);
 	$('textarea.example').trigger('autosize.includeStyle');
 * Minor optimization
