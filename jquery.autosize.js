@@ -1,7 +1,7 @@
 /*!
-	jQuery Autosize v1.16.17
+	jQuery Autosize v1.16.18
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-06-12
+	updated: 2013-06-18
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 (function ($) {
@@ -12,16 +12,12 @@
 		callback: false,
 		resizeDelay: 10
 	},
-	hidden = 'hidden',
-	borderBox = 'border-box',
-	lineHeight = 'lineHeight',
-	useSubpixels = window.getComputedStyle !== undefined,
 
 	// border:0 is unnecessary, but avoids a bug in FireFox on OSX
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>',
 
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
-	copyStyle = [
+	typographyStyles = [
 		'fontFamily',
 		'fontSize',
 		'fontWeight',
@@ -31,8 +27,6 @@
 		'wordSpacing',
 		'textIndent'
 	],
-	oninput = 'oninput',
-	onpropertychange = 'onpropertychange',
 
 	// to keep track which textarea is being mirrored when adjust() is called.
 	mirrored,
@@ -42,8 +36,8 @@
 
 	// test that line-height can be accurately copied.
 	mirror.style.lineHeight = '99px';
-	if ($(mirror).css(lineHeight) === '99px') {
-		copyStyle.push(lineHeight);
+	if ($(mirror).css('lineHeight') === '99px') {
+		typographyStyles.push('lineHeight');
 	}
 	mirror.style.lineHeight = '';
 
@@ -69,7 +63,7 @@
 				return;
 			}
 
-			if ($ta.css('box-sizing') === borderBox || $ta.css('-moz-box-sizing') === borderBox || $ta.css('-webkit-box-sizing') === borderBox){
+			if ($ta.css('box-sizing') === 'border-box' || $ta.css('-moz-box-sizing') === 'border-box' || $ta.css('-webkit-box-sizing') === 'border-box'){
 				boxOffset = $ta.outerHeight() - $ta.height();
 			}
 
@@ -79,13 +73,15 @@
 			resize = ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal';
 
 			$ta.css({
-				overflow: hidden,
-				overflowY: hidden,
+				overflow: 'hidden',
+				overflowY: 'hidden',
 				wordWrap: 'break-word',
 				resize: resize
 			}).data('autosize', true);
 
 			function initMirror() {
+				var styles = {}, ignore;
+
 				mirrored = ta;
 				mirror.className = options.className;
 				maxHeight = parseInt($ta.css('maxHeight'), 10);
@@ -95,16 +91,17 @@
 				// original textarea.  mirror always has a height of 0.
 				// This gives a cross-browser supported way getting the actual
 				// height of the text, through the scrollTop property.
-				$.each(copyStyle, function(i, val){
-					mirror.style[val] = $ta.css(val);
+				$.each(typographyStyles, function(i,val){
+					styles[val] = $ta.css(val);
 				});
+				$(mirror).css(styles);
 
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
-				if (oninput in ta) {
+				if ('oninput' in ta) {
 					var width = ta.style.width;
 					ta.style.width = '0px';
-					var discard = ta.offsetWidth; // trigger a reflow
+					ignore = ta.offsetWidth; // This value isn't used, but getting it triggers the necessary reflow
 					ta.style.width = width;
 				}
 			}
@@ -112,7 +109,7 @@
 			// Using mainly bare JS in this function because it is going
 			// to fire very often while typing, and needs to very efficient.
 			function adjust() {
-				var height, overflow, original, width, style;
+				var height, original, width, style;
 
 				if (mirrored !== ta) {
 					initMirror();
@@ -122,13 +119,16 @@
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
 
-				if (useSubpixels) {
+				// window.getComputedStyle, getBoundingClientRect returning a width are unsupported in IE8 and lower.
+				// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
+				if ('getComputedStyle' in window) {
 					style = window.getComputedStyle(ta);
-					// The mirror width much exactly match the textarea width, so using getBoundingClientRect because it doesn't round the subpixel value.
 					width = ta.getBoundingClientRect().width;
-					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,property){
-						width -= parseInt(style[property], 10);
+
+					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
+						width -= parseInt(style[val],10);
 					});
+
 					mirror.style.width = width + 'px';
 				}
 				else {
@@ -144,14 +144,16 @@
 				height = mirror.scrollTop;
 
 				if (maxHeight && height > maxHeight) {
+					ta.style.overflowY = 'scroll';
 					height = maxHeight;
-					overflow = 'scroll';
-				} else if (height < minHeight) {
-					height = minHeight;
+				} else {
+					ta.style.overflowY = 'hidden';
+					if (height < minHeight) {
+						height = minHeight;
+					}
 				}
 
 				height += boxOffset;
-				ta.style.overflowY = overflow || hidden;
 
 				if (original !== height) {						
 					ta.style.height = height + 'px';
@@ -161,15 +163,15 @@
 				}
 			}
 
-			if (onpropertychange in ta) {
-				if (oninput in ta) {
+			if ('onpropertychange' in ta) {
+				if ('oninput' in ta) {
 					// Detects IE9.  IE9 does not fire onpropertychange or oninput for deletions,
-					// so binding to onkeyup to catch most of those occassions.  There is no way that I
+					// so binding to onkeyup to catch most of those occasions.  There is no way that I
 					// know of to detect something like 'cut' in IE9.
-					ta[oninput] = ta.onkeyup = adjust;
+					ta.oninput = ta.onkeyup = adjust;
 				} else {
 					// IE7 / IE8
-					ta[onpropertychange] = function(){
+					ta.onpropertychange = function(){
 						if(event.propertyName === 'value'){
 							adjust();
 						}
@@ -177,7 +179,7 @@
 				}
 			} else {
 				// Modern Browsers
-				ta[oninput] = adjust;
+				ta.oninput = adjust;
 			}
 
 			// Set options.resizeDelay to false if using fixed-width textarea elements.
@@ -195,9 +197,13 @@
 				});
 			}
 
-			// Allow for manual triggering if needed.
+			// Event for manual triggering if needed.
+			// Should only be needed when the value of the textarea is changed through JavaScript rather than user input.
 			$ta.on('autosize', adjust);
-			$ta.on('autosize.textareaStyleChanged', function() { mirrored = null; adjust(); });
+
+			// Event for manual triggering that also forces the styles to update as well.
+			// Should only be needed if one of typography styles of the textarea change, and the textarea is already the target of the adjust method.
+			$ta.on('autosize.includeStyle', function() { mirrored = null; adjust(); });
 
 			// Call adjust in case the textarea already contains text.
 			adjust();
