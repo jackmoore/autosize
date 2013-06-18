@@ -55,12 +55,20 @@
 			maxHeight,
 			minHeight,
 			boxOffset = 0,
-			callback = $.isFunction(options.callback);
+			callback = $.isFunction(options.callback),
+			originalStyles = {
+				height: ta.style.height,
+				overflow: ta.style.overflow,
+				overflowY: ta.style.overflowY,
+				wordWrap: ta.style.wordWrap,
+				resize: ta.style.resize
+			};
 
 			if ($ta.data('autosize')) {
 				// exit if autosize has already been applied, or if the textarea is the mirror element.
 				return;
 			}
+			$ta.data('autosize', true);
 
 			if ($ta.css('box-sizing') === 'border-box' || $ta.css('-moz-box-sizing') === 'border-box' || $ta.css('-webkit-box-sizing') === 'border-box'){
 				boxOffset = $ta.outerHeight() - $ta.height();
@@ -68,15 +76,6 @@
 
 			// IE8 and lower return 'auto', which parses to NaN, if no min-height is set.
 			minHeight = Math.max(parseInt($ta.css('minHeight'), 10) - boxOffset || 0, $ta.height());
-
-			// Save the original styles in case autosize is removed
-			$ta.data('autosize', {
-				height: ta.style.height,
-				overflow: ta.style.overflow,
-				overflowY: ta.style.overflowY,
-				wordWrap: ta.style.wordWrap,
-				resize: ta.style.resize
-			});
 
 			$ta.css({
 				overflow: 'hidden',
@@ -219,7 +218,7 @@
 				$ta
 					.off('autosize')
 					.off('.autosize')
-					.css($ta.data('autosize'))
+					.css(originalStyles)
 					.removeData('autosize');
 			});
 
