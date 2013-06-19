@@ -4,6 +4,11 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.17.0 - 2013/6/19
+* Renamed 'autosize' event to 'autosize.resize'
+* Renamed 'autosize.includeStyle' event to 'autosize.resizeIncludeStyle'
+* Fixes problem introduced in 1.16.18 with manually triggering the 'autosize' event:
+
 ### v1.16.20 - 2013/6/18
 * Minor improvement to the destroy event.
 
