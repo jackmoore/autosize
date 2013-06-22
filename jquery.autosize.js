@@ -1,7 +1,7 @@
 /*!
-	jQuery Autosize v1.17.0
+	jQuery Autosize v1.17.1
 	(c) 2013 Jack Moore - jacklmoore.com
-	updated: 2013-06-19
+	updated: 2013-06-22
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 (function ($) {
@@ -62,7 +62,9 @@
 				overflowY: ta.style.overflowY,
 				wordWrap: ta.style.wordWrap,
 				resize: ta.style.resize
-			};
+			},
+			timeout,
+			width = $ta.width();
 
 			if ($ta.data('autosize')) {
 				// exit if autosize has already been applied, or if the textarea is the mirror element.
@@ -168,6 +170,15 @@
 				}
 			}
 
+			function resize () {
+				clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					if ($ta.width() !== width) {
+						adjust();
+					}
+				}, parseInt(options.resizeDelay,10));
+			}
+
 			if ('onpropertychange' in ta) {
 				if ('oninput' in ta) {
 					// Detects IE9.  IE9 does not fire onpropertychange or oninput for deletions,
@@ -189,17 +200,9 @@
 
 			// Set options.resizeDelay to false if using fixed-width textarea elements.
 			// Uses a timeout and width check to reduce the amount of times adjust needs to be called after window resize.
+
 			if (options.resizeDelay !== false) {
-				var timeout;
-				var width = $(ta).width();
-				$(window).on('resize.autosize', function() {
-					clearTimeout(timeout);
-					timeout = setTimeout(function(){
-						if ($(ta).width() !== width) {
-							adjust();
-						}
-					}, parseInt(options.resizeDelay,10));
-				});
+				$(window).on('resize.autosize', resize);
 			}
 
 			// Event for manual triggering if needed.
@@ -215,6 +218,8 @@
 
 			$ta.on('autosize.destroy', function(){
 				mirrored = null;
+				clearTimeout(timeout);
+				$(window).off('resize', resize);
 				$ta
 					.off('autosize')
 					.off('.autosize')
