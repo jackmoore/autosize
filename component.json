@@ -1,8 +1,0 @@
-{
-	"name": "jquery-autosize",
-	"version": "1.17.1",
-	"main": "./jquery.autosize.js",
-	"dependencies": {
-		"jquery": ">=1.7"
-	}
-}
