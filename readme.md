@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.17.2 - 2013/7/28
+* Added support for loading as an AMD module.
+* Added package.json for installing through NPM.
+
 ### v1.17.1 - 2013/6/22
 * Fixed potential memory leak when using autosize.destroy.
 

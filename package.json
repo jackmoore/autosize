@@ -2,9 +2,7 @@
 	"name": "jquery-autosize",
 	"description": "Automatically adjust textarea height based on user input.",
 	"version": "1.17.2",
-	"dependencies": {
-		"jquery": ">=1.7"
-	},
+	"dependencies": {},
 	"keywords": [
 		"form",
 		"textarea",
@@ -24,6 +22,5 @@
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
 	],
-	"homepage": "http://www.jacklmoore.com/autosize",
-	"main": "jquery.autosize.js"
+	"homepage": "http://www.jacklmoore.com/autosize"
 }
