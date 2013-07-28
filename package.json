@@ -22,5 +22,6 @@
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
 	],
-	"homepage": "http://www.jacklmoore.com/autosize"
+	"homepage": "http://www.jacklmoore.com/autosize",
+	"main": "jquery.autosize.js"
 }
