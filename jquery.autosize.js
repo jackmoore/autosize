@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.17.2 - 2013-07-30
+	Autosize v1.17.3 - 2013-08-21
 	Automatically adjust textarea height based on user input.
 	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -95,7 +95,7 @@
 			});
 
 			function initMirror() {
-				var styles = {}, ignore;
+				var styles = {};
 
 				mirrored = ta;
 				mirror.className = options.className;
@@ -113,11 +113,11 @@
 
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
-				if ('oninput' in ta) {
-					var width = ta.style.width;
-					ta.style.width = '0px';
-					ignore = ta.offsetWidth; // This value isn't used, but getting it triggers the necessary reflow
-					ta.style.width = width;
+				if ('oninput' in ta && 'setSelectionRange' in ta) {
+					var cursorIndex = ta.selectionStart;
+					ta.value += ' ';
+					ta.value = ta.value.slice(0,-1);
+					ta.setSelectionRange(cursorIndex,cursorIndex);
 				}
 			}
 

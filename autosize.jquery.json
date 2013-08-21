@@ -2,7 +2,7 @@
 	"name": "autosize",
 	"title": "Autosize",
 	"description": "Automatically adjust textarea height based on user input.",
-	"version": "1.17.2",
+	"version": "1.17.3",
 	"dependencies": {
 		"jquery": ">=1.7"
 	},

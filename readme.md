@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.17.3 - 2013/8/21
+* Resolved an issue that was causing slowing down initialization for text-intensive textareas in Chrome.
+* Renamed minified file from jquery.autosize-min.js to jquery.autosize.min.js
+
 ### v1.17.2 - 2013/7/28
 * Added support for loading as an AMD module.
 * Added package.json for installing through NPM.
