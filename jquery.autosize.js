@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.17.3 - 2013-08-21
+	Autosize v1.17.4 - 2013-08-22
 	Automatically adjust textarea height based on user input.
 	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -111,6 +111,23 @@
 				});
 				$(mirror).css(styles);
 
+				// window.getComputedStyle, getBoundingClientRect returning a width are unsupported/unneeded in IE8 and lower.
+				// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
+				if ('getComputedStyle' in window) {
+					var style = window.getComputedStyle(ta);
+					var width = ta.getBoundingClientRect().width;
+
+					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
+						width -= parseInt(style[val],10);
+					});
+
+					mirror.style.width = width + 'px';
+				}
+				else {
+					mirror.style.width = Math.max($ta.width(), 0) + 'px';
+				}
+
+				// This code block fixes a Chrome-specific issue:
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
 				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
 				if ('oninput' in ta && 'setSelectionRange' in ta) {
@@ -124,7 +141,7 @@
 			// Using mainly bare JS in this function because it is going
 			// to fire very often while typing, and needs to very efficient.
 			function adjust() {
-				var height, original, width, style;
+				var height, original;
 
 				if (mirrored !== ta) {
 					initMirror();
@@ -133,22 +150,6 @@
 				mirror.value = ta.value + options.append;
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
-
-				// window.getComputedStyle, getBoundingClientRect returning a width are unsupported in IE8 and lower.
-				// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
-				if ('getComputedStyle' in window) {
-					style = window.getComputedStyle(ta);
-					width = ta.getBoundingClientRect().width;
-
-					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
-						width -= parseInt(style[val],10);
-					});
-
-					mirror.style.width = width + 'px';
-				}
-				else {
-					mirror.style.width = Math.max($ta.width(), 0) + 'px';
-				}
 
 				// Needed for IE8 and lower to reliably return the correct scrollTop
 				mirror.scrollTop = 0;
@@ -181,7 +182,10 @@
 			function resize () {
 				clearTimeout(timeout);
 				timeout = setTimeout(function(){
-					if ($ta.width() !== width) {
+					var newWidth = $ta.width();
+
+					if (newWidth !== width) {
+						width = newWidth;
 						adjust();
 					}
 				}, parseInt(options.resizeDelay,10));
