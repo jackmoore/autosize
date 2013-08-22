@@ -6,7 +6,6 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ### v1.17.4 - 2013/8/22
 * Improved speed of editing large blocks of text in FireFox.
-* No longer accounts for changes in width for a textarea while typing in order to improve performance.
 
 ### v1.17.3 - 2013/8/2013
 * Resolved an issue that was causing slowing down initialization for large blocks of text in Chrome.

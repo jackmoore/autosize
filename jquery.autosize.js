@@ -94,6 +94,26 @@
 				resize: ($ta.css('resize') === 'none' || $ta.css('resize') === 'vertical') ? 'none' : 'horizontal'
 			});
 
+			// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
+			function setWidth() {
+				var style, width;
+				
+				if ('getComputedStyle' in window) {
+					style = window.getComputedStyle(ta);
+					width = ta.getBoundingClientRect().width;
+
+					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
+						width -= parseInt(style[val],10);
+					});
+
+					mirror.style.width = width + 'px';
+				}
+				else {
+					// window.getComputedStyle, getBoundingClientRect returning a width are unsupported and unneeded in IE8 and lower.
+					mirror.style.width = Math.max($ta.width(), 0) + 'px';
+				}
+			}
+
 			function initMirror() {
 				var styles = {};
 
@@ -111,21 +131,7 @@
 				});
 				$(mirror).css(styles);
 
-				// window.getComputedStyle, getBoundingClientRect returning a width are unsupported/unneeded in IE8 and lower.
-				// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
-				if ('getComputedStyle' in window) {
-					var style = window.getComputedStyle(ta);
-					var width = ta.getBoundingClientRect().width;
-
-					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
-						width -= parseInt(style[val],10);
-					});
-
-					mirror.style.width = width + 'px';
-				}
-				else {
-					mirror.style.width = Math.max($ta.width(), 0) + 'px';
-				}
+				setWidth();
 
 				// This code block fixes a Chrome-specific issue:
 				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
@@ -145,6 +151,8 @@
 
 				if (mirrored !== ta) {
 					initMirror();
+				} else {
+					setWidth();
 				}
 
 				mirror.value = ta.value + options.append;
