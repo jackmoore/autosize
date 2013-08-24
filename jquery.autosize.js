@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.17.5 - 2013-08-22
+	Autosize v1.17.6 - 2013-08-24
 	Automatically adjust textarea height based on user input.
 	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -133,15 +133,10 @@
 
 				setWidth();
 
-				// This code block fixes a Chrome-specific issue:
-				// The textarea overflow is probably now hidden, but Chrome doesn't reflow the text to account for the
-				// new space made available by removing the scrollbars. This workaround causes Chrome to reflow the text.
-				if ('oninput' in ta && 'setSelectionRange' in ta) {
-					// The following line ensures that the mirror's width change has been applied with a repaint.
-					// FireFox may not have repainted the width change yet, which would cause this block to run slowly
-					// for large blocks of text.
-					var firefoxFix = mirror.offsetWidth;
-
+				// Chrome-specific fix:
+				// When the textarea y-overflow is hidden, Chrome doesn't reflow the text to account for the space
+				// made available by removing the scrollbar. This workaround triggers the reflow for Chrome.
+				if (window.chrome && 'setSelectionRange' in ta) {
 					var cursorIndex = ta.selectionStart;
 					ta.value += ' ';
 					ta.value = ta.value.slice(0,-1);
