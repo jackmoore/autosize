@@ -137,10 +137,16 @@
 				// When the textarea y-overflow is hidden, Chrome doesn't reflow the text to account for the space
 				// made available by removing the scrollbar. This workaround triggers the reflow for Chrome.
 				if (window.chrome && 'setSelectionRange' in ta) {
+					var $activeElement = $(document.activeElement || 'body');
 					var cursorIndex = ta.selectionStart;
 					ta.value += ' ';
 					ta.value = ta.value.slice(0,-1);
 					ta.setSelectionRange(cursorIndex,cursorIndex);
+
+					if (!$activeElement.is($ta)) {
+						$ta.blur();
+						$activeElement.focus();
+					}
 				}
 			}
 
