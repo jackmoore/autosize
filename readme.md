@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.17.7 - 2013/9/3
+* Reverted to an earlier fix for a Chrome issue.  Too many issues with using setSelectionRange.
+
 ### v1.17.6 - 2013/8/24
 * Fixed a potential issue introduced in 1.17.4 that causes an 'NS_ERROR_FAILURE' error in Firefox.
 
