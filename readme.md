@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.17.8 - 2013/9/7
+* Minor change to not append the mirror element when the plugin is applied to an empty jQuery collection
+
 ### v1.17.7 - 2013/9/3
 * Reverted to an earlier fix for a Chrome issue.  Too many issues with using setSelectionRange.
 

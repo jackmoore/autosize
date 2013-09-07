@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.17.7 - 2013-09-03
+	Autosize v1.17.8 - 2013-09-07
 	Automatically adjust textarea height based on user input.
 	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -50,6 +50,10 @@
 	mirror.style.lineHeight = '';
 
 	$.fn.autosize = function (options) {
+		if (!this.length) {
+			return this;
+		}
+
 		options = $.extend({}, defaults, options || {});
 
 		if (mirror.parentNode !== document.body) {
