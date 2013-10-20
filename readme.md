@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.0 - 2013/10/20
+* Fixed error that was being thrown in FireFox 3.x. Fixes #112
+* Removed AMD support.  Fixes #109  Ref #56.
+
 ### v1.17.8 - 2013/9/7
 * Minor change to not append the mirror element when the plugin is applied to an empty jQuery collection
 

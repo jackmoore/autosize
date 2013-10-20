@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.17.8 - 2013-09-07
+	Autosize v1.18.0 - 2013-10-20
 	Automatically adjust textarea height based on user input.
 	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -103,7 +103,7 @@
 				var style, width;
 				
 				if ('getComputedStyle' in window) {
-					style = window.getComputedStyle(ta);
+					style = window.getComputedStyle(ta, null);
 					width = ta.getBoundingClientRect().width;
 
 					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
