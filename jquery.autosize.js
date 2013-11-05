@@ -13,7 +13,7 @@
 		resizeDelay: 10
 	},
 
-	// border:0 is unnecessary, but avoids a bug in FireFox on OSX
+	// border:0 is unnecessary, but avoids a bug in Firefox on OSX
 	copy = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; padding: 0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>',
 
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
