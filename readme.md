@@ -5,7 +5,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ## Changelog
 
 ### v1.18.0 - 2013/10/20
-* Fixed error that was being thrown in FireFox 3.x. Fixes #112
+* Fixed error that was being thrown in Firefox 3.x. Fixes #112
 * Removed AMD support.  Fixes #109  Ref #56.
 
 ### v1.17.8 - 2013/9/7
@@ -18,10 +18,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 * Fixed a potential issue introduced in 1.17.4 that causes an 'NS_ERROR_FAILURE' error in Firefox.
 
 ### v1.17.5 - 2013/8/23
-* Fixed oversight in 1.17.4 that caused FireFox fix not to be applied.
+* Fixed oversight in 1.17.4 that caused Firefox fix not to be applied.
 
 ### v1.17.4 - 2013/8/22
-* Improved speed of editing large blocks of text in FireFox.
+* Improved speed of editing large blocks of text in Firefox.
 
 ### v1.17.3 - 2013/8/2013
 * Resolved an issue that was causing slowing down initialization for large blocks of text in Chrome.
@@ -144,7 +144,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
   $('#myTextArea').trigger('autosize');
 
 ### v1.5 - 2011/12/7
-* fixed a regression in detecting FireFox support
+* fixed a regression in detecting Firefox support
 
 ### v1.4 - 2011/11/22
 * added branching to exclude old browsers (FF3- & Safari4-)
