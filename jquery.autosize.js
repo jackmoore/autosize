@@ -176,7 +176,7 @@
 				height += boxOffset;
 
 				if (original !== height) {
-					ta.style.height = height + 'px !important';
+					ta.style.setProperty('height', height + 'px', 'important');
 					if (callback) {
 						options.callback.call(ta,ta);
 					}
