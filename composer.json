@@ -12,5 +12,5 @@
     "license": "MIT",
     "require": {
         "components/jquery": "dev-master"
-    },
+    }
 }
