@@ -10,7 +10,8 @@
 		className: 'autosizejs',
 		append: '',
 		callback: false,
-		resizeDelay: 10
+		resizeDelay: 10,
+		extraBottomSpace: 20
 	},
 
 	// border:0 is unnecessary, but avoids a bug in Firefox on OSX
@@ -173,7 +174,7 @@
 					}
 				}
 
-				height += boxOffset;
+				height += (boxOffset + options.extraBottomSpace);
 
 				if (original !== height) {
 					ta.style.height = height + 'px';
