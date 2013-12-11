@@ -151,11 +151,15 @@
 					setWidth();
 				}
 
-			        if (!ta.value) {
-			          mirror.value = $(ta).attr("placeholder") + options.append;
-			        } else {
-			          mirror.value = ta.value + options.append;
-			        }
+				if (!ta.value) {
+					// If the textarea is empty, copy the placeholder text into 
+					// the mirror control and use that for sizing so that we 
+					// don't end up with placeholder getting trimmed.
+					mirror.value = ($(ta).attr("placeholder") || '') + options.append;
+				} else {
+					mirror.value = ta.value + options.append;
+				}
+
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
 
