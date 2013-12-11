@@ -151,7 +151,11 @@
 					setWidth();
 				}
 
-				mirror.value = ta.value + options.append;
+			        if (!ta.value) {
+			          mirror.value = $(ta).attr("placeholder") + options.append;
+			        } else {
+			          mirror.value = ta.value + options.append;
+			        }
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
 
