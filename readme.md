@@ -5,7 +5,7 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ## Changelog
 
 ### v1.18.2 - 2014/1/6
-* Checked getComputedStyle return value to avoid potential error exception.
+* Checked getComputedStyle return value to avoid potential error exception.  Fixes #133
 
 ### v1.18.1 - 2013/11/5
 * Removed AMD support.  Fixes #109  Ref #56.
