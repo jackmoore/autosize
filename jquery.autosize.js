@@ -1,7 +1,7 @@
 /*!
-	Autosize v1.18.1 - 2013-11-05
+	Autosize v1.18.2 - 2014-01-06
 	Automatically adjust textarea height based on user input.
-	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
+	(c) 2014 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
 */
 (function ($) {
@@ -92,10 +92,10 @@
 
 			// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
 			function setWidth() {
-				var style, width;
+				var width;
+				var style = window.getComputedStyle ? window.getComputedStyle(ta, null) : false;
 				
-				if ('getComputedStyle' in window) {
-					style = window.getComputedStyle(ta, null);
+				if (style) {
 					width = ta.getBoundingClientRect().width;
 
 					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
