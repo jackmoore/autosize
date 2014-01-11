@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.4 - 2014/1/11
+* If textarea displays placeholder text, use placeholder text for sizing. Ref #130, Ref #84.
+
 ### v1.18.3 - 2014/1/10
 * Allow correct width calculation of hidden textarea elements, when they have a specified width.  Fixes #134
 

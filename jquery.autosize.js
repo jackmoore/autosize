@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.18.3 - 2014-01-10
+	Autosize v1.18.4 - 2014-01-11
 	Automatically adjust textarea height based on user input.
 	(c) 2014 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -10,7 +10,8 @@
 		className: 'autosizejs',
 		append: '',
 		callback: false,
-		resizeDelay: 10
+		resizeDelay: 10,
+		placeholder: true
 	},
 
 	// border:0 is unnecessary, but avoids a bug in Firefox on OSX
@@ -155,7 +156,7 @@
 					setWidth();
 				}
 
-				if (!ta.value) {
+				if (!ta.value && options.placeholder) {
 					// If the textarea is empty, copy the placeholder text into 
 					// the mirror control and use that for sizing so that we 
 					// don't end up with placeholder getting trimmed.
