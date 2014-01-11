@@ -101,13 +101,14 @@
 					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
 						width -= parseInt(style[val],10);
 					});
-
-					mirror.style.width = width + 'px';
 				}
-				else {
+				if (!style || width == 0) {
 					// window.getComputedStyle, getBoundingClientRect returning a width are unsupported and unneeded in IE8 and lower.
-					mirror.style.width = Math.max($ta.width(), 0) + 'px';
+                    // In some situations, if the element is offscreen, then the above approach will result in 0 width,
+                    // but the approach below works.
+					mirror.style.width = Math.max($ta.width(), 0);
 				}
+                mirror.style.width = width + 'px';
 			}
 
 			function initMirror() {
