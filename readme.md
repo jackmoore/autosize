@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.3 - 2014/1/10
+* Allow correct width calculation of hidden textarea elements, when they have a specified width.  Fixes #134
+
 ### v1.18.2 - 2014/1/6
 * Checked getComputedStyle return value to avoid potential error exception.  Fixes #133
 

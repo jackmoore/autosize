@@ -1,5 +1,5 @@
 /*!
-	Autosize v1.18.2 - 2014-01-06
+	Autosize v1.18.3 - 2014-01-10
 	Automatically adjust textarea height based on user input.
 	(c) 2014 Jack Moore - http://www.jacklmoore.com/autosize
 	license: http://www.opensource.org/licenses/mit-license.php
@@ -91,24 +91,27 @@
 			});
 
 			// The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn't round the sub-pixel value.
+			// window.getComputedStyle, getBoundingClientRect returning a width are unsupported, but also unneeded in IE8 and lower.
 			function setWidth() {
 				var width;
 				var style = window.getComputedStyle ? window.getComputedStyle(ta, null) : false;
 				
 				if (style) {
+
 					width = ta.getBoundingClientRect().width;
+
+					if (width === 0) {
+						width = parseInt(style.width,10);
+					}
 
 					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
 						width -= parseInt(style[val],10);
 					});
+				} else {
+					width = Math.max($ta.width(), 0);
 				}
-				if (!style || width == 0) {
-					// window.getComputedStyle, getBoundingClientRect returning a width are unsupported and unneeded in IE8 and lower.
-                    // In some situations, if the element is offscreen, then the above approach will result in 0 width,
-                    // but the approach below works.
-					mirror.style.width = Math.max($ta.width(), 0);
-				}
-                mirror.style.width = width + 'px';
+
+				mirror.style.width = width + 'px';
 			}
 
 			function initMirror() {
