@@ -8,6 +8,7 @@
 	var
 	defaults = {
 		className: 'autosizejs',
+		id: 'autosizejs',
 		append: '',
 		callback: false,
 		resizeDelay: 10,
@@ -120,6 +121,7 @@
 
 				mirrored = ta;
 				mirror.className = options.className;
+				mirror.id = options.id;
 				maxHeight = parseInt($ta.css('maxHeight'), 10);
 
 				// mirror is a duplicate textarea located off-screen that
