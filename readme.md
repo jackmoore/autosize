@@ -4,7 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
-### v1.18.5 - 2014/3/410
+### v1.18.6 - 2014/3/13
+* Fixed incorrect size when setting the HTML5 textarea wrap attribute to 'hard'.
+
+### v1.18.5 - 2014/3/10
 * Added 'id' property for setting the id of the mirrored textarea element
 
 ### v1.18.4 - 2014/1/11
