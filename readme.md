@@ -4,6 +4,10 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.7 - 2014/4/13
+* Very minor change to better represent condition for taking the element width from the style object. Fixes #147
+* Added a newline character by default to the textarea element for smoother behavior in IE.  Reference #148
+
 ### v1.18.6 - 2014/3/13
 * Fixed incorrect size when setting the HTML5 textarea wrap attribute to 'hard'.
 
