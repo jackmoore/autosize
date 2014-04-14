@@ -17,9 +17,9 @@
       $(function() {
         var ta = $('#t'), 
             logger = $('#logger');
-        ta.autosize({callback: function() {console.log('callback resized')}});
+        ta.autosize({callback: function() {console.log('on resized callback')}});
         ta.on('autosize.resized', function(){
-          console.log('autosize.resized');
+          console.log('on autosize.resized');
         });
       });
     </script>
