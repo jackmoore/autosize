@@ -193,6 +193,8 @@
 
 				if (original !== height) {
 					ta.style.height = height + 'px';
+					// triggering the autosize.resized event, w/out relying just on the callback
+					$ta.trigger('autosize.resized');
 					if (callback) {
 						options.callback.call(ta,ta);
 					}
