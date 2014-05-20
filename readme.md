@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.8 - 2014/5/20
+* Minor change to logic for applying the CSS resize property. Fixes #156
+
 ### v1.18.7 - 2014/4/13
 * Very minor change to better represent condition for taking the element width from the style object. Fixes #147
 * Added a newline character by default to the textarea element for smoother behavior in IE.  Reference #148
