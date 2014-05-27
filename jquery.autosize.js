@@ -115,6 +115,9 @@
 					$.each(['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'], function(i,val){
 						width -= parseInt(style[val],10);
 					});
+
+					width = Math.max(width, 0);
+
 				} else {
 					width = $ta.width();
 				}
