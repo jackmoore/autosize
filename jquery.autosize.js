@@ -13,7 +13,7 @@
     factory(require('jquery'));
   } else {
     // Browser globals
-    factory(jQuery);
+    factory(jQuery || $);
   }
 }(function ($) {
 	var
@@ -280,4 +280,4 @@
 			adjust();
 		});
 	};
-})); // jQuery or jQuery-like library, such as Zepto
+}));
