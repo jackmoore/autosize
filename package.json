@@ -3,6 +3,10 @@
 	"description": "Automatically adjust textarea height based on user input.",
 	"version": "1.18.9",
 	"dependencies": {},
+	"repository": {
+	    "type": "git",
+	    "url": "git://github.com/jackmoore/autosize.git"
+	},
 	"keywords": [
 		"form",
 		"textarea",
