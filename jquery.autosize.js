@@ -89,6 +89,7 @@
 			$ta.css({
 				overflow: 'hidden',
 				overflowY: 'hidden',
+				whiteSpace: 'pre-wrap', // fix IE11 text word-wrap issue
 				wordWrap: 'break-word' // horizontal overflow is hidden, so break-word is necessary for handling words longer than the textarea width
 			});
 
