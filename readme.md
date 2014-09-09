@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.10 - 2014/9/9
+* Added white-space to the list of monitored textarea properties.
+
 ### v1.18.9 - 2014/5/27
 * Minor change to fix potential IE8 negative width bug. Fixes #157 Fixes #158
 
