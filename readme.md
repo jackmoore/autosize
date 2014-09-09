@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+### v1.18.11 - 2014/9/9
+* Merged request for autosize.resized event.  Fixes #149.
+
 ### v1.18.10 - 2014/9/9
 * Added white-space to the list of monitored textarea properties.
 

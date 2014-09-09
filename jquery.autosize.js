@@ -1,5 +1,5 @@
 /*!
-	Autosize 1.18.10
+	Autosize 1.18.11
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -202,6 +202,7 @@
 					if (callback) {
 						options.callback.call(ta,ta);
 					}
+					$ta.trigger('autosize.resized');
 				}
 			}
 
