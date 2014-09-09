@@ -1,5 +1,5 @@
 /*!
-	Autosize 1.18.11
+	Autosize 1.18.12
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -270,4 +270,4 @@
 			adjust();
 		});
 	};
-}(window.jQuery || window.$)); // jQuery or jQuery-like library, such as Zepto
+}(jQuery || $)); // jQuery or jQuery-like library, such as Zepto
