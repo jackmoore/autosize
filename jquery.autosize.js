@@ -1,5 +1,5 @@
 /*!
-	Autosize 1.18.12
+	Autosize 1.18.13
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -169,11 +169,12 @@
 					// If the textarea is empty, copy the placeholder text into 
 					// the mirror control and use that for sizing so that we 
 					// don't end up with placeholder getting trimmed.
-					mirror.value = ($ta.attr("placeholder") || '') + options.append;
+					mirror.value = ($ta.attr("placeholder") || '');
 				} else {
-					mirror.value = ta.value + options.append;
+					mirror.value = ta.value;
 				}
 
+				mirror.value += options.append || '';
 				mirror.style.overflowY = ta.style.overflowY;
 				original = parseInt(ta.style.height,10);
 

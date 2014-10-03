@@ -5,6 +5,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ## Changelog
 
 
+##### v1.18.12 - 2014/10/3
+* Allow setting the append property to falsey values.  Fixes #177, Ref #168, Ref #166.
+
 ##### v1.18.12 - 2014/9/9
 * Replace window.jQuery with jQuery.  Fixes #176.
 
