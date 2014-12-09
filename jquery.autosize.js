@@ -157,7 +157,7 @@
 			// Using mainly bare JS in this function because it is going
 			// to fire very often while typing, and needs to very efficient.
 			function adjust() {
-				var height, original;
+				var height, originalHeight;
 
 				if (mirrored !== ta) {
 					initMirror();
@@ -176,7 +176,7 @@
 
 				mirror.value += options.append || '';
 				mirror.style.overflowY = ta.style.overflowY;
-				original = parseFloat(ta.style.height) || 0;
+				originalHeight = parseFloat(ta.style.height) || 0;
 
 				// Setting scrollTop to zero is needed in IE8 and lower for the next step to be accurately applied
 				mirror.scrollTop = 0;
@@ -198,7 +198,7 @@
 
 				height += boxOffset;
 
-				if (original !== height) {
+				if (originalHeight !== height) {
 					ta.style.height = height + 'px';
 
 					// Trigger a repaint for IE8 for when ta is nested 2 or more levels inside an inline-block
