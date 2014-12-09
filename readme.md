@@ -5,6 +5,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 ## Changelog
 
 
+##### v1.18.16 - 2014/12/9
+* Treat height differences smaller than 1/100px as equal. Merges #189.
+
 ##### v1.18.15 - 2014/11/11
 * Replaced parseInt with parseFloat to support sub-pixel values.  Merges #185.
 
