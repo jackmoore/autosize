@@ -11,7 +11,8 @@
 		"form",
 		"textarea",
 		"ui",
-		"jQuery"
+		"jQuery",
+		"jquery-plugin"
 	],
 	"authors": [
 		{
