@@ -198,7 +198,7 @@
 
 				height += boxOffset;
 
-				if (originalHeight !== height) {
+				if (Math.abs(originalHeight - height) > 1/100) {
 					ta.style.height = height + 'px';
 
 					// Trigger a repaint for IE8 for when ta is nested 2 or more levels inside an inline-block
