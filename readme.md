@@ -4,6 +4,8 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+##### v.1.18.17 - 2014/12/10
+* Fixed potential issue when using transforms to scale a textarea.  Fixes #190.
 
 ##### v1.18.16 - 2014/12/9
 * Treat height differences smaller than 1/100px as equal. Merges #189.
