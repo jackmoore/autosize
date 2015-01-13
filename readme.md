@@ -4,6 +4,18 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+##### v.1.18.17 - 2014/12/10
+* Fixed potential issue when using transforms to scale a textarea.  Fixes #190.
+
+##### v1.18.16 - 2014/12/9
+* Treat height differences smaller than 1/100px as equal. Merges #189.
+
+##### v1.18.15 - 2014/11/11
+* Replaced parseInt with parseFloat to support sub-pixel values.  Merges #185.
+
+##### v1.18.14 - 2014/10/3
+* Fixed potential IE8 issue.  Merged #181.
+
 ##### v1.18.13 - 2014/10/3
 * Allow setting the append property to falsey values.  Fixes #177, Ref #168, Ref #166.
 
