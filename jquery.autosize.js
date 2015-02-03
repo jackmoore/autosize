@@ -16,22 +16,22 @@
 
 	// border:0 is unnecessary, but avoids a bug in Firefox on OSX
 	$copy = $('<textarea tabindex="-1"/>').css({
-    position: 'absolute',
-    top: '-999px',
-    left: 0,
-    right: 'auto',
-    bottom: 'auto',
-    border: 0,
-    padding: 0,
-    '-moz-box-sizing': 'content-box',
-    '-webkit-box-sizing': 'content-box',
-    boxSizing: 'content-box',
-    wordWrap: 'break-word',
-    overflow: 'hidden',
-    transition: 'none',
-    '-webkit-transition': 'none',
-    '-moz-transition': 'none'
-  }),
+		position: 'absolute',
+		top: '-999px',
+		left: 0,
+		right: 'auto',
+		bottom: 'auto',
+		border: 0,
+		padding: 0,
+		'-moz-box-sizing': 'content-box',
+		'-webkit-box-sizing': 'content-box',
+		boxSizing: 'content-box',
+		wordWrap: 'break-word',
+		overflow: 'hidden',
+		transition: 'none',
+		'-webkit-transition': 'none',
+		'-moz-transition': 'none'
+	}),
 
 	// line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.
 	typographyStyles = [
@@ -52,9 +52,9 @@
 	// the mirror element, which is used to calculate what size the mirrored element should be.
 	mirror = $copy.data('autosize', true)[0];
 
-  // apply !important styles.
-  mirror.style.setProperty('height', '0', 'important');
-  mirror.style.setProperty('minHeight', '0', 'important');
+	// apply !important styles.
+	mirror.style.setProperty('height', '0', 'important');
+	mirror.style.setProperty('minHeight', '0', 'important');
 
 	// test that line-height can be accurately copied.
 	mirror.style.lineHeight = '99px';
