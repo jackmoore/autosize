@@ -4,6 +4,9 @@ Small jQuery plugin to allow dynamic resizing of textarea height, so that it gro
 
 ## Changelog
 
+##### v.1.18.18 - 2015/02/24
+* Fix Content Security Policy (CSP) warnings about unsafe-inline styles.  Fixes #199.
+
 ##### v.1.18.17 - 2014/12/10
 * Fixed potential issue when using transforms to scale a textarea.  Fixes #190.
 
