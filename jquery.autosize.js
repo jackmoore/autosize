@@ -270,4 +270,4 @@
 			adjust();
 		});
 	};
-}(jQuery || $)); // jQuery or jQuery-like library, such as Zepto
+}(window.jQuery || window.Zepto || window.$)); // jQuery or jQuery-like library, such as Zepto
