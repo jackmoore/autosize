@@ -1,216 +1,145 @@
-## Autosize
+## Summary
 
-Small jQuery plugin to allow dynamic resizing of textarea height, so that it grows as based on visitor input.  To use, just call the `.autosize()` method on any textarea element. Example `$('textarea').autosize();`.  See the [project page](http://jacklmoore.com/autosize/) for documentation, caveats, and a demonstration.  Released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
+Autosize is a small, stand-alone script to automatically adjust textarea height to fit text.
 
-## Changelog
+## Install
 
-##### v.1.18.18 - 2015/02/24
-* Fix Content Security Policy (CSP) warnings about unsafe-inline styles.  Fixes #199.
+[Download zip](https://github.com/jackmoore/autosize/archive/master.zip)
 
-##### v.1.18.17 - 2014/12/10
-* Fixed potential issue when using transforms to scale a textarea.  Fixes #190.
+##### Install via NPM
+```bash
+npm install autosize
+```
+##### Install via Bower
+```bash
+bower install autosize
+```
 
-##### v1.18.16 - 2014/12/9
-* Treat height differences smaller than 1/100px as equal. Merges #189.
+#### Browser compatibility
 
-##### v1.18.15 - 2014/11/11
-* Replaced parseInt with parseFloat to support sub-pixel values.  Merges #185.
+Chrome | Firefox | IE | Safari | iOS Safari | Android | Opera Mini
+------ | --------|----|--------|------------|---------|------------
+yes    | yes     | 9  | yes    | yes        | 4       | ?
 
-##### v1.18.14 - 2014/10/3
-* Fixed potential IE8 issue.  Merged #181.
+### Usage
 
-##### v1.18.13 - 2014/10/3
-* Allow setting the append property to falsey values.  Fixes #177, Ref #168, Ref #166.
+The autosize function accepts a single textarea element, or an array or array-like object (such as a NodeList or jQuery collection) of textarea elements.
 
-##### v1.18.12 - 2014/9/9
-* Replace window.jQuery with jQuery.  Fixes #176.
+```javascript
+// from a NodeList
+autosize(document.querySelectorAll('textarea'));
 
-##### v1.18.11 - 2014/9/9
-* Merged request for autosize.resized event.  Fixes #149.
+// from a single Node
+autosize(document.querySelector('textarea'));
 
-##### v1.18.10 - 2014/9/9
-* Added white-space to the list of monitored textarea properties.
+// from a jQuery collection
+autosize($('textarea'));
+```
 
-##### v1.18.9 - 2014/5/27
-* Minor change to fix potential IE8 negative width bug. Fixes #157 Fixes #158
+### Lifecycle Events
 
-##### v1.18.8 - 2014/5/20
-* Minor change to logic for applying the CSS resize property. Fixes #156
+##### autosize.update (triggerable)
 
-##### v1.18.7 - 2014/4/13
-* Very minor change to better represent condition for taking the element width from the style object. Fixes #147
-* Added a newline character by default to the textarea element for smoother behavior in IE.  Reference #148
+Once you've assigned autosize to an element, you can manually trigger the resize event by using the 'autosize.update' event. Autosize has no way of knowing when a script has changed the value of a textarea element, or when the textarea element styles have changed, so this event would be used instruct autosize to resize the textarea.
 
-##### v1.18.6 - 2014/3/13
-* Fixed incorrect size when setting the HTML5 textarea wrap attribute to 'hard'.
 
-##### v1.18.5 - 2014/3/10
-* Added 'id' property for setting the id of the mirrored textarea element
+```javascript
+var ta = document.querySelector('textarea');
 
-##### v1.18.4 - 2014/1/11
-* If textarea displays placeholder text, use placeholder text for sizing. Ref #130, Ref #84.
+autosize(ta);
 
-##### v1.18.3 - 2014/1/10
-* Allow correct width calculation of hidden textarea elements, when they have a specified width.  Fixes #134
+// Change the value of the textarea
+ta.value = "Something really long";
+ta.style.fontSize = '20px';
 
-##### v1.18.2 - 2014/1/6
-* Checked getComputedStyle return value to avoid potential error exception.  Fixes #133
+// Dispatch a 'autosize.update' event to trigger a resize:
+var evt = document.createEvent('Event');
+evt.initEvent('autosize.update', true, false);
+ta.dispatchEvent(evt);
+```
 
-##### v1.18.1 - 2013/11/5
-* Removed AMD support.  Fixes #109  Ref #56.
+##### autosize.destroy (triggerable)
 
-##### v1.18.0 - 2013/10/20
-* Fixed error that was being thrown in Firefox 3.x. Fixes #112
+```javascript
+var ta = document.querySelector('textarea');
 
-##### v1.17.8 - 2013/9/7
-* Minor change to not append the mirror element when the plugin is applied to an empty jQuery collection
+// assign autosize to ta
+autosize(ta);
 
-##### v1.17.7 - 2013/9/3
-* Reverted to an earlier fix for a Chrome issue.  Too many issues with using setSelectionRange.
+// remove autosize from ta
+var evt = document.createEvent('Event');
+evt.initEvent('autosize.destroy', true, false);
+ta.dispatchEvent(evt);
+```
 
-##### v1.17.6 - 2013/8/24
-* Fixed a potential issue introduced in 1.17.4 that causes an 'NS_ERROR_FAILURE' error in Firefox.
+##### autosize.resized (observable)
 
-##### v1.17.5 - 2013/8/23
-* Fixed oversight in 1.17.4 that caused Firefox fix not to be applied.
+This event is fired every time autosize adjusts the textarea height.
 
-##### v1.17.4 - 2013/8/22
-* Improved speed of editing large blocks of text in Firefox.
+```javascript
+var ta = document.querySelector('textarea');
 
-##### v1.17.3 - 2013/8/2013
-* Resolved an issue that was causing slowing down initialization for large blocks of text in Chrome.
-* Renamed minified file from jquery.autosize-min.js to jquery.autosize.min.js
+ta.addEventListener('autosize.resized', function(){
+	console.log('textarea height updated');
+});
 
-##### v1.17.2 - 2013/7/28
-* Added support for loading as an AMD module.
-* Added package.json for installing through NPM.
+### Differences between v2 and v1
 
-##### v1.17.1 - 2013/6/22
-* Fixed potential memory leak when using autosize.destroy.
+If you need the v1 version for whatever reason, you can find it in the v1 branch on Github:
+[https://github.com/jackmoore/autosize/tree/v1](https://github.com/jackmoore/autosize/tree/v1)
 
-##### v1.17.0 - 2013/6/19
-* Renamed 'autosize' event to 'autosize.resize'
-* Renamed 'autosize.includeStyle' event to 'autosize.resizeIncludeStyle'
-* Fixes problem introduced in 1.16.18 with manually triggering the 'autosize' event:
+Autosize v2 is a smaller, simplier script than v1.  It is now a stand-alone script instead of a jQuery plugin, and support for IE8 and lower has been dropped (legacy IE users will be presented with an unmodified textarea element).  Additionally, Autosize v2 does not take in any optional parameters at this time.
 
-##### v1.16.20 - 2013/6/18
-* Minor improvement to the destroy event.
+Autosize v2 does not create a mirror textarea element in order to calculate the correct height, which was responsible for much of the original script's complexity.  This should be more efficient and reliable, but the new method prevents using a CSS transition to animate the height change.
 
-##### v1.16.19 - 2013/6/18
-* Added event for removing autosize from a textarea element:
-	$('textarea.example').trigger('autosize.destroy');
 
-##### v1.16.18 - 2013/6/18
-* Added event for manually triggering resize that also accounts for typographic styles that have changed on the textarea element. Example:
-	$('textarea.example').css('text-indent', 25);
-	$('textarea.example').trigger('autosize.includeStyle');
-* Minor optimization
+### Converting to a jQuery plugin
 
-##### v1.16.17 - 2013/6/12
-* Fixed a compatibility issue with jQuery versions before 1.9 introduced in the previous update.
+Autosize does not depend on jQuery, but it can easily be turned into a jQuery plugin if desired.
 
-##### v1.16.16 - 2013/6/11
-* Fixed an issue where the calculated height might be slightly off in modern browsers when the width of the textarea has a sub-pixel value.
-
-##### v1.16.15 - 2013/6/7
-* Reduced how frequently autosize is triggered when resizing the window. Added resizeDelay property so that the frequency can be adjusted or disabled.
-
-##### v1.16.14 - 2013/6/6
-* Fixed an issue with autosize working poorly if the mirror element has a transition applied to it's width.
-
-##### v1.16.13 - 2013/6/4
-* Fixed a Chrome cursor position issue introduced with the reflow workaround added in 1.16.10.
-
-##### v1.16.12 - 2013/5/31
-* Much better efficiency and smoothness for IE8 and lower.
-
-##### v1.16.11 - 2013/5/31
-* Fixed a default height issue in IE8 and lower.
-
-##### v1.16.10 - 2013/5/30
-* Dropped scrollHeight for scrollTop. This fixed a height problem relating to padding. (Fixes #70)
-* Re-added workaround to get Chrome to reflow text after hiding overflow.
-
-##### v1.16.9 - 2013/5/20
-* Reverted change from 1.16.8 as it caused an issue in IE8. (Fixes #69)
-
-##### v1.16.8 - 2013/5/7
-* Fixed issue where autosize was creating a horizontal scrollbar for a user
-
-##### v1.16.7 - 2013/3/20
-* Added workaround for a very edge-case iOS bug (Fixes #58).
-
-##### v1.16.6 - 2013/3/12
-* Replaced jQuery shorthand methods with on() in anticipation of jQuery 2.0 conditional builds
-
-##### v1.16.5 - 2013/3/12
-* Fixed a bug where triggering the autosize event immediately after assigning autosize had no effect.
-
-##### v1.16.4 - 2013/1/29
-* Fixed a conflict with direction:ltr pages.
-
-##### v1.16.3 - 2013/1/23
-* Added minified file back to repository
-
-##### v1.16.2 - 2013/1/20
-* Minor box-sizing issue dealing with min-heights.
-
-##### v1.16.1 - 2013/1/20
-* Added to plugins.jquery.com
-
-##### v1.15 - 2012/11/16
-* Reworked to only create a single mirror element, instead of one for each textarea.
-* Dropped feature detection for FF3 and Safari 4.
-
-##### v1.14 - 2012/10/6
-* Added 'append' option for appending whitespace to the end of the height calculation (an extra newline improves the apperance when animating).
-* Added a demonstration of animating the height change using a CSS transition.
-
-##### v1.13 - 2012/9/21
-* Added optional callback that fires after resize.
-
-##### v1.12 - 2012/9/3
-* Fixed a bug I introduced in the last update.
-
-##### v1.11 - 2012/8/8
-* Added workaround to get Chrome to reflow default text better.
-
-##### v1.10 - 2012/4/30
-* Added 'lineHeight' to the list of styles considered for size detection.
-
-##### v1.9 - 2012/6/19
-* Added 'textIndent' to the list of styles considered for size detection.
-* Added vender prefixes to box-sizing detection
-
-##### v1.8 - 2012/6/7
-* Added conditional so that autosize cannot be applied twice to the same element
-* When autosize is applied to an element, it will have a data property that links it to the mirrored textarea element.  This will make it easier to keep track of and remove unneeded mirror elements.  Example:
-
-    $('textarea.example').data('mirror').remove(); // delete the mirror
-
-    $('textarea.example').remove(); // delete the original
-
-##### v1.7 - 2012/5/3
-* Now supports box-sizing:border-box
-
-##### v1.6 - 2012/2/11
-* added binding to allow autosize to be triggered manually.  Example:
-  $('#myTextArea').trigger('autosize');
-
-##### v1.5 - 2011/12/7
-* fixed a regression in detecting Firefox support
-
-##### v1.4 - 2011/11/22
-* added branching to exclude old browsers (FF3- & Safari4-)
-
-##### v1.3 - 2011/11/13
-* fixed a regression in 1.1 relating to Opera.
-
-##### v1.2 - 2011/11/10
-* fixed a regression in 1.1 that broke autosize for IE9.
-
-##### v1.1 - 2011/11/10
-* autosize now follows the max-height of textareas.  OverflowY will be set to scroll once the content height exceeds max-height.
-
-##### v1.0 - 2011/11/7
-* first release
+```javascript
+// Create the plugin:
+window.jQuery.fn.autosize = function() {
+	return autosize(this);
+};
+
+// Use the plugin:
+jQuery(function($){
+	$('textarea').autosize();
+});
+```
+
+### Known Issues &amp; Solutions
+
+#### Incorrect size with hidden textarea elements
+
+Autosize needs to be able to calculate the width of the textarea element when it is assigned.  JavaScript cannot accurately calculate the width of an element that has been removed from the document flow.  If you want to assign Autosize to a hidden textarea element, be sure to either specify the pixel width of the element in your CSS, or trigger the `autosize.update` event after you reveal the textarea element.
+
+**Possible ways to resolve:**
+
+* Specify an exact width for the textarea element in your stylesheet.
+* Wait until after the textarea element has been revealed before assigning Autosize.
+* Trigger the `autosize.update` event after the element has been revealed.
+
+```javascript
+var ta = document.querySelector('textarea');
+ta.style.display = 'none';
+autosize(ta);
+ta.style.display = '';
+
+// Trigger the autosize.update event to recalculate the size:
+var evt = document.createEvent('Event');
+evt.initEvent('autosize.update', true, false);
+ta.dispatchEvent(evt);
+```
+
+* Wait until the textarea has been focused by the user before assigning Autosize.
+
+```javascript
+var ta = document.querySelector('textarea');
+ta.addEventListener('focus', function(){
+	autosize(ta);
+});
+```
+
+Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php)
