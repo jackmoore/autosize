@@ -82,6 +82,7 @@ var ta = document.querySelector('textarea');
 ta.addEventListener('autosize.resized', function(){
 	console.log('textarea height updated');
 });
+```
 
 ### Differences between v2 and v1
 
