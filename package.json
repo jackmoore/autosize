@@ -12,6 +12,7 @@
     "url": "http://www.jacklmoore.com",
     "email": "hello@jacklmoore.com"
   },
+  "main": "dest/autosize.js",
   "license": "MIT",
   "homepage": "http://www.jacklmoore.com/autosize",
   "demo": "http://www.jacklmoore.com/autosize",
@@ -28,8 +29,7 @@
   "config": {
     "bower": {
       "name": "autosize",
-      "ignore": [],
-      "main": "dest/autosize.js"
+      "ignore": []
     },
     "title": "Autosize",
     "fileName": "autosize"
