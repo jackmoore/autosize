@@ -31,7 +31,7 @@
 	mirrored,
 
 	// the mirror element, which is used to calculate what size the mirrored element should be.
-	mirror = $('<textarea tabindex="-1"/>').data('autosize', true)[0];
+	mirror = $('<textarea aria-hidden="true" tabindex="-1"/>').data('autosize', true)[0];
 
 	// border:0 is unnecessary, but avoids a bug in Firefox on OSX
 	mirror.style.cssText = "position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; padding: 0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;";
