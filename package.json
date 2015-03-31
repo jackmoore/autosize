@@ -20,6 +20,7 @@
     "type": "git",
     "url": "http://github.com/jackmoore/autosize.git"
   },
+  "main": "dest/autosize.js",
   "dependencies": {},
   "devDependencies": {
     "jshint": "^2.5.6",
