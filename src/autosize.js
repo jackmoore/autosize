@@ -29,9 +29,6 @@
 				ta.style.resize = 'horizontal';
 			}
 
-			// horizontal overflow is hidden, so break-word is necessary for handling words longer than the textarea width
-			ta.style.wordWrap = 'break-word';
-
 			// Chrome/Safari-specific fix:
 			// When the textarea y-overflow is hidden, Chrome/Safari doesn't reflow the text to account for the space
 			// made available by removing the scrollbar. This workaround will cause the text to reflow.
@@ -85,6 +82,22 @@
 			}
 		}
 
+		ta.addEventListener('autosize.destroy', function(style){
+			window.removeEventListener('resize', adjust);
+			ta.removeEventListener('input', adjust);
+			ta.removeEventListener('keyup', adjust);
+			ta.removeAttribute('data-autosize-on');
+			ta.removeEventListener('autosize.destroy');
+
+			Object.keys(style).forEach(function(key){
+				ta.style[key] = style[key];
+			});
+		}.bind(ta, {
+			height: ta.style.height,
+			overflowY: ta.style.overflowY,
+			resize: ta.style.resize
+		}));
+
 		// IE9 does not fire onpropertychange or oninput for deletions,
 		// so binding to onkeyup to catch most of those events.
 		// There is no way that I know of to detect something like 'cut' in IE9.
@@ -94,32 +107,9 @@
 
 		window.addEventListener('resize', adjust);
 		ta.addEventListener('input', adjust);
-
 		ta.addEventListener('autosize.update', adjust);
-
-		ta.addEventListener('autosize.destroy', function(style){
-			window.removeEventListener('resize', adjust);
-			ta.removeEventListener('input', adjust);
-			ta.removeEventListener('keyup', adjust);
-			ta.removeEventListener('autosize.destroy');
-
-			Object.keys(style).forEach(function(key){
-				ta.style[key] = style[key];
-			});
-
-			ta.removeAttribute('data-autosize-on');
-		}.bind(ta, {
-			height: ta.style.height,
-			overflow: ta.style.overflow,
-			overflowY: ta.style.overflowY,
-			wordWrap: ta.style.wordWrap,
-			resize: ta.style.resize
-		}));
-
 		ta.setAttribute('data-autosize-on', true);
-		ta.style.overflow = 'hidden';
 		ta.style.overflowY = 'hidden';
-
 		init();		
 	}
 
