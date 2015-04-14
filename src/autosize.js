@@ -94,12 +94,14 @@
 
 		window.addEventListener('resize', adjust);
 		ta.addEventListener('input', adjust);
+		ta.addEventListener('paste', adjust);
 
 		ta.addEventListener('autosize.update', adjust);
 
 		ta.addEventListener('autosize.destroy', function(style){
 			window.removeEventListener('resize', adjust);
 			ta.removeEventListener('input', adjust);
+			ta.removeEventListener('paste', adjust);
 			ta.removeEventListener('keyup', adjust);
 			ta.removeEventListener('autosize.destroy');
 
