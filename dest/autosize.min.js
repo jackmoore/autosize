@@ -1,5 +1,5 @@
 /*!
-	Autosize 2.0.0
+	Autosize 2.0.1
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
