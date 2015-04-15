@@ -2,13 +2,15 @@
 
 ##### v.3.0.0 - 2015-04-15
 * added new methods for updating and destroying:
-	autosize.update(elements)
-	autosize.destroy(elements)
-	
+
+	* autosize.update(elements)
+	* autosize.destroy(elements)
+
 * renamed custom events as to not use jQuery's custom events namespace:
-	autosize.resized renamed to autosize:resized
-	autosize.update renamed to autosize:update
-	autosize.destroy renamed to autosize:destroy
+
+	* autosize.resized renamed to autosize:resized
+	* autosize.update renamed to autosize:update
+	* autosize.destroy renamed to autosize:destroy
 
 ##### v.2.0.1 - 2015-04-15
 * version bump for NPM publishing purposes
