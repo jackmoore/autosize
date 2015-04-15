@@ -1,7 +1,8 @@
 var pkg = require('./package.json');
 var fs = require('fs');
-var ugly = require("uglify-js");
-var jshint = require("jshint").JSHINT;
+var ugly = require('uglify-js');
+var jshint = require('jshint').JSHINT;
+var babel = require('babel');
 
 function writeBower() {
 	var bower = {
@@ -21,23 +22,6 @@ function writeBower() {
 	return true;
 }
 
-function build(full) {
-	var mini = ugly.minify(full, {fromString: true}).code;
-	var header = [
-		"/*!",
-		"	"+pkg.config.title+" "+pkg.version,
-		"	license: MIT",
-		"	"+pkg.homepage,
-		"*/",
-		""
-	].join("\n");
-
-	fs.writeFile('dest/'+pkg.config.fileName+'.js', header+full);
-	fs.writeFile('dest/'+pkg.config.fileName+'.min.js', header+mini);
-
-	return true;
-}
-
 function lint(full) {
 	jshint(full.toString(), {
 		browser: true,
@@ -47,7 +31,7 @@ function lint(full) {
 		eqeqeq: true,
 		eqnull: true,
 		noarg: true,
-		predef: ['define', 'module']
+		predef: ['define', 'module', 'exports']
 	});
 
 	if (jshint.errors.length) {
@@ -59,10 +43,26 @@ function lint(full) {
 	}
 }
 
-fs.readFile('src/'+pkg.config.fileName+'.js', 'utf8', function (err,data) {
-  if (err) {
-    return console.log(err);
-  } else {
-  	lint(data) && build(data) && writeBower();
-  }
+function build(code) {
+	var minified = ugly.minify(code, {fromString: true}).code;
+	var header = [
+		'/*!',
+		'	'+pkg.config.title+' '+pkg.version,
+		'	license: MIT',
+		'	'+pkg.homepage,
+		'*/',
+		''
+	].join('\n');
+
+	fs.writeFile('dest/'+pkg.config.fileName+'.js', header+code);
+	fs.writeFile('dest/'+pkg.config.fileName+'.min.js', header+minified);
+	writeBower();
+}
+
+babel.transformFile('src/'+pkg.config.fileName+'.js', {modules: 'umd'}, function (err,res) {
+	if (err) {
+		return console.log(err);
+	} else {
+		lint(res.code) && build(res.code);
+	}
 });
