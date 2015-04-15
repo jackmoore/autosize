@@ -32,10 +32,10 @@ function assign(ta) {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
 		}
 
-		adjust();
+		update();
 	}
 
-	function adjust() {
+	function update() {
 		const startHeight = ta.style.height;
 		const htmlTop = document.documentElement.scrollTop;
 		const bodyTop = document.body.scrollTop;
@@ -61,17 +61,17 @@ function assign(ta) {
 
 		if (startHeight !== ta.style.height) {
 			const evt = document.createEvent('Event');
-			evt.initEvent('autosize.resized', true, false);
+			evt.initEvent('autosize:resized', true, false);
 			ta.dispatchEvent(evt);
 		}
 	}
 
-	ta.addEventListener('autosize.destroy', style => {
-		window.removeEventListener('resize', adjust);
-		ta.removeEventListener('input', adjust);
-		ta.removeEventListener('keyup', adjust);
+	ta.addEventListener('autosize:destroy', style => {
+		window.removeEventListener('resize', update);
+		ta.removeEventListener('input', update);
+		ta.removeEventListener('keyup', update);
 		ta.removeAttribute('data-autosize-on');
-		ta.removeEventListener('autosize.destroy');
+		ta.removeEventListener('autosize:destroy');
 
 		Object.keys(style).forEach(key => {
 			ta.style[key] = style[key];
@@ -86,12 +86,12 @@ function assign(ta) {
 	// so binding to onkeyup to catch most of those events.
 	// There is no way that I know of to detect something like 'cut' in IE9.
 	if ('onpropertychange' in ta && 'oninput' in ta) {
-		ta.addEventListener('keyup', adjust);
+		ta.addEventListener('keyup', update);
 	}
 
-	window.addEventListener('resize', adjust);
-	ta.addEventListener('input', adjust);
-	ta.addEventListener('autosize.update', adjust);
+	window.addEventListener('resize', update);
+	ta.addEventListener('input', update);
+	ta.addEventListener('autosize:update', update);
 	ta.setAttribute('data-autosize-on', true);
 	ta.style.overflowY = 'hidden';
 	init();		
@@ -100,14 +100,14 @@ function assign(ta) {
 function destroy(ta) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA') return;
 	const evt = document.createEvent('Event');
-	evt.initEvent('autosize.destroy', true, false);
+	evt.initEvent('autosize:destroy', true, false);
 	ta.dispatchEvent(evt);
 }
 
 function update(ta) {
 	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
 	const evt = document.createEvent('Event');
-	evt.initEvent('autosize.update', true, false);
+	evt.initEvent('autosize:update', true, false);
 	ta.dispatchEvent(evt);
 }
 
