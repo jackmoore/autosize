@@ -1,11 +1,11 @@
-function main(ta) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) { return; }
+function assign(ta) {
+	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
 
 	var maxHeight;
 	var heightOffset;
 
 	function init() {
-		var style = window.getComputedStyle(ta, null);
+		const style = window.getComputedStyle(ta, null);
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -16,7 +16,7 @@ function main(ta) {
 		// Chrome/Safari-specific fix:
 		// When the textarea y-over is hidden, Chrome/Safari doesn't reflow the text to account for the space
 		// made available by removing the scrollbar. This workaround will cause the text to reflow.
-		var width = ta.style.width;
+		const width = ta.style.width;
 		ta.style.width = '0px';
 		// Force reflow:
 		/* jshint ignore:start */
@@ -36,13 +36,13 @@ function main(ta) {
 	}
 
 	function adjust() {
-		var startHeight = ta.style.height;
-		var htmlTop = document.documentElement.scrollTop;
-		var bodyTop = document.body.scrollTop;
+		const startHeight = ta.style.height;
+		const htmlTop = document.documentElement.scrollTop;
+		const bodyTop = document.body.scrollTop;
 		
 		ta.style.height = 'auto';
 
-		var endHeight = ta.scrollHeight+heightOffset;
+		let endHeight = ta.scrollHeight+heightOffset;
 
 		if (maxHeight !== false && maxHeight < endHeight) {
 			endHeight = maxHeight;
@@ -60,20 +60,20 @@ function main(ta) {
 		document.body.scrollTop = bodyTop;
 
 		if (startHeight !== ta.style.height) {
-			var evt = document.createEvent('Event');
+			const evt = document.createEvent('Event');
 			evt.initEvent('autosize.resized', true, false);
 			ta.dispatchEvent(evt);
 		}
 	}
 
-	ta.addEventListener('autosize.destroy', function(style){
+	ta.addEventListener('autosize.destroy', style => {
 		window.removeEventListener('resize', adjust);
 		ta.removeEventListener('input', adjust);
 		ta.removeEventListener('keyup', adjust);
 		ta.removeAttribute('data-autosize-on');
 		ta.removeEventListener('autosize.destroy');
 
-		Object.keys(style).forEach(function(key){
+		Object.keys(style).forEach(key => {
 			ta.style[key] = style[key];
 		});
 	}.bind(ta, {
@@ -97,33 +97,51 @@ function main(ta) {
 	init();		
 }
 
+function destroy(ta) {
+	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA') return;
+	const evt = document.createEvent('Event');
+	evt.initEvent('autosize.destroy', true, false);
+	ta.dispatchEvent(evt);
+}
+
+function update(ta) {
+	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
+	const evt = document.createEvent('Event');
+	evt.initEvent('autosize.update', true, false);
+	ta.dispatchEvent(evt);
+}
+
 var autosize;
 
 // Do nothing in IE8 or lower
 if (typeof window.getComputedStyle !== 'function') {
-	autosize = function(elements) {
-		return elements;
-	};
-	autosize.destroy = function(){};
-	autosize.update = function(){};
+	autosize = el => el;
+	autosize.destroy = el => el;
+	autosize.update = el => el;
 } else {
-	autosize = function(elements) {
-		if (elements && elements.length) {
-			Array.prototype.forEach.call(elements, main);
-		} else if (elements && elements.nodeName) {
-			main(elements);
+	autosize = el => {
+		if (el && el.length) {
+			Array.prototype.forEach.call(el, assign);
+		} else if (el && el.nodeName) {
+			assign(el);
 		}
-		return elements;
+		return el;
 	};
-	autosize.destroy = function(ta) {
-		var evt = document.createEvent('Event');
-		evt.initEvent('autosize.destroy', true, false);
-		ta.dispatchEvent(evt);
+	autosize.destroy = el => {
+		if (el && el.length) {
+			Array.prototype.forEach.call(el, destroy);
+		} else if (el && el.nodeName) {
+			destroy(el);
+		}
+		return el;
 	};
-	autosize.update = function(ta) {
-		var evt = document.createEvent('Event');
-		evt.initEvent('autosize.update', true, false);
-		ta.dispatchEvent(evt);
+	autosize.update = el => {
+		if (el && el.length) {
+			Array.prototype.forEach.call(el, update);
+		} else if (el && el.nodeName) {
+			update(el);
+		}
+		return el;
 	};
 }
 
