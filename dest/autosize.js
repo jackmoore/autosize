@@ -86,26 +86,22 @@
 			}
 		}
 
-		function destroy(){  
-			_destroy.call(ta, {
-				height: ta.style.height,
-				overflowY: ta.style.overflowY,
-				resize: ta.style.resize
-			});
-		}
-		 
-		function _destroy(style) {
+		var destroy = function(style){
 			window.removeEventListener('resize', update);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
 			ta.removeAttribute('data-autosize-on');
 			ta.removeEventListener('autosize:destroy', destroy);
-		
+
 			Object.keys(style).forEach(function (key) {
-			ta.style[key] = style[key];
+				ta.style[key] = style[key];
 			});
-		}
-		
+		}.bind(ta, {
+			height: ta.style.height,
+			    overflowY: ta.style.overflowY,
+			    resize: ta.style.resize
+		});
+
 		ta.addEventListener('autosize:destroy', destroy);
 
 		// IE9 does not fire onpropertychange or oninput for deletions,
