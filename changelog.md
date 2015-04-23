@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.3 - 2015-04-23
+* Avoided adjusting the height for hidden textarea elements.  Fixes #155.
+
 ##### v.3.0.2 - 2015-04-23
 * Reworked to respect max-height of any unit-type.  Fixes #191.
 

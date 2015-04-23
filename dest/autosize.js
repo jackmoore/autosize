@@ -63,10 +63,17 @@
 			var startHeight = ta.style.height;
 			var htmlTop = document.documentElement.scrollTop;
 			var bodyTop = document.body.scrollTop;
+			var originalHeight = ta.style.height;
 
 			ta.style.height = 'auto';
 
 			var endHeight = ta.scrollHeight + heightOffset;
+
+			if (ta.scrollHeight === 0) {
+				// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
+				ta.style.height = originalHeight;
+				return;
+			}
 
 			ta.style.height = endHeight + 'px';
 
