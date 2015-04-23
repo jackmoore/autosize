@@ -3,6 +3,7 @@ var fs = require('fs');
 var ugly = require('uglify-js');
 var jshint = require('jshint').JSHINT;
 var babel = require('babel');
+var gaze = require('gaze');
 
 function writeBower() {
 	var bower = {
@@ -39,8 +40,10 @@ function lint(full) {
 			console.log(err.line+':'+err.character+' '+err.reason);
 		});
 	} else {
-		return true;
+		console.log('linted')
 	}
+
+	return true;
 }
 
 function build(code) {
@@ -54,15 +57,28 @@ function build(code) {
 		''
 	].join('\n');
 
-	fs.writeFile('dest/'+pkg.config.fileName+'.js', header+code);
-	fs.writeFile('dest/'+pkg.config.fileName+'.min.js', header+minified);
+	fs.writeFile('dest/'+pkg.config.filename+'.js', header+code);
+	fs.writeFile('dest/'+pkg.config.filename+'.min.js', header+minified);
 	writeBower();
+	console.log('built');
 }
 
-babel.transformFile('src/'+pkg.config.fileName+'.js', {modules: 'umd'}, function (err,res) {
-	if (err) {
-		return console.log(err);
-	} else {
-		lint(res.code) && build(res.code);
-	}
+function transform(filepath) {
+	babel.transformFile(filepath, {modules: 'umd'}, function (err,res) {
+		if (err) {
+			return console.log(err);
+		} else {
+			lint(res.code);
+			build(res.code);
+		}
+	});
+}
+
+gaze('src/'+pkg.config.filename+'.js', function(err, watcher){
+	// On file changed
+	this.on('changed', function(filepath) {
+		transform(filepath);
+	});
 });
+
+transform('src/'+pkg.config.filename+'.js');

@@ -1,7 +1,6 @@
 function assign(ta) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
 
-	var maxHeight;
 	var heightOffset;
 
 	function init() {
@@ -13,25 +12,30 @@ function assign(ta) {
 			ta.style.resize = 'horizontal';
 		}
 
-		// Chrome/Safari-specific fix:
-		// When the textarea y-over is hidden, Chrome/Safari doesn't reflow the text to account for the space
-		// made available by removing the scrollbar. This workaround will cause the text to reflow.
-		const width = ta.style.width;
-		ta.style.width = '0px';
-		// Force reflow:
-		/* jshint ignore:start */
-		ta.offsetWidth;
-		/* jshint ignore:end */
-		ta.style.width = width;
-
-		maxHeight = style.maxHeight !== 'none' ? parseFloat(style.maxHeight) : false;
-		
 		if (style.boxSizing === 'content-box') {
 			heightOffset = -(parseFloat(style.paddingTop)+parseFloat(style.paddingBottom));
 		} else {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
 		}
 
+		update();
+	}
+
+	function changeOverflow(value) {
+		{
+			// Chrome/Safari-specific fix:
+			// When the textarea y-overflow is hidden, Chrome/Safari do not reflow the text to account for the space
+			// made available by removing the scrollbar. The following forces the necessary text reflow.
+			const width = ta.style.width;
+			ta.style.width = '0px';
+			// Force reflow:
+			/* jshint ignore:start */
+			ta.offsetWidth;
+			/* jshint ignore:end */
+			ta.style.width = width;
+		}
+
+		ta.style.overflowY = value;
 		update();
 	}
 
@@ -44,20 +48,26 @@ function assign(ta) {
 
 		let endHeight = ta.scrollHeight+heightOffset;
 
-		if (maxHeight !== false && maxHeight < endHeight) {
-			endHeight = maxHeight;
-			if (ta.style.overflowY !== 'scroll') {
-				ta.style.overflowY = 'scroll';
-			}
-		} else if (ta.style.overflowY !== 'hidden') {
-			ta.style.overflowY = 'hidden';
-		}
-
 		ta.style.height = endHeight+'px';
 
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
+
+		const style = window.getComputedStyle(ta, null);
+
+		if (style.height !== ta.style.height) {
+			if (ta.style.overflowY !== 'visible') {
+				changeOverflow('visible');
+				return;
+			}
+		} else {
+			if (ta.style.overflowY !== 'hidden') {
+				changeOverflow('hidden');
+				autosize();
+				return;
+			}
+		}
 
 		if (startHeight !== ta.style.height) {
 			const evt = document.createEvent('Event');
@@ -78,8 +88,8 @@ function assign(ta) {
 		});
 	}.bind(ta, {
 		height: ta.style.height,
+		resize: ta.style.resize,
 		overflowY: ta.style.overflowY,
-		resize: ta.style.resize
 	});
 
 	ta.addEventListener('autosize:destroy', destroy);
@@ -95,7 +105,6 @@ function assign(ta) {
 	ta.addEventListener('input', update);
 	ta.addEventListener('autosize:update', update);
 	ta.setAttribute('data-autosize-on', true);
-	ta.style.overflowY = 'hidden';
 	init();		
 }
 

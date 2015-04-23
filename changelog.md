@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.2 - 2015-04-23
+* Reworked to respect max-height of any unit-type.  Fixes #191.
+
 ##### v.3.0.1 - 2015-04-23
 * Fixed the destroy event so that it removes it's own event handler. Fixes #218.
 
