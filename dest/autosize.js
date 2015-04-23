@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.0
+	Autosize 3.0.1
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -86,12 +86,12 @@
 			}
 		}
 
-		ta.addEventListener('autosize:destroy', (function (style) {
+		var destroy = (function (style) {
 			window.removeEventListener('resize', update);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
 			ta.removeAttribute('data-autosize-on');
-			ta.removeEventListener('autosize:destroy');
+			ta.removeEventListener('autosize:destroy', destroy);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
@@ -100,7 +100,9 @@
 			height: ta.style.height,
 			overflowY: ta.style.overflowY,
 			resize: ta.style.resize
-		}));
+		});
+
+		ta.addEventListener('autosize:destroy', destroy);
 
 		// IE9 does not fire onpropertychange or oninput for deletions,
 		// so binding to onkeyup to catch most of those events.

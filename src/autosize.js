@@ -66,12 +66,12 @@ function assign(ta) {
 		}
 	}
 
-	ta.addEventListener('autosize:destroy', style => {
+	const destroy = style => {
 		window.removeEventListener('resize', update);
 		ta.removeEventListener('input', update);
 		ta.removeEventListener('keyup', update);
 		ta.removeAttribute('data-autosize-on');
-		ta.removeEventListener('autosize:destroy');
+		ta.removeEventListener('autosize:destroy', destroy);
 
 		Object.keys(style).forEach(key => {
 			ta.style[key] = style[key];
@@ -80,7 +80,9 @@ function assign(ta) {
 		height: ta.style.height,
 		overflowY: ta.style.overflowY,
 		resize: ta.style.resize
-	}));
+	});
+
+	ta.addEventListener('autosize:destroy', destroy);
 
 	// IE9 does not fire onpropertychange or oninput for deletions,
 	// so binding to onkeyup to catch most of those events.
