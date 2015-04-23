@@ -88,9 +88,9 @@
 
 		function destroy(){  
 			_destroy.call(ta, {
-			height: ta.style.height,
-			overflowY: ta.style.overflowY,
-			resize: ta.style.resize
+				height: ta.style.height,
+				overflowY: ta.style.overflowY,
+				resize: ta.style.resize
 			});
 		}
 		 
