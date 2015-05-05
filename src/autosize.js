@@ -1,7 +1,8 @@
-function assign(ta) {
+function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
 
-	var heightOffset;
+	let heightOffset = null;
+	let overflowY = 'hidden';
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
@@ -35,7 +36,12 @@ function assign(ta) {
 			ta.style.width = width;
 		}
 
-		ta.style.overflowY = value;
+		overflowY = value;
+
+		if (setOverflowY) {
+			ta.style.overflowY = value;
+		}
+
 		update();
 	}
 
@@ -64,14 +70,13 @@ function assign(ta) {
 		const style = window.getComputedStyle(ta, null);
 
 		if (style.height !== ta.style.height) {
-			if (ta.style.overflowY !== 'visible') {
+			if (overflowY !== 'visible') {
 				changeOverflow('visible');
 				return;
 			}
 		} else {
-			if (ta.style.overflowY !== 'hidden') {
+			if (overflowY !== 'hidden') {
 				changeOverflow('hidden');
-				autosize();
 				return;
 			}
 		}
@@ -97,6 +102,8 @@ function assign(ta) {
 		height: ta.style.height,
 		resize: ta.style.resize,
 		overflowY: ta.style.overflowY,
+		overflowX: ta.style.overflowX,
+		wordWrap: ta.style.wordWrap,
 	});
 
 	ta.addEventListener('autosize:destroy', destroy);
@@ -112,11 +119,20 @@ function assign(ta) {
 	ta.addEventListener('input', update);
 	ta.addEventListener('autosize:update', update);
 	ta.setAttribute('data-autosize-on', true);
-	init();		
+	
+	if (setOverflowY) {
+		ta.style.overflowY = 'hidden';
+	}
+	if (setOverflowX) {
+		ta.style.overflowX = 'hidden';
+		ta.style.wordWrap = 'break-word';
+	}
+
+	init();
 }
 
 function destroy(ta) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA') return;
+	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
 	const evt = document.createEvent('Event');
 	evt.initEvent('autosize:destroy', true, false);
 	ta.dispatchEvent(evt);
@@ -129,7 +145,7 @@ function update(ta) {
 	ta.dispatchEvent(evt);
 }
 
-var autosize;
+let autosize = null;
 
 // Do nothing in IE8 or lower
 if (typeof window.getComputedStyle !== 'function') {
@@ -137,27 +153,21 @@ if (typeof window.getComputedStyle !== 'function') {
 	autosize.destroy = el => el;
 	autosize.update = el => el;
 } else {
-	autosize = el => {
-		if (el && el.length) {
-			Array.prototype.forEach.call(el, assign);
-		} else if (el && el.nodeName) {
-			assign(el);
+	autosize = (el, options) => {
+		if (el) {
+			Array.prototype.forEach.call(el.length ? el : [el], x => assign(x, options));
 		}
 		return el;
 	};
 	autosize.destroy = el => {
-		if (el && el.length) {
-			Array.prototype.forEach.call(el, destroy);
-		} else if (el && el.nodeName) {
-			destroy(el);
+		if (el) {
+			Array.prototype.forEach.call(el.length ? el : [el], destroy);
 		}
 		return el;
 	};
 	autosize.update = el => {
-		if (el && el.length) {
-			Array.prototype.forEach.call(el, update);
-		} else if (el && el.nodeName) {
-			update(el);
+		if (el) {
+			Array.prototype.forEach.call(el.length ? el : [el], update);
 		}
 		return el;
 	};

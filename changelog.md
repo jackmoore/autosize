@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.4 - 2015-05-05
+* Added options object for indicating if the script should set the overflowX and overflowY.  The default behavior lets the script control the overflows, which will normalize the appearance between browsers.  Fixes #220.
+
 ##### v.3.0.3 - 2015-04-23
 * Avoided adjusting the height for hidden textarea elements.  Fixes #155.
 

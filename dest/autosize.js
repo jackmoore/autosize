@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.2
+	Autosize 3.0.4
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -19,9 +19,17 @@
 	'use strict';
 
 	function assign(ta) {
+		var _ref = arguments[1] === undefined ? {} : arguments[1];
+
+		var _ref$setOverflowX = _ref.setOverflowX;
+		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
+		var _ref$setOverflowY = _ref.setOverflowY;
+		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
+
 		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) {
 			return;
-		}var heightOffset;
+		}var heightOffset = null;
+		var overflowY = 'hidden';
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
@@ -55,7 +63,12 @@
 				ta.style.width = width;
 			}
 
-			ta.style.overflowY = value;
+			overflowY = value;
+
+			if (setOverflowY) {
+				ta.style.overflowY = value;
+			}
+
 			update();
 		}
 
@@ -84,14 +97,13 @@
 			var style = window.getComputedStyle(ta, null);
 
 			if (style.height !== ta.style.height) {
-				if (ta.style.overflowY !== 'visible') {
+				if (overflowY !== 'visible') {
 					changeOverflow('visible');
 					return;
 				}
 			} else {
-				if (ta.style.overflowY !== 'hidden') {
+				if (overflowY !== 'hidden') {
 					changeOverflow('hidden');
-					autosize();
 					return;
 				}
 			}
@@ -116,7 +128,9 @@
 		}).bind(ta, {
 			height: ta.style.height,
 			resize: ta.style.resize,
-			overflowY: ta.style.overflowY });
+			overflowY: ta.style.overflowY,
+			overflowX: ta.style.overflowX,
+			wordWrap: ta.style.wordWrap });
 
 		ta.addEventListener('autosize:destroy', destroy);
 
@@ -131,11 +145,20 @@
 		ta.addEventListener('input', update);
 		ta.addEventListener('autosize:update', update);
 		ta.setAttribute('data-autosize-on', true);
+
+		if (setOverflowY) {
+			ta.style.overflowY = 'hidden';
+		}
+		if (setOverflowX) {
+			ta.style.overflowX = 'hidden';
+			ta.style.wordWrap = 'break-word';
+		}
+
 		init();
 	}
 
 	function destroy(ta) {
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA') {
+		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) {
 			return;
 		}var evt = document.createEvent('Event');
 		evt.initEvent('autosize:destroy', true, false);
@@ -150,7 +173,7 @@
 		ta.dispatchEvent(evt);
 	}
 
-	var autosize;
+	var autosize = null;
 
 	// Do nothing in IE8 or lower
 	if (typeof window.getComputedStyle !== 'function') {
@@ -164,27 +187,23 @@
 			return el;
 		};
 	} else {
-		autosize = function (el) {
-			if (el && el.length) {
-				Array.prototype.forEach.call(el, assign);
-			} else if (el && el.nodeName) {
-				assign(el);
+		autosize = function (el, options) {
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], function (x) {
+					return assign(x, options);
+				});
 			}
 			return el;
 		};
 		autosize.destroy = function (el) {
-			if (el && el.length) {
-				Array.prototype.forEach.call(el, destroy);
-			} else if (el && el.nodeName) {
-				destroy(el);
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], destroy);
 			}
 			return el;
 		};
 		autosize.update = function (el) {
-			if (el && el.length) {
-				Array.prototype.forEach.call(el, update);
-			} else if (el && el.nodeName) {
-				update(el);
+			if (el) {
+				Array.prototype.forEach.call(el.length ? el : [el], update);
 			}
 			return el;
 		};
