@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.5 - 2015-05-18
+* Do nothing in Node.js environment.
+
 ##### v.3.0.4 - 2015-05-05
 * Added options object for indicating if the script should set the overflowX and overflowY.  The default behavior lets the script control the overflows, which will normalize the appearance between browsers.  Fixes #220.
 
