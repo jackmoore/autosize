@@ -175,8 +175,8 @@
 
 	var autosize = null;
 
-	// Do nothing in IE8 or lower
-	if (typeof window.getComputedStyle !== 'function') {
+	// Do nothing in Node.js environment and IE8 (or lower)
+	if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
 		autosize = function (el) {
 			return el;
 		};
