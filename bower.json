@@ -21,7 +21,7 @@
 		"type": "git",
 		"url": "http://github.com/jackmoore/autosize.git"
 	},
-	"main": "dest/autosize.js",
+	"main": "dist/autosize.js",
 	"moduleType": [
 		"amd",
 		"node"

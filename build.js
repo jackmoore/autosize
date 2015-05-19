@@ -57,10 +57,11 @@ function build(code) {
 		''
 	].join('\n');
 
-	fs.writeFile('dest/'+pkg.config.filename+'.js', header+code);
-	fs.writeFile('dest/'+pkg.config.filename+'.min.js', header+minified);
+	fs.writeFile('dist/'+pkg.config.filename+'.js', header+code);
+	fs.writeFile('dist/'+pkg.config.filename+'.min.js', header+minified);
 	writeBower();
-	console.log('built');
+	
+	console.log('dist built');
 }
 
 function transform(filepath) {
@@ -79,6 +80,8 @@ gaze('src/'+pkg.config.filename+'.js', function(err, watcher){
 	this.on('changed', function(filepath) {
 		transform(filepath);
 	});
+
+	console.log('watching');
 });
 
 transform('src/'+pkg.config.filename+'.js');

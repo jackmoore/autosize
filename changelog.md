@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.6 - 2015-05-19
+* Renamed 'dest' folder to 'dist' to follow common conventions.
+
 ##### v.3.0.5 - 2015-05-18
 * Do nothing in Node.js environment.
 

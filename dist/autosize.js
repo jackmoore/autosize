@@ -26,9 +26,9 @@
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) {
-			return;
-		}var heightOffset = null;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
+
+		var heightOffset = null;
 		var overflowY = 'hidden';
 
 		function init() {
@@ -158,17 +158,15 @@
 	}
 
 	function destroy(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) {
-			return;
-		}var evt = document.createEvent('Event');
+		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
+		var evt = document.createEvent('Event');
 		evt.initEvent('autosize:destroy', true, false);
 		ta.dispatchEvent(evt);
 	}
 
 	function update(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) {
-			return;
-		}var evt = document.createEvent('Event');
+		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
+		var evt = document.createEvent('Event');
 		evt.initEvent('autosize:update', true, false);
 		ta.dispatchEvent(evt);
 	}
