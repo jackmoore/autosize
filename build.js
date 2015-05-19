@@ -9,7 +9,6 @@ function writeBower() {
 	var bower = {
 		name: pkg.config.bower.name,
 		description: pkg.description,
-		version: pkg.version,
 		dependencies: pkg.dependencies,
 		keywords: pkg.keywords,
 		authors: [pkg.author],
@@ -18,6 +17,7 @@ function writeBower() {
 		ignore: pkg.config.bower.ignore,
 		repository: pkg.repository,
 		main: pkg.main,
+		moduleType: pkg.config.bower.moduleType,
 	};
 	fs.writeFile('bower.json', JSON.stringify(bower, null, '\t'));
 	return true;

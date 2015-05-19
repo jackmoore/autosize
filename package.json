@@ -30,7 +30,8 @@
   "config": {
     "bower": {
       "name": "autosize",
-      "ignore": []
+      "ignore": [],
+      "moduleType": ["amd", "node"]
     },
     "title": "Autosize",
     "filename": "autosize"
