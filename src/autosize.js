@@ -47,7 +47,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 	function update() {
 		const startHeight = ta.style.height;
-		const htmlTop = document.documentElement.scrollTop;
+		const htmlTop = window.pageYOffset || document.documentElement.scrollTop;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
 
@@ -119,7 +119,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	ta.addEventListener('input', update);
 	ta.addEventListener('autosize:update', update);
 	ta.setAttribute('data-autosize-on', true);
-	
+
 	if (setOverflowY) {
 		ta.style.overflowY = 'hidden';
 	}
