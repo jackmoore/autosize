@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.7 - 2015-06-29
+* Fixed jumpy behavior in Windows 8.1 mobile. Fixes #239.
+
 ##### v.3.0.6 - 2015-05-19
 * Renamed 'dest' folder to 'dist' to follow common conventions.
 

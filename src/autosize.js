@@ -47,7 +47,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 	function update() {
 		const startHeight = ta.style.height;
-		const htmlTop = window.pageYOffset || document.documentElement.scrollTop;
+		const htmlTop = window.pageYOffset;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
 

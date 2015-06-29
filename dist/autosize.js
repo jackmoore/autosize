@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.5
+	Autosize 3.0.7
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -74,7 +74,7 @@
 
 		function update() {
 			var startHeight = ta.style.height;
-			var htmlTop = document.documentElement.scrollTop;
+			var htmlTop = window.pageYOffset;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
 
