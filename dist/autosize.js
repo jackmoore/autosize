@@ -30,9 +30,16 @@
 
 		var heightOffset = null;
 		var overflowY = 'hidden';
+		var maxHeight, minHeight;
+		var paddingHeight, borderHeight;
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
+
+			maxHeight = style.maxHeight !== 'none' ? parseFloat(style.maxHeight) : null;
+			minHeight = style.minHeight !== 'none' ? parseFloat(style.minHeight) : null;
+			paddingHeight = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+			borderHeight = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
 
 			if (style.resize === 'vertical') {
 				ta.style.resize = 'none';
@@ -40,52 +47,50 @@
 				ta.style.resize = 'horizontal';
 			}
 
-			if (style.boxSizing === 'content-box') {
-				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
+			if (style.boxSizing === 'content-box' || style.MozBoxSizing === 'content-box') {
+				heightOffset = -paddingHeight;
 			} else {
-				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+				heightOffset = borderHeight;
 			}
 
 			update();
 		}
 
 		function changeOverflow(value) {
-			{
-				// Chrome/Safari-specific fix:
-				// When the textarea y-overflow is hidden, Chrome/Safari do not reflow the text to account for the space
-				// made available by removing the scrollbar. The following forces the necessary text reflow.
-				var width = ta.style.width;
-				ta.style.width = '0px';
-				// Force reflow:
-				/* jshint ignore:start */
-				ta.offsetWidth;
-				/* jshint ignore:end */
-				ta.style.width = width;
-			}
-
 			overflowY = value;
 
 			if (setOverflowY) {
 				ta.style.overflowY = value;
 			}
-
-			update();
 		}
 
 		function update() {
-			var startHeight = ta.style.height;
 			var htmlTop = window.pageYOffset;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
+			var hasPadding = ta.offsetHeight - borderHeight === ta.clientHeight;
+			var scrollHeight;
 
 			ta.style.height = 'auto';
 
-			var endHeight = ta.scrollHeight + heightOffset;
+			scrollHeight = ta.scrollHeight;
+
+			var endHeight = scrollHeight + heightOffset;
+
+			// Padding in old version of firefox are not taken in scrollHeight calculation.
+			// this is an issue with box sizing border-box
+			if (!hasPadding) {
+				endHeight += paddingHeight;
+			}
 
 			if (ta.scrollHeight === 0) {
 				// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
 				ta.style.height = originalHeight;
 				return;
+			}
+
+			if (minHeight !== null) {
+				endHeight = Math.max(endHeight, minHeight);
 			}
 
 			ta.style.height = endHeight + 'px';
@@ -94,9 +99,7 @@
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
 
-			var style = window.getComputedStyle(ta, null);
-
-			if (style.height !== ta.style.height) {
+			if (maxHeight !== null && maxHeight < endHeight) {
 				if (overflowY !== 'visible') {
 					changeOverflow('visible');
 					return;
@@ -108,7 +111,7 @@
 				}
 			}
 
-			if (startHeight !== ta.style.height) {
+			if (originalHeight !== endHeight + 'px') {
 				var evt = document.createEvent('Event');
 				evt.initEvent('autosize:resized', true, false);
 				ta.dispatchEvent(evt);
@@ -130,7 +133,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy);
 
