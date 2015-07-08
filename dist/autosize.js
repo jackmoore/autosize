@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.7
+	Autosize 3.0.8
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -69,11 +69,10 @@
 				ta.style.overflowY = value;
 			}
 
-			update();
+			resize();
 		}
 
-		function update() {
-			var startHeight = ta.style.height;
+		function resize() {
 			var htmlTop = window.pageYOffset;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
@@ -93,18 +92,22 @@
 			// prevents scroll-position jumping
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
+		}
+
+		function update() {
+			var startHeight = ta.style.height;
+
+			resize();
 
 			var style = window.getComputedStyle(ta, null);
 
 			if (style.height !== ta.style.height) {
 				if (overflowY !== 'visible') {
 					changeOverflow('visible');
-					return;
 				}
 			} else {
 				if (overflowY !== 'hidden') {
 					changeOverflow('hidden');
-					return;
 				}
 			}
 

@@ -42,11 +42,10 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			ta.style.overflowY = value;
 		}
 
-		update();
+		resize();
 	}
 
-	function update() {
-		const startHeight = ta.style.height;
+	function resize() {
 		const htmlTop = window.pageYOffset;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
@@ -66,18 +65,22 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
+	}
+
+	function update() {
+		const startHeight = ta.style.height;
+		
+		resize();
 
 		const style = window.getComputedStyle(ta, null);
 
 		if (style.height !== ta.style.height) {
 			if (overflowY !== 'visible') {
 				changeOverflow('visible');
-				return;
 			}
 		} else {
 			if (overflowY !== 'hidden') {
 				changeOverflow('hidden');
-				return;
 			}
 		}
 

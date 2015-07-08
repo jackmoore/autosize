@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.8 - 2015-06-29
+* Fixed the `autosize:resized` event not being triggered when the overflow changes. Fixes #244.
+
 ##### v.3.0.7 - 2015-06-29
 * Fixed jumpy behavior in Windows 8.1 mobile. Fixes #239.
 
