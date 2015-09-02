@@ -18,7 +18,10 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		} else {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
 		}
-
+		// Fix when a textarea is not on document body and heightOffset is Not a Number
+		if (isNaN(heightOffset))
+			heightOffset = 0;
+			
 		update();
 	}
 
