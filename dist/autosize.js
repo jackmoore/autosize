@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.8
+	Autosize 3.0.9
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -44,6 +44,10 @@
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+			}
+			// Fix when a textarea is not on document body and heightOffset is Not a Number
+			if (isNaN(heightOffset)) {
+				heightOffset = 0;
 			}
 
 			update();

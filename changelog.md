@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.9 - 2015-09-02
+* Fixed issue with assigning autosize to detached nodes. Merged #253, Fixes #234.
+
 ##### v.3.0.8 - 2015-06-29
 * Fixed the `autosize:resized` event not being triggered when the overflow changes. Fixes #244.
 
