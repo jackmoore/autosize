@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.10 - 2015-09-10
+* Removed data attribute as a way of tracking which elements autosize has been assigned to. fixes #254, fixes #200.
+
 ##### v.3.0.9 - 2015-09-02
 * Fixed issue with assigning autosize to detached nodes. Merged #253, Fixes #234.
 

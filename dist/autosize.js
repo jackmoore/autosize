@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.9
+	Autosize 3.0.10
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -18,6 +18,21 @@
 })(this, function (exports, module) {
 	'use strict';
 
+	var set = Set ? new Set() : (function () {
+		var list = [];
+
+		return {
+			has: function has(key) {
+				return Boolean(list.indexOf(key) > -1);
+			},
+			add: function add(key) {
+				list.push(key);
+			},
+			'delete': function _delete(key) {
+				list.splice(list.indexOf(key), 1);
+			} };
+	})();
+
 	function assign(ta) {
 		var _ref = arguments[1] === undefined ? {} : arguments[1];
 
@@ -26,7 +41,7 @@
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 		var heightOffset = null;
 		var overflowY = 'hidden';
@@ -126,8 +141,8 @@
 			window.removeEventListener('resize', update);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
-			ta.removeAttribute('data-autosize-on');
 			ta.removeEventListener('autosize:destroy', destroy);
+			set['delete'](ta);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
@@ -151,7 +166,7 @@
 		window.addEventListener('resize', update);
 		ta.addEventListener('input', update);
 		ta.addEventListener('autosize:update', update);
-		ta.setAttribute('data-autosize-on', true);
+		set.add(ta);
 
 		if (setOverflowY) {
 			ta.style.overflowY = 'hidden';
