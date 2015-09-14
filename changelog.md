@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.11 - 2015-09-14
+* Fixed regression from 3.0.10 that caused an error with ES5 browsers.  Merged #255, Fixes #257.
+
 ##### v.3.0.10 - 2015-09-10
 * Removed data attribute as a way of tracking which elements autosize has been assigned to. fixes #254, fixes #200.
 
