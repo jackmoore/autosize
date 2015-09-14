@@ -18,7 +18,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var set = Set ? new Set() : (function () {
+	var set = (typeof Set != "undefined") ? new Set() : (function () {
 		var list = [];
 
 		return {
