@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.11
+	Autosize 3.0.12
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -18,7 +18,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var set = Set ? new Set() : (function () {
+	var set = typeof Set === 'function' ? new Set() : (function () {
 		var list = [];
 
 		return {

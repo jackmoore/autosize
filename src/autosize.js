@@ -1,4 +1,4 @@
-var set = Set ? new Set() : (()=>{
+const set = (typeof Set === "function") ? new Set() : (function () {
 	const list = [];
 
 	return {

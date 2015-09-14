@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.12 - 2015-09-14
+* Merged changes were discarded when building new dist files.  Merged #255, Fixes #257 for real this time.
+
 ##### v.3.0.11 - 2015-09-14
 * Fixed regression from 3.0.10 that caused an error with ES5 browsers.  Merged #255, Fixes #257.
 
