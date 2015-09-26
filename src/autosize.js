@@ -110,9 +110,17 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			ta.dispatchEvent(evt);
 		}
 	}
+	
+	var lastPageWidth = document.documentElement.clientWidth;
+	function pageResize() {
+		if (document.documentElement.clientWidth != lastPageWidth) {
+			lastPageWidth = document.documentElement.clientWidth;
+			update();
+		}
+	}
 
 	const destroy = style => {
-		window.removeEventListener('resize', update);
+		window.removeEventListener('resize', pageResize);
 		ta.removeEventListener('input', update);
 		ta.removeEventListener('keyup', update);
 		ta.removeEventListener('autosize:destroy', destroy);
@@ -138,7 +146,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		ta.addEventListener('keyup', update);
 	}
 
-	window.addEventListener('resize', update);
+	window.addEventListener('resize', pageResize);
 	ta.addEventListener('input', update);
 	ta.addEventListener('autosize:update', update);
 	set.add(ta);
