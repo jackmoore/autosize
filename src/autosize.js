@@ -18,11 +18,13 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 	let heightOffset = null;
-	let overflowY = 'hidden';
+	let overflowY = null;
 	let clientWidth = ta.clientWidth;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
+
+		overflowY = style.overflowY;
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -153,9 +155,6 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	ta.addEventListener('autosize:update', update);
 	set.add(ta);
 
-	if (setOverflowY) {
-		ta.style.overflowY = 'hidden';
-	}
 	if (setOverflowX) {
 		ta.style.overflowX = 'hidden';
 		ta.style.wordWrap = 'break-word';
