@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.12
+	Autosize 3.0.13
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -44,10 +44,13 @@
 		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 		var heightOffset = null;
-		var overflowY = 'hidden';
+		var overflowY = null;
+		var clientWidth = ta.clientWidth;
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
+
+			overflowY = style.overflowY;
 
 			if (style.resize === 'vertical') {
 				ta.style.resize = 'none';
@@ -108,6 +111,9 @@
 
 			ta.style.height = endHeight + 'px';
 
+			// used to check if an update is actually necessary on window.resize
+			clientWidth = ta.clientWidth;
+
 			// prevents scroll-position jumping
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
@@ -137,8 +143,14 @@
 			}
 		}
 
+		var pageResize = function pageResize() {
+			if (ta.clientWidth !== clientWidth) {
+				update();
+			}
+		};
+
 		var destroy = (function (style) {
-			window.removeEventListener('resize', update);
+			window.removeEventListener('resize', pageResize);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
 			ta.removeEventListener('autosize:destroy', destroy);
@@ -163,14 +175,11 @@
 			ta.addEventListener('keyup', update);
 		}
 
-		window.addEventListener('resize', update);
+		window.addEventListener('resize', pageResize);
 		ta.addEventListener('input', update);
 		ta.addEventListener('autosize:update', update);
 		set.add(ta);
 
-		if (setOverflowY) {
-			ta.style.overflowY = 'hidden';
-		}
 		if (setOverflowX) {
 			ta.style.overflowX = 'hidden';
 			ta.style.wordWrap = 'break-word';

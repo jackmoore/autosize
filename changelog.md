@@ -1,5 +1,9 @@
 ## Changelog
 
+##### v.3.0.13 - 2015-09-26
+* Fixed scroll-bar jumpiness in iOS. Merged #261, fixes #207.
+* Fixed reflowing of initial text in Chrome and Safari.
+
 ##### v.3.0.12 - 2015-09-14
 * Merged changes were discarded when building new dist files.  Merged #255, Fixes #257 for real this time.
 
