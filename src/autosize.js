@@ -19,6 +19,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 	let heightOffset = null;
 	let overflowY = 'hidden';
+	let clientWidth = ta.clientWidth;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
@@ -82,6 +83,9 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		ta.style.height = endHeight+'px';
 
+		// used to check if an update is actually necessary on window.resize
+		clientWidth = ta.clientWidth;
+
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
@@ -89,7 +93,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 	function update() {
 		const startHeight = ta.style.height;
-		
+
 		resize();
 
 		const style = window.getComputedStyle(ta, null);
@@ -110,14 +114,12 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			ta.dispatchEvent(evt);
 		}
 	}
-	
-	var lastPageWidth = document.documentElement.clientWidth;
-	function pageResize() {
-		if (document.documentElement.clientWidth != lastPageWidth) {
-			lastPageWidth = document.documentElement.clientWidth;
+
+	const pageResize = () => {
+		if (ta.clientWidth !== clientWidth) {
 			update();
 		}
-	}
+	};
 
 	const destroy = style => {
 		window.removeEventListener('resize', pageResize);
