@@ -41,7 +41,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		if (isNaN(heightOffset)) {
 			heightOffset = 0;
 		}
-	
+
 		update();
 	}
 
@@ -128,6 +128,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		ta.removeEventListener('input', update);
 		ta.removeEventListener('keyup', update);
 		ta.removeEventListener('autosize:destroy', destroy);
+		ta.removeEventListener('autosize:update', update);
 		set.delete(ta);
 
 		Object.keys(style).forEach(key => {
