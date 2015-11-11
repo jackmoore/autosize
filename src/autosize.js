@@ -124,11 +124,11 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	};
 
 	const destroy = style => {
-		window.removeEventListener('resize', pageResize);
-		ta.removeEventListener('input', update);
-		ta.removeEventListener('keyup', update);
-		ta.removeEventListener('autosize:destroy', destroy);
-		ta.removeEventListener('autosize:update', update);
+		window.removeEventListener('resize', pageResize, false);
+		ta.removeEventListener('input', update, false);
+		ta.removeEventListener('keyup', update, false);
+		ta.removeEventListener('autosize:destroy', destroy, false);
+		ta.removeEventListener('autosize:update', update, false);
 		set.delete(ta);
 
 		Object.keys(style).forEach(key => {
@@ -142,18 +142,18 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		wordWrap: ta.style.wordWrap,
 	});
 
-	ta.addEventListener('autosize:destroy', destroy);
+	ta.addEventListener('autosize:destroy', destroy, false);
 
 	// IE9 does not fire onpropertychange or oninput for deletions,
 	// so binding to onkeyup to catch most of those events.
 	// There is no way that I know of to detect something like 'cut' in IE9.
 	if ('onpropertychange' in ta && 'oninput' in ta) {
-		ta.addEventListener('keyup', update);
+		ta.addEventListener('keyup', update, false);
 	}
 
-	window.addEventListener('resize', pageResize);
-	ta.addEventListener('input', update);
-	ta.addEventListener('autosize:update', update);
+	window.addEventListener('resize', pageResize, false);
+	ta.addEventListener('input', update, false);
+	ta.addEventListener('autosize:update', update, false);
 	set.add(ta);
 
 	if (setOverflowX) {

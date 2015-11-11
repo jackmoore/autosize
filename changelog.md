@@ -1,5 +1,9 @@
 ## Changelog
 
+##### v.3.0.14 - 2015-11-11
+* Fixed memory leak on destroy. Merged #271, fixes #270.
+* Fixed bug in old versions of Firefox (1-5), fixes #246.
+
 ##### v.3.0.13 - 2015-09-26
 * Fixed scroll-bar jumpiness in iOS. Merged #261, fixes #207.
 * Fixed reflowing of initial text in Chrome and Safari.
