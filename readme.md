@@ -10,10 +10,6 @@ Full documentation and a demo can be found at [jacklmoore.com/autosize](http://j
 ```bash
 npm install autosize
 ```
-#### Install via Bower
-```bash
-bower install autosize
-```
 
 #### Browser compatibility
 
