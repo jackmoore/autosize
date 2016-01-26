@@ -14,6 +14,18 @@ const set = (typeof Set === "function") ? new Set() : (function () {
 	}
 })();
 
+let createEvent = (name)=> new Event(name);
+try {
+	new Event('test');
+} catch(e) {
+	// IE does not support `new Event()`
+	createEvent = (name)=> {
+		const evt = document.createEvent('Event');
+		evt.initEvent(name, true, false);
+		return evt;
+	};
+}
+
 function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
@@ -111,8 +123,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		}
 
 		if (startHeight !== ta.style.height) {
-			const evt = document.createEvent('Event');
-			evt.initEvent('autosize:resized', true, false);
+			const evt = createEvent('autosize:resized');
 			ta.dispatchEvent(evt);
 		}
 	}
@@ -166,15 +177,13 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 function destroy(ta) {
 	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = document.createEvent('Event');
-	evt.initEvent('autosize:destroy', true, false);
+	const evt = createEvent('autosize:destroy');
 	ta.dispatchEvent(evt);
 }
 
 function update(ta) {
 	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = document.createEvent('Event');
-	evt.initEvent('autosize:update', true, false);
+	const evt = createEvent('autosize:update');
 	ta.dispatchEvent(evt);
 }
 
