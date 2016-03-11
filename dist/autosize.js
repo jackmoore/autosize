@@ -54,17 +54,24 @@
 		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
+        var _ref$autosizeHeight = _ref.autosizeHeight;
+        var autosizeHeight = _ref$autosizeHeight === undefined ? true : _ref$autosizeHeight;
+        var _ref$autosizeWidth = _ref.autosizeWidth;
+        var autosizeWidth = _ref$autosizeWidth === undefined ? false : _ref$autosizeWidth;
 
 		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 		var heightOffset = null;
-		var overflowY = null;
+        var widthOffset = null;
+        var overflowY = null;
+        var overflowX = null;
 		var clientWidth = ta.clientWidth;
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
 
 			overflowY = style.overflowY;
+            overflowX = style.overflowX;
 
 			if (style.resize === 'vertical') {
 				ta.style.resize = 'none';
@@ -74,8 +81,10 @@
 
 			if (style.boxSizing === 'content-box') {
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
+                widthOffset = -(parseFloat(style.paddingLeft) + parseFloat(style.paddingRight));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+                widthOffset = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
 			}
 			// Fix when a textarea is not on document body and heightOffset is Not a Number
 			if (isNaN(heightOffset)) {
@@ -85,7 +94,7 @@
 			update();
 		}
 
-		function changeOverflow(value) {
+        function changeYOverflow(value) {
 			{
 				// Chrome/Safari-specific fix:
 				// When the textarea y-overflow is hidden, Chrome/Safari do not reflow the text to account for the space
@@ -107,8 +116,39 @@
 
 			resize();
 		}
+        function changeXOverflow(value) {
+            {
+                // Chrome/Safari-specific fix:
+                // When the textarea y-overflow is hidden, Chrome/Safari do not reflow the text to account for the space
+                // made available by removing the scrollbar. The following forces the necessary text reflow.
+                var height = ta.style.height;
+                ta.style.height = '0px';
+                // Force reflow:
+                /* jshint ignore:start */
+                ta.offsetHeight;
+                /* jshint ignore:end */
+                ta.style.height = height;
+            }
 
-		function resize() {
+            overflowX = value;
+
+            if (setOverflowX) {
+                ta.style.overflowX = value;
+            }
+
+            resize();
+        }
+
+        function resize() {
+            if (autosizeWidth) {
+                resizeWidth();
+            }
+            if (autosizeHeight) {
+                resizeHeight();
+            }
+        }
+
+        function resizeHeight() {
 			var htmlTop = window.pageYOffset;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
@@ -133,6 +173,35 @@
 			document.body.scrollTop = bodyTop;
 		}
 
+        function resizeWidth() {
+            var htmlTop = window.pageYOffset;
+            var bodyTop = document.body.scrollTop;
+            var originalWidth = ta.style.width;
+
+            ta.style.width = 'auto';
+            ta.style.whiteSpace = "nowrap";
+
+
+            var endWidth = ta.scrollWidth + widthOffset;
+            var maxWidth = null;
+            if (ta.style.maxWidth) {
+                maxWidth = parseInt(ta.style.maxWidth);
+            }
+            if (maxWidth && endWidth > maxWidth) {
+                endWidth = maxWidth;
+                ta.style.whiteSpace = "normal";
+            } else {
+                ta.style.whiteSpace = "nowrap";
+            }
+
+            ta.style.width = endWidth + 'px';
+            // used to check if an update is actually necessary on window.resize
+            clientWidth = ta.clientWidth;
+
+            // prevents scroll-position jumping
+            document.documentElement.scrollTop = htmlTop;
+            document.body.scrollTop = bodyTop;
+        }
 		function update() {
 			var startHeight = ta.style.height;
 
@@ -142,13 +211,22 @@
 
 			if (style.height !== ta.style.height) {
 				if (overflowY !== 'visible') {
-					changeOverflow('visible');
+                    changeYOverflow('visible');
 				}
 			} else {
 				if (overflowY !== 'hidden') {
-					changeOverflow('hidden');
-				}
-			}
+                    changeYOverflow('hidden');
+                }
+            }
+            if (style.width !== ta.style.width) {
+                if (overflowX !== 'visible') {
+                    changeXOverflow('visible');
+                }
+            } else {
+                if (overflowX !== 'hidden') {
+                    changeXOverflow('hidden');
+                }
+            }
 
 			if (startHeight !== ta.style.height) {
 				var evt = createEvent('autosize:resized');
