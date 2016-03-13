@@ -1,4 +1,4 @@
-const set = (typeof Set === "function") ? new Set() : (function () {
+const set = (typeof Set === 'function') ? new Set() : (function () {
 	const list = [];
 
 	return {
@@ -14,12 +14,12 @@ const set = (typeof Set === "function") ? new Set() : (function () {
 	}
 })();
 
-let createEvent = (name)=> new Event(name);
+let createEvent = (name) => new Event(name);
 try {
 	new Event('test');
-} catch(e) {
+} catch (e) {
 	// IE does not support `new Event()`
-	createEvent = (name)=> {
+	createEvent = (name) => {
 		const evt = document.createEvent('Event');
 		evt.initEvent(name, true, false);
 		return evt;
@@ -45,9 +45,9 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		}
 
 		if (style.boxSizing === 'content-box') {
-			heightOffset = -(parseFloat(style.paddingTop)+parseFloat(style.paddingBottom));
+			heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 		} else {
-			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
+			heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
 		}
 		// Fix when a textarea is not on document body and heightOffset is Not a Number
 		if (isNaN(heightOffset)) {
@@ -87,7 +87,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		ta.style.height = 'auto';
 
-		let endHeight = ta.scrollHeight+heightOffset;
+		let endHeight = ta.scrollHeight + heightOffset;
 
 		if (ta.scrollHeight === 0) {
 			// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
@@ -95,7 +95,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			return;
 		}
 
-		ta.style.height = endHeight+'px';
+		ta.style.height = endHeight + 'px';
 
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
@@ -106,6 +106,9 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	}
 
 	function update() {
+		const evt = createEvent('autosize:resizing');
+		ta.dispatchEvent(evt);
+
 		const startHeight = ta.style.height;
 
 		resize();

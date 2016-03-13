@@ -30,7 +30,8 @@
 			},
 			'delete': function _delete(key) {
 				list.splice(list.indexOf(key), 1);
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
@@ -48,7 +49,7 @@
 	}
 
 	function assign(ta) {
-		var _ref = arguments[1] === undefined ? {} : arguments[1];
+		var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 		var _ref$setOverflowX = _ref.setOverflowX;
 		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
@@ -134,6 +135,9 @@
 		}
 
 		function update() {
+			var evt = createEvent('autosize:resizing');
+			ta.dispatchEvent(evt);
+
 			var startHeight = ta.style.height;
 
 			resize();
@@ -151,8 +155,8 @@
 			}
 
 			if (startHeight !== ta.style.height) {
-				var evt = createEvent('autosize:resized');
-				ta.dispatchEvent(evt);
+				var _evt = createEvent('autosize:resized');
+				ta.dispatchEvent(_evt);
 			}
 		}
 
@@ -178,7 +182,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
