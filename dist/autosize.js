@@ -30,7 +30,8 @@
 			},
 			'delete': function _delete(key) {
 				list.splice(list.indexOf(key), 1);
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
@@ -102,7 +103,8 @@
 				if (el.parentNode.scrollTop) {
 					arr.push({
 						node: el.parentNode,
-						scrollTop: el.parentNode.scrollTop });
+						scrollTop: el.parentNode.scrollTop
+					});
 				}
 				el = el.parentNode;
 			}
@@ -141,6 +143,9 @@
 		}
 
 		function update() {
+			var evt = createEvent('autosize:resizing');
+			ta.dispatchEvent(evt);
+
 			resize();
 
 			var computed = window.getComputedStyle(ta, null);
@@ -162,8 +167,8 @@
 
 			if (cachedHeight !== computedHeight) {
 				cachedHeight = computedHeight;
-				var evt = createEvent('autosize:resized');
-				ta.dispatchEvent(evt);
+				var _evt = createEvent('autosize:resized');
+				ta.dispatchEvent(_evt);
 			}
 		}
 
@@ -189,7 +194,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
