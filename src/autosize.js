@@ -1,4 +1,4 @@
-const set = (typeof Set === "function") ? new Set() : (function () {
+const set = (typeof Set === 'function') ? new Set() : (function () {
 	const list = [];
 
 	return {
@@ -14,20 +14,28 @@ const set = (typeof Set === "function") ? new Set() : (function () {
 	}
 })();
 
-let createEvent = (name)=> new Event(name);
+let createEvent = (name) => new Event(name);
 try {
 	new Event('test');
-} catch(e) {
+} catch (e) {
 	// IE does not support `new Event()`
-	createEvent = (name)=> {
+	createEvent = (name) => {
 		const evt = document.createEvent('Event');
 		evt.initEvent(name, true, false);
 		return evt;
 	};
 }
 
+const dispatchEvent = (el, name) => {
+	const evt = createEvent(name);
+	el.dispatchEvent(evt);
+}
+
+const isTextarea = (el) =>
+	el && el.nodeName && el.nodeName === 'TEXTAREA'
+
 function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+	if (!isTextarea(ta) || set.has(ta)) return;
 
 	let heightOffset = null;
 	let overflowY = null;
@@ -45,9 +53,9 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		}
 
 		if (style.boxSizing === 'content-box') {
-			heightOffset = -(parseFloat(style.paddingTop)+parseFloat(style.paddingBottom));
+			heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 		} else {
-			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
+			heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
 		}
 		// Fix when a textarea is not on document body and heightOffset is Not a Number
 		if (isNaN(heightOffset)) {
@@ -87,7 +95,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		ta.style.height = 'auto';
 
-		let endHeight = ta.scrollHeight+heightOffset;
+		let endHeight = ta.scrollHeight + heightOffset;
 
 		if (ta.scrollHeight === 0) {
 			// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
@@ -95,7 +103,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			return;
 		}
 
-		ta.style.height = endHeight+'px';
+		ta.style.height = endHeight + 'px';
 
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
@@ -106,7 +114,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	}
 
 	function update() {
-		const startHeight = ta.style.height;
+		dispatchEvent(ta, 'autosize:resizing');
 
 		resize();
 
@@ -122,10 +130,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			}
 		}
 
-		if (startHeight !== ta.style.height) {
-			const evt = createEvent('autosize:resized');
-			ta.dispatchEvent(evt);
-		}
+		dispatchEvent(ta, 'autosize:resized');
 	}
 
 	const pageResize = () => {
@@ -176,15 +181,13 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 }
 
 function destroy(ta) {
-	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:destroy');
-	ta.dispatchEvent(evt);
+	if (!isTextarea(ta)) return;
+	dispatchEvent(ta, 'autosize:destroy');
 }
 
 function update(ta) {
-	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:update');
-	ta.dispatchEvent(evt);
+	if (!isTextarea(ta)) return;
+	dispatchEvent(ta, 'autosize:update');
 }
 
 let autosize = null;

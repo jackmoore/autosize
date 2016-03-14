@@ -30,7 +30,8 @@
 			},
 			'delete': function _delete(key) {
 				list.splice(list.indexOf(key), 1);
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
@@ -47,15 +48,24 @@
 		};
 	}
 
+	var dispatchEvent = function dispatchEvent(el, name) {
+		var evt = createEvent(name);
+		el.dispatchEvent(evt);
+	};
+
+	var isTextarea = function isTextarea(el) {
+		return el && el.nodeName && el.nodeName === 'TEXTAREA';
+	};
+
 	function assign(ta) {
-		var _ref = arguments[1] === undefined ? {} : arguments[1];
+		var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 		var _ref$setOverflowX = _ref.setOverflowX;
 		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+		if (!isTextarea(ta) || set.has(ta)) return;
 
 		var heightOffset = null;
 		var overflowY = null;
@@ -134,7 +144,7 @@
 		}
 
 		function update() {
-			var startHeight = ta.style.height;
+			dispatchEvent(ta, 'autosize:resizing');
 
 			resize();
 
@@ -150,10 +160,7 @@
 				}
 			}
 
-			if (startHeight !== ta.style.height) {
-				var evt = createEvent('autosize:resized');
-				ta.dispatchEvent(evt);
-			}
+			dispatchEvent(ta, 'autosize:resized');
 		}
 
 		var pageResize = function pageResize() {
@@ -178,7 +185,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
@@ -203,15 +211,13 @@
 	}
 
 	function destroy(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:destroy');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:destroy');
 	}
 
 	function update(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:update');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:update');
 	}
 
 	var autosize = null;
