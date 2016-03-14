@@ -26,8 +26,16 @@ try {
 	};
 }
 
+const dispatchEvent = (el, name) => {
+	const evt = createEvent(name);
+	el.dispatchEvent(evt);
+}
+
+const isTextarea = (el) =>
+	el && el.nodeName && el.nodeName === 'TEXTAREA'
+
 function assign(ta) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+	if (!isTextarea(ta) || set.has(ta)) return;
 
 	let heightOffset = null;
 	let clientWidth = ta.clientWidth;
@@ -121,8 +129,7 @@ function assign(ta) {
 	}
 
 	function update() {
-		const evt = createEvent('autosize:resizing');
-		ta.dispatchEvent(evt);
+		dispatchEvent(ta, 'autosize:resizing');
 
 		resize();
 
@@ -145,9 +152,8 @@ function assign(ta) {
 
 		if (cachedHeight !== computedHeight) {
 			cachedHeight = computedHeight;
-			const evt = createEvent('autosize:resized');
-			ta.dispatchEvent(evt);
 		}
+        dispatchEvent(ta, 'autosize:resized');
 	}
 
 	const pageResize = () => {
@@ -195,15 +201,13 @@ function assign(ta) {
 }
 
 function destroy(ta) {
-	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:destroy');
-	ta.dispatchEvent(evt);
+	if (!isTextarea(ta)) return;
+	dispatchEvent(ta, 'autosize:destroy');
 }
 
 function update(ta) {
-	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:update');
-	ta.dispatchEvent(evt);
+	if (!isTextarea(ta)) return;
+	dispatchEvent(ta, 'autosize:update');
 }
 
 let autosize = null;

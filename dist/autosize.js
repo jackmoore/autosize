@@ -48,8 +48,17 @@
 		};
 	}
 
+	var dispatchEvent = function dispatchEvent(el, name) {
+		var evt = createEvent(name);
+		el.dispatchEvent(evt);
+	};
+
+	var isTextarea = function isTextarea(el) {
+		return el && el.nodeName && el.nodeName === 'TEXTAREA';
+	};
+
 	function assign(ta) {
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+		if (!isTextarea(ta) || set.has(ta)) return;
 
 		var heightOffset = null;
 		var clientWidth = ta.clientWidth;
@@ -143,8 +152,7 @@
 		}
 
 		function update() {
-			var evt = createEvent('autosize:resizing');
-			ta.dispatchEvent(evt);
+			dispatchEvent(ta, 'autosize:resizing');
 
 			resize();
 
@@ -167,9 +175,8 @@
 
 			if (cachedHeight !== computedHeight) {
 				cachedHeight = computedHeight;
-				var _evt = createEvent('autosize:resized');
-				ta.dispatchEvent(_evt);
 			}
+			dispatchEvent(ta, 'autosize:resized');
 		}
 
 		var pageResize = function pageResize() {
@@ -217,15 +224,13 @@
 	}
 
 	function destroy(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:destroy');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:destroy');
 	}
 
 	function update(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:update');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:update');
 	}
 
 	var autosize = null;
