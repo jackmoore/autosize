@@ -82,7 +82,6 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 	function resize() {
 		const htmlTop = window.pageYOffset;
-		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
 
 		ta.style.height = 'auto';
@@ -102,7 +101,6 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
-		document.body.scrollTop = bodyTop;
 	}
 
 	function update() {
