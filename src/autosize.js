@@ -32,6 +32,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	let heightOffset = null;
 	let overflowY = null;
 	let clientWidth = ta.clientWidth;
+	let overflowParent = null;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
@@ -54,7 +55,21 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			heightOffset = 0;
 		}
 
+		overflowParent = findOverflowParent(ta);
+
 		update();
+	}
+
+	function findOverflowParent(element) {
+		while(element.parentNode) {
+			const parent = element.parentNode;
+			const parentStyle = window.getComputedStyle(parent, null);
+			const overflowValue = parentStyle.getPropertyValue('overflow-y');
+			if (overflowValue === 'auto') {
+				return parent;
+			}
+			element = parent;
+		}
 	}
 
 	function changeOverflow(value) {
@@ -84,6 +99,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		const htmlTop = window.pageYOffset;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
+		const parentTop = overflowParent ? overflowParent.scrollTop : undefined;
 
 		ta.style.height = 'auto';
 
@@ -103,6 +119,9 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
+		if (overflowParent) {
+			overflowParent.scrollTop = parentTop;
+		}
 	}
 
 	function update() {
