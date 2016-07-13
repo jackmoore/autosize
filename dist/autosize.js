@@ -90,7 +90,7 @@
 		}
 
 		function findOverflowParent(element) {
-			while (element.parentNode) {
+			while (element.parentNode && element.parentNode !== document) {
 				var _parent = element.parentNode;
 				var parentStyle = window.getComputedStyle(_parent, null);
 				var overflowValue = parentStyle.getPropertyValue('overflow-y');

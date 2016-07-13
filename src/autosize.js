@@ -61,7 +61,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	}
 
 	function findOverflowParent(element) {
-		while(element.parentNode) {
+		while(element.parentNode && element.parentNode !== document) {
 			const parent = element.parentNode;
 			const parentStyle = window.getComputedStyle(parent, null);
 			const overflowValue = parentStyle.getPropertyValue('overflow-y');
