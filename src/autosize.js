@@ -80,10 +80,26 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		resize();
 	}
 
+	function getParentOverflows(el) {
+		const arr = [];
+
+		while (el && el.parentNode && el.parentNode instanceof Element) {
+			if (el.parentNode.scrollTop) {
+				arr.push({
+					node: el.parentNode,
+					scrollTop: el.parentNode.scrollTop,
+				})
+			}
+			el = el.parentNode;
+		}
+
+		return arr;
+	}
+
 	function resize() {
-		const htmlTop = window.pageYOffset;
-		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
+		const overflows = getParentOverflows(ta);
+		const docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 		ta.style.height = 'auto';
 
@@ -101,8 +117,13 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		clientWidth = ta.clientWidth;
 
 		// prevents scroll-position jumping
-		document.documentElement.scrollTop = htmlTop;
-		document.body.scrollTop = bodyTop;
+		overflows.forEach(el => {
+			el.node.scrollTop = el.scrollTop
+		});
+
+		if (docTop) {
+			document.documentElement.scrollTop = docTop;
+		}
 	}
 
 	function update() {

@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.15
+	Autosize 3.0.16
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -108,10 +108,25 @@
 			resize();
 		}
 
+		function getParentOverflows(el) {
+			var arr = [];
+
+			while (el && el.parentNode && el.parentNode instanceof Element) {
+				if (el.parentNode.scrollTop) {
+					arr.push({
+						node: el.parentNode,
+						scrollTop: el.parentNode.scrollTop });
+				}
+				el = el.parentNode;
+			}
+
+			return arr;
+		}
+
 		function resize() {
-			var htmlTop = window.pageYOffset;
-			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
+			var overflows = getParentOverflows(ta);
+			var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 			ta.style.height = 'auto';
 
@@ -129,8 +144,13 @@
 			clientWidth = ta.clientWidth;
 
 			// prevents scroll-position jumping
-			document.documentElement.scrollTop = htmlTop;
-			document.body.scrollTop = bodyTop;
+			overflows.forEach(function (el) {
+				el.node.scrollTop = el.scrollTop;
+			});
+
+			if (docTop) {
+				document.documentElement.scrollTop = docTop;
+			}
 		}
 
 		function update() {

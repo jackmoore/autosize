@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.16 - 2016-7-13
+* Fixed issue with overflowing parent elements. Fixes #298.
+
 ##### v.3.0.15 - 2016-1-26
 * Used newer Event constructor, when available. Fixes #280.
 
