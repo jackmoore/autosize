@@ -18,7 +18,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var set = typeof Set === 'function' ? new Set() : (function () {
+	var set = typeof Set === "function" ? new Set() : (function () {
 		var list = [];
 
 		return {
@@ -30,7 +30,8 @@
 			},
 			'delete': function _delete(key) {
 				list.splice(list.indexOf(key), 1);
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
@@ -48,7 +49,7 @@
 	}
 
 	function assign(ta) {
-		var _ref = arguments[1] === undefined ? {} : arguments[1];
+		var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
 		var _ref$setOverflowX = _ref.setOverflowX;
 		var setOverflowX = _ref$setOverflowX === undefined ? true : _ref$setOverflowX;
@@ -60,6 +61,7 @@
 		var heightOffset = null;
 		var overflowY = null;
 		var clientWidth = ta.clientWidth;
+		var overflowParent = null;
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
@@ -82,7 +84,21 @@
 				heightOffset = 0;
 			}
 
+			overflowParent = findOverflowParent(ta);
+
 			update();
+		}
+
+		function findOverflowParent(element) {
+			while (element.parentNode) {
+				var _parent = element.parentNode;
+				var parentStyle = window.getComputedStyle(_parent, null);
+				var overflowValue = parentStyle.getPropertyValue('overflow-y');
+				if (overflowValue === 'auto') {
+					return _parent;
+				}
+				element = _parent;
+			}
 		}
 
 		function changeOverflow(value) {
@@ -112,6 +128,7 @@
 			var htmlTop = window.pageYOffset;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
+			var parentTop = overflowParent ? overflowParent.scrollTop : undefined;
 
 			ta.style.height = 'auto';
 
@@ -131,6 +148,9 @@
 			// prevents scroll-position jumping
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
+			if (overflowParent) {
+				overflowParent.scrollTop = parentTop;
+			}
 		}
 
 		function update() {
@@ -178,7 +198,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
