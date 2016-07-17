@@ -133,7 +133,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		const style = window.getComputedStyle(ta, null);
 
-		if (style.height !== ta.style.height) {
+		if (parseInt(style.height) < parseInt(ta.style.height)) {
 			if (overflowY !== 'visible') {
 				changeOverflow('visible');
 			}
