@@ -30,13 +30,10 @@ function assign(ta) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 	let heightOffset = null;
-	let overflowY = null;
 	let clientWidth = ta.clientWidth;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
-
-		overflowY = style.overflowY;
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -70,8 +67,6 @@ function assign(ta) {
 			/* jshint ignore:end */
 			ta.style.width = width;
 		}
-
-		overflowY = value;
 
 		ta.style.overflowY = value;
 
@@ -131,12 +126,15 @@ function assign(ta) {
 
 		const style = window.getComputedStyle(ta, null);
 
+		// The computed height not matching the height set via resize indicates that 
+		// the max-height has been exceeded, in which case the overflow should be set to visible.
 		if (style.height !== ta.style.height) {
-			if (overflowY !== 'visible') {
+			if (style.overflowY !== 'visible') {
 				changeOverflow('visible');
 			}
 		} else {
-			if (overflowY !== 'hidden') {
+			// Normally keep overflow set to hidden, to avoid flash of scrollbar as the textarea expands.
+			if (style.overflowY !== 'hidden') {
 				changeOverflow('hidden');
 			}
 		}
