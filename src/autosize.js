@@ -26,7 +26,7 @@ try {
 	};
 }
 
-function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
+function assign(ta) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 	let heightOffset = null;
@@ -73,9 +73,7 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		overflowY = value;
 
-		if (setOverflowY) {
-			ta.style.overflowY = value;
-		}
+		ta.style.overflowY = value;
 
 		resize();
 	}
@@ -187,11 +185,8 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 	ta.addEventListener('input', update, false);
 	ta.addEventListener('autosize:update', update, false);
 	set.add(ta);
-
-	if (setOverflowX) {
-		ta.style.overflowX = 'hidden';
-		ta.style.wordWrap = 'break-word';
-	}
+	ta.style.overflowX = 'hidden';
+	ta.style.wordWrap = 'break-word';
 
 	init();
 }
