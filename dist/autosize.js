@@ -30,7 +30,8 @@
 			},
 			'delete': function _delete(key) {
 				list.splice(list.indexOf(key), 1);
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
@@ -47,8 +48,17 @@
 		};
 	}
 
+	var dispatchEvent = function dispatchEvent(el, name) {
+		var evt = createEvent(name);
+		el.dispatchEvent(evt);
+	};
+
+	var isTextarea = function isTextarea(el) {
+		return el && el.nodeName && el.nodeName === 'TEXTAREA';
+	};
+
 	function assign(ta) {
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+		if (!isTextarea(ta) || set.has(ta)) return;
 
 		var heightOffset = null;
 		var clientWidth = ta.clientWidth;
@@ -102,7 +112,8 @@
 				if (el.parentNode.scrollTop) {
 					arr.push({
 						node: el.parentNode,
-						scrollTop: el.parentNode.scrollTop });
+						scrollTop: el.parentNode.scrollTop
+					});
 				}
 				el = el.parentNode;
 			}
@@ -141,6 +152,8 @@
 		}
 
 		function update() {
+			dispatchEvent(ta, 'autosize:resizing');
+
 			resize();
 
 			var computed = window.getComputedStyle(ta, null);
@@ -162,9 +175,8 @@
 
 			if (cachedHeight !== computedHeight) {
 				cachedHeight = computedHeight;
-				var evt = createEvent('autosize:resized');
-				ta.dispatchEvent(evt);
 			}
+			dispatchEvent(ta, 'autosize:resized');
 		}
 
 		var pageResize = function pageResize() {
@@ -189,7 +201,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
@@ -211,15 +224,13 @@
 	}
 
 	function destroy(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:destroy');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:destroy');
 	}
 
 	function update(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:update');
-		ta.dispatchEvent(evt);
+		if (!isTextarea(ta)) return;
+		dispatchEvent(ta, 'autosize:update');
 	}
 
 	var autosize = null;
