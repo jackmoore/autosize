@@ -32,7 +32,7 @@ function lint(full) {
 		eqeqeq: true,
 		eqnull: true,
 		noarg: true,
-		predef: ['define', 'module', 'exports', 'Set']
+		predef: ['define', 'module', 'exports', 'Map']
 	});
 
 	if (jshint.errors.length) {

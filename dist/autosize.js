@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.17
+	Autosize 3.0.18
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -18,18 +18,29 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var set = typeof Set === 'function' ? new Set() : (function () {
-		var list = [];
+	var map = typeof Map === 'function' ? new Map() : (function () {
+		var keys = [];
+		var values = [];
 
 		return {
 			has: function has(key) {
-				return Boolean(list.indexOf(key) > -1);
+				return keys.indexOf(key) > -1;
 			},
-			add: function add(key) {
-				list.push(key);
+			get: function get(key) {
+				return values[keys.indexOf(key)];
+			},
+			set: function set(key, value) {
+				if (keys.indexOf(key) === -1) {
+					keys.push(key);
+					values.push(value);
+				}
 			},
 			'delete': function _delete(key) {
-				list.splice(list.indexOf(key), 1);
+				var index = keys.indexOf(key);
+				if (index > -1) {
+					keys.splice(index, 1);
+					values.splice(index, 1);
+				}
 			} };
 	})();
 
@@ -48,7 +59,7 @@
 	}
 
 	function assign(ta) {
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) return;
 
 		var heightOffset = null;
 		var clientWidth = ta.clientWidth;
@@ -163,7 +174,9 @@
 			if (cachedHeight !== computedHeight) {
 				cachedHeight = computedHeight;
 				var evt = createEvent('autosize:resized');
-				ta.dispatchEvent(evt);
+				try {
+					ta.dispatchEvent(evt);
+				} catch (err) {}
 			}
 		}
 
@@ -179,11 +192,12 @@
 			ta.removeEventListener('keyup', update, false);
 			ta.removeEventListener('autosize:destroy', destroy, false);
 			ta.removeEventListener('autosize:update', update, false);
-			set['delete'](ta);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
 			});
+
+			map['delete'](ta);
 		}).bind(ta, {
 			height: ta.style.height,
 			resize: ta.style.resize,
@@ -203,23 +217,28 @@
 		window.addEventListener('resize', pageResize, false);
 		ta.addEventListener('input', update, false);
 		ta.addEventListener('autosize:update', update, false);
-		set.add(ta);
 		ta.style.overflowX = 'hidden';
 		ta.style.wordWrap = 'break-word';
+
+		map.set(ta, {
+			destroy: destroy,
+			update: update });
 
 		init();
 	}
 
 	function destroy(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:destroy');
-		ta.dispatchEvent(evt);
+		var methods = map.get(ta);
+		if (methods) {
+			methods.destroy();
+		}
 	}
 
 	function update(ta) {
-		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:update');
-		ta.dispatchEvent(evt);
+		var methods = map.get(ta);
+		if (methods) {
+			methods.update();
+		}
 	}
 
 	var autosize = null;
@@ -260,3 +279,6 @@
 
 	module.exports = autosize;
 });
+
+// Firefox will throw an error on dispatchEvent for a detached element
+// https://bugzilla.mozilla.org/show_bug.cgi?id=889376

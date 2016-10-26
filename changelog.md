@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.18 - 2016-10-26
+* Fixed Firefox issue where calling dispatchEvent on a detached element throws an error.  Fixes #317.
+
 ##### v.3.0.17 - 2016-7-25
 * Fixed Chromium issue where getComputedStyle pixel value did not exactly match the style pixel value.  Fixes #306.
 * Removed undocumented argument, minor refactoring, more comments.
