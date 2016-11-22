@@ -25,7 +25,7 @@ const map = (typeof Map === "function") ? new Map() : (function () {
 	}
 })();
 
-let createEvent = (name)=> new Event(name);
+let createEvent = (name)=> new Event(name, {bubbles: true});
 try {
 	new Event('test');
 } catch(e) {
