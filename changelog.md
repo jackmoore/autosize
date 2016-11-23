@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.19 - 2016-11-23
+* Bubble dispatched events. Merged #319.
+
 ##### v.3.0.18 - 2016-10-26
 * Fixed Firefox issue where calling dispatchEvent on a detached element throws an error.  Fixes #317.
 

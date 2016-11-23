@@ -1,7 +1,7 @@
 {
   "name": "autosize",
   "description": "Autosize is a small, stand-alone script to automatically adjust textarea height to fit text.",
-  "version": "3.0.18",
+  "version": "3.0.19",
   "keywords": [
     "textarea",
     "form",
@@ -27,9 +27,9 @@
   "dependencies": {},
   "devDependencies": {
     "babel": "^5.4.3",
-    "gaze": "^0.5.1",
-    "jshint": "^2.5.6",
-    "uglify-js": "^2.4.22"
+    "gaze": "^1.1.2",
+    "jshint": "^2.9.4",
+    "uglify-js": "^2.7.4"
   },
   "config": {
     "bower": {
