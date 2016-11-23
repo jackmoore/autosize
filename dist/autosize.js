@@ -18,7 +18,7 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var map = typeof Map === 'function' ? new Map() : (function () {
+	var map = typeof Map === "function" ? new Map() : (function () {
 		var keys = [];
 		var values = [];
 
@@ -41,11 +41,12 @@
 					keys.splice(index, 1);
 					values.splice(index, 1);
 				}
-			} };
+			}
+		};
 	})();
 
 	var createEvent = function createEvent(name) {
-		return new Event(name);
+		return new Event(name, { bubbles: true });
 	};
 	try {
 		new Event('test');
@@ -113,7 +114,8 @@
 				if (el.parentNode.scrollTop) {
 					arr.push({
 						node: el.parentNode,
-						scrollTop: el.parentNode.scrollTop });
+						scrollTop: el.parentNode.scrollTop
+					});
 				}
 				el = el.parentNode;
 			}
@@ -176,7 +178,10 @@
 				var evt = createEvent('autosize:resized');
 				try {
 					ta.dispatchEvent(evt);
-				} catch (err) {}
+				} catch (err) {
+					// Firefox will throw an error on dispatchEvent for a detached element
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=889376
+				}
 			}
 		}
 
@@ -203,7 +208,8 @@
 			resize: ta.style.resize,
 			overflowY: ta.style.overflowY,
 			overflowX: ta.style.overflowX,
-			wordWrap: ta.style.wordWrap });
+			wordWrap: ta.style.wordWrap
+		});
 
 		ta.addEventListener('autosize:destroy', destroy, false);
 
@@ -222,7 +228,8 @@
 
 		map.set(ta, {
 			destroy: destroy,
-			update: update });
+			update: update
+		});
 
 		init();
 	}
@@ -279,6 +286,3 @@
 
 	module.exports = autosize;
 });
-
-// Firefox will throw an error on dispatchEvent for a detached element
-// https://bugzilla.mozilla.org/show_bug.cgi?id=889376
