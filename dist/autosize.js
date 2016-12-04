@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.19
+	Autosize 3.0.20
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -103,8 +103,6 @@
 			}
 
 			ta.style.overflowY = value;
-
-			resize();
 		}
 
 		function getParentOverflows(el) {
@@ -156,25 +154,29 @@
 		function update() {
 			resize();
 
-			var computed = window.getComputedStyle(ta, null);
-			var computedHeight = Math.round(parseFloat(computed.height));
 			var styleHeight = Math.round(parseFloat(ta.style.height));
+			var computed = window.getComputedStyle(ta, null);
+			var actualHeight = Math.round(parseFloat(computed.height));
 
-			// The computed height not matching the height set via resize indicates that
+			// The actual height not matching the style height (set via the resize method) indicates that
 			// the max-height has been exceeded, in which case the overflow should be set to visible.
-			if (computedHeight !== styleHeight) {
+			if (actualHeight !== styleHeight) {
 				if (computed.overflowY !== 'visible') {
 					changeOverflow('visible');
+					resize();
+					actualHeight = Math.round(parseFloat(window.getComputedStyle(ta, null).height));
 				}
 			} else {
 				// Normally keep overflow set to hidden, to avoid flash of scrollbar as the textarea expands.
 				if (computed.overflowY !== 'hidden') {
 					changeOverflow('hidden');
+					resize();
+					actualHeight = Math.round(parseFloat(window.getComputedStyle(ta, null).height));
 				}
 			}
 
-			if (cachedHeight !== computedHeight) {
-				cachedHeight = computedHeight;
+			if (cachedHeight !== actualHeight) {
+				cachedHeight = actualHeight;
 				var evt = createEvent('autosize:resized');
 				try {
 					ta.dispatchEvent(evt);

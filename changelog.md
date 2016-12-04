@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.20 - 2016-12-04
+* Fixed minor bug where the `resized` event would not fire under specific conditions when changing the overflow.
+
 ##### v.3.0.19 - 2016-11-23
 * Bubble dispatched events. Merged #319.
 
