@@ -24,6 +24,7 @@
     "type": "git",
     "url": "http://github.com/jackmoore/autosize.git"
   },
+  "main": "dest/autosize.js",
   "dependencies": {},
   "devDependencies": {
     "babel": "^5.4.3",
