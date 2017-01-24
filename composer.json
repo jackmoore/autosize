@@ -1,0 +1,16 @@
+{
+    "name": "jackmoore/autosize",
+    "description": "Automatically adjust textarea height based on user input.",
+    "keywords": ["form", "textarea", "ui", "jQuery"],
+    "homepage": "http://www.jacklmoore.com/autosize",
+    "authors": [
+        {
+            "name": "Jack Moore",
+            "email": "hello@jacklmoore.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "components/jquery": "dev-master"
+    }
+}
