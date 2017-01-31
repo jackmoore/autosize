@@ -156,7 +156,7 @@
 
 			var styleHeight = Math.round(parseFloat(ta.style.height));
 			var computed = window.getComputedStyle(ta, null);
-			var actualHeight = Math.round(parseFloat(computed.height));
+			var actualHeight = ta.clientHeight;
 
 			// The actual height not matching the style height (set via the resize method) indicates that
 			// the max-height has been exceeded, in which case the overflow should be set to visible.
@@ -164,14 +164,14 @@
 				if (computed.overflowY !== 'visible') {
 					changeOverflow('visible');
 					resize();
-					actualHeight = Math.round(parseFloat(window.getComputedStyle(ta, null).height));
+					actualHeight = ta.clientHeight;
 				}
 			} else {
 				// Normally keep overflow set to hidden, to avoid flash of scrollbar as the textarea expands.
 				if (computed.overflowY !== 'hidden') {
 					changeOverflow('hidden');
 					resize();
-					actualHeight = Math.round(parseFloat(window.getComputedStyle(ta, null).height));
+					actualHeight = ta.clientHeight;
 				}
 			}
 
