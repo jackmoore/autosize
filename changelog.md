@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.3.0.21 - 2016-05-19
+* Fixed bug with overflow detection which degraded performance of textareas that exceed their max-width. Fixes #333.
+
 ##### v.3.0.20 - 2016-12-04
 * Fixed minor bug where the `resized` event would not fire under specific conditions when changing the overflow.
 

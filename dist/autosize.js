@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.20
+	Autosize 3.0.21
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -161,10 +161,10 @@
 			var actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(computed.height)) : ta.offsetHeight;
 
 			// The actual height not matching the style height (set via the resize method) indicates that
-			// the max-height has been exceeded, in which case the overflow should be set to visible.
+			// the max-height has been exceeded, in which case the overflow should be allowed.
 			if (actualHeight !== styleHeight) {
-				if (computed.overflowY !== 'visible') {
-					changeOverflow('visible');
+				if (computed.overflowY === 'hidden') {
+					changeOverflow('scroll');
 					resize();
 					actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(window.getComputedStyle(ta, null).height)) : ta.offsetHeight;
 				}
