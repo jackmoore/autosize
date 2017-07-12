@@ -104,7 +104,7 @@ function assign(ta) {
 		const overflows = getParentOverflows(ta);
 		const docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
-		ta.style.height = 'auto';
+		ta.style.height = '';
 
 		let endHeight = ta.scrollHeight+heightOffset;
 

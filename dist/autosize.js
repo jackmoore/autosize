@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.21
+	Autosize 4.0.0
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -126,7 +126,7 @@
 			var overflows = getParentOverflows(ta);
 			var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
-			ta.style.height = 'auto';
+			ta.style.height = '';
 
 			var endHeight = ta.scrollHeight + heightOffset;
 
