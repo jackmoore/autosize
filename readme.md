@@ -11,6 +11,9 @@ Full documentation and a demo can be found at [jacklmoore.com/autosize](http://j
 npm install autosize
 ```
 
+#### Use it from a CDN
+Load it from [CDNJS](https://cdnjs.com/libraries/autosize.js).
+
 #### Browser compatibility
 
 Chrome | Firefox | IE | Safari | iOS Safari | Android | Opera Mini | Windows Phone IE
