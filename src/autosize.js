@@ -55,6 +55,8 @@ function assign(ta) {
 
 		if (style.boxSizing === 'content-box') {
 			heightOffset = -(parseFloat(style.paddingTop)+parseFloat(style.paddingBottom));
+		} else if (style.boxSizing === 'border-box') {
+			heightOffset = -(parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth));
 		} else {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
 		}
@@ -138,7 +140,7 @@ function assign(ta) {
 		// Using offsetHeight as a replacement for computed.height in IE, because IE does not account use of border-box
 		var actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(computed.height)) : ta.offsetHeight;
 
-		// The actual height not matching the style height (set via the resize method) indicates that 
+		// The actual height not matching the style height (set via the resize method) indicates that
 		// the max-height has been exceeded, in which case the overflow should be allowed.
 		if (actualHeight !== styleHeight) {
 			if (computed.overflowY === 'hidden') {
