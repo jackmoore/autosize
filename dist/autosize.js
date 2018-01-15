@@ -77,6 +77,8 @@
 
 			if (style.boxSizing === 'content-box') {
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
+			} else if (style.boxSizing === 'border-box') {
+				heightOffset = -(parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
 			}
@@ -123,7 +125,7 @@
 
 		function resize() {
 			var originalHeight = ta.style.height;
-			var overflows = getParentOverflows(ta);
+			// const overflows = getParentOverflows(ta);
 			var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 			ta.style.height = '';
@@ -141,10 +143,13 @@
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
 
+			// Disable scrollTop set because it causes scroll jumps on mobile safari
+			// where body.scrollTop > 0 when keyboard is opened.
+			//
 			// prevents scroll-position jumping
-			overflows.forEach(function (el) {
-				el.node.scrollTop = el.scrollTop;
-			});
+			// overflows.forEach(el => {
+			// 	el.node.scrollTop = el.scrollTop
+			// });
 
 			if (docTop) {
 				document.documentElement.scrollTop = docTop;
