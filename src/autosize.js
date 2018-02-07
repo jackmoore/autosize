@@ -86,7 +86,7 @@ function assign(ta) {
 	function getParentOverflows(el) {
 		const arr = [];
 
-		while (el && el.parentNode && el.parentNode instanceof Element) {
+		while (el && el.parentNode && el.parentNode instanceof Element && el.parentNode !== document.body) {
 			if (el.parentNode.scrollTop) {
 				arr.push({
 					node: el.parentNode,
