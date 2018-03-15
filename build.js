@@ -5,24 +5,6 @@ var jshint = require('jshint').JSHINT;
 var babel = require('babel');
 var gaze = require('gaze');
 
-function writeBower() {
-	var bower = {
-		name: pkg.config.bower.name,
-		description: pkg.description,
-		dependencies: pkg.dependencies,
-		keywords: pkg.keywords,
-		authors: [pkg.author],
-		license: pkg.license,
-		homepage: pkg.homepage,
-		ignore: pkg.config.bower.ignore,
-		repository: pkg.repository,
-		main: pkg.main,
-		moduleType: pkg.config.bower.moduleType,
-	};
-	fs.writeFile('bower.json', JSON.stringify(bower, null, '\t'));
-	return true;
-}
-
 function lint(full) {
 	jshint(full.toString(), {
 		browser: true,
@@ -49,18 +31,16 @@ function lint(full) {
 function build(code) {
 	var minified = ugly.minify(code, {fromString: true}).code;
 	var header = [
-		'/*!',
-		'	'+pkg.config.title+' '+pkg.version,
-		'	license: MIT',
-		'	'+pkg.homepage,
-		'*/',
-		''
+		`/*!`,
+		`	${pkg.name} ${pkg.version}`,
+		`	license: ${pkg.license}`,
+		`	${pkg.homepage}`,
+		`*/`,
+		``
 	].join('\n');
 
-	fs.writeFile('dist/'+pkg.config.filename+'.js', header+code);
-	fs.writeFile('dist/'+pkg.config.filename+'.min.js', header+minified);
-	writeBower();
-	
+	fs.writeFile('dist/'+pkg.name+'.js', header+code);
+	fs.writeFile('dist/'+pkg.name+'.min.js', header+minified);
 	console.log('dist built');
 }
 
@@ -75,7 +55,7 @@ function transform(filepath) {
 	});
 }
 
-gaze('src/'+pkg.config.filename+'.js', function(err, watcher){
+gaze('src/'+pkg.name+'.js', function(err, watcher){
 	// On file changed
 	this.on('changed', function(filepath) {
 		transform(filepath);
@@ -84,4 +64,4 @@ gaze('src/'+pkg.config.filename+'.js', function(err, watcher){
 	console.log('watching');
 });
 
-transform('src/'+pkg.config.filename+'.js');
+transform('src/'+pkg.name+'.js');

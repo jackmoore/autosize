@@ -31,18 +31,6 @@
     "jshint": "^2.9.4",
     "uglify-js": "^2.7.4"
   },
-  "config": {
-    "bower": {
-      "name": "autosize",
-      "ignore": [],
-      "moduleType": [
-        "amd",
-        "node"
-      ]
-    },
-    "title": "Autosize",
-    "filename": "autosize"
-  },
   "scripts": {
     "build": "node build"
   }
