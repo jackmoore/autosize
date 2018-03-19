@@ -119,10 +119,14 @@ function assign(ta) {
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
 
+
+// This commented out code breaks causes the keyboard to overlay the input box on IOS 11
+/*
 		// prevents scroll-position jumping
 		overflows.forEach(el => {
 			el.node.scrollTop = el.scrollTop
 		});
+*/
 
 		if (docTop) {
 			document.documentElement.scrollTop = docTop;
