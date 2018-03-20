@@ -1,5 +1,5 @@
 /*!
-	Autosize 4.0.0
+	autosize 4.0.0
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -141,10 +141,12 @@
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
 
-			// prevents scroll-position jumping
-			overflows.forEach(function (el) {
-				el.node.scrollTop = el.scrollTop;
-			});
+			/* This commented out code breaks causes the keyboard to overlay the input box on IOS 11
+   // prevents scroll-position jumping
+   overflows.forEach(el => {
+   	el.node.scrollTop = el.scrollTop
+   });
+   */
 
 			if (docTop) {
 				document.documentElement.scrollTop = docTop;
