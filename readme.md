@@ -8,7 +8,7 @@ A workaround for this bug appeared in a fork of autosize project:
 
 #### [Workaround for ios 11 bug](https://github.com/jhubble/autosize/commit/18e747124271c7d59362a4a34455dceebf4ed6b0)
 
-To avoid third part changes, this fork was created for ISAO internal use.
+To avoid third part changes, this fork was created for ISAO internal use. And should be abandoned when [autosize](https://github.com/jackmoore/autosize) implements the fix on future versions.
 
 ## Summary
 
