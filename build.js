@@ -2,7 +2,7 @@ var pkg = require('./package.json');
 var fs = require('fs');
 var ugly = require('uglify-js');
 var jshint = require('jshint').JSHINT;
-var babel = require('babel');
+var babel = require('babel-core');
 var gaze = require('gaze');
 
 function lint(full) {
@@ -14,6 +14,7 @@ function lint(full) {
 		eqeqeq: true,
 		eqnull: true,
 		noarg: true,
+		immed: false,
 		predef: ['define', 'module', 'exports', 'Map']
 	});
 
@@ -29,7 +30,7 @@ function lint(full) {
 }
 
 function build(code) {
-	var minified = ugly.minify(code, {fromString: true}).code;
+	var minified = ugly.minify(code).code;
 	var header = [
 		`/*!`,
 		`	${pkg.name} ${pkg.version}`,
@@ -45,7 +46,12 @@ function build(code) {
 }
 
 function transform(filepath) {
-	babel.transformFile(filepath, {modules: 'umd'}, function (err,res) {
+	babel.transformFile(filepath, {
+		plugins: [
+			"add-module-exports", ["transform-es2015-modules-umd", {"strict": true, "noInterop": true}]
+		],
+		presets: ["env"],
+	}, function (err,res) {
 		if (err) {
 			return console.log(err);
 		} else {

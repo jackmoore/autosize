@@ -41,7 +41,7 @@ function assign(ta) {
 	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) return;
 
 	let heightOffset = null;
-	let clientWidth = ta.clientWidth;
+	let clientWidth = null;
 	let cachedHeight = null;
 
 	function init() {
@@ -173,7 +173,7 @@ function assign(ta) {
 		}
 	};
 
-	const destroy = style => {
+	const destroy = (style => {
 		window.removeEventListener('resize', pageResize, false);
 		ta.removeEventListener('input', update, false);
 		ta.removeEventListener('keyup', update, false);
@@ -185,7 +185,7 @@ function assign(ta) {
 		});
 
 		map.delete(ta);
-	}.bind(ta, {
+	}).bind(ta, {
 		height: ta.style.height,
 		resize: ta.style.resize,
 		overflowY: ta.style.overflowY,

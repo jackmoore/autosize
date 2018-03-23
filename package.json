@@ -26,10 +26,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "babel": "^5.4.3",
+    "babel-core": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "gaze": "^1.1.2",
-    "jshint": "^2.9.4",
-    "uglify-js": "^2.7.4"
+    "jshint": "^2.9.5",
+    "uglify-js": "^3.3.16"
   },
   "scripts": {
     "build": "node build"
