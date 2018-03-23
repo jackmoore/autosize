@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.4.0.1 - 2018-03-23
+* Minor refactor & updated build depedencies
+
 ##### v.4.0.0 - 2017-07-12
 * Changed how Autosize determines the inital height. Fixes #336.
 

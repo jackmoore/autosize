@@ -100,21 +100,16 @@ function assign(ta) {
 	}
 
 	function resize() {
-		const originalHeight = ta.style.height;
+		if (ta.scrollHeight === 0) {
+			// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
+			return;
+		}
+
 		const overflows = getParentOverflows(ta);
 		const docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 		ta.style.height = '';
-
-		let endHeight = ta.scrollHeight+heightOffset;
-
-		if (ta.scrollHeight === 0) {
-			// If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
-			ta.style.height = originalHeight;
-			return;
-		}
-
-		ta.style.height = endHeight+'px';
+		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
 
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
