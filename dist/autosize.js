@@ -137,7 +137,11 @@
 			}
 
 			ta.style.height = endHeight + 'px';
-
+			if(endHeight > 25){
+				$(ta).css("max-height","none");
+			} else {
+				$(ta).css("max-height","25px");
+			}
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
 
