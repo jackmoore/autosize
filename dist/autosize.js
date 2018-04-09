@@ -145,7 +145,6 @@
 			} else if(endHeight <= 25) {
 				$(ta).css("max-height","25px");
 			}
-			console.log("endHeight is " +endHeight);
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
 
