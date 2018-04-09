@@ -84,7 +84,7 @@
 			if (isNaN(heightOffset)) {
 				heightOffset = 0;
 			}
-
+			resize();
 			update();
 		}
 
