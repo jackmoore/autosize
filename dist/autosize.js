@@ -137,12 +137,9 @@
 			}
 
 			ta.style.height = endHeight + 'px';
-			console.log(endHeight);
-			if(endHeight === 25){
+			// console.log(endHeight);
+			if(endHeight > 25){
 				$(ta).css("max-height","none");
-			} else if (endHeight === 68) {
-
-				$(ta).css("max-height","51px");
 			} else {
 				$(ta).css("max-height","25px");
 			}
