@@ -84,6 +84,7 @@
 			if (isNaN(heightOffset)) {
 				heightOffset = 0;
 			}
+			$(ta).css("max-height","25px");
 			resize();
 			update();
 		}
@@ -136,14 +137,20 @@
 				return;
 			}
 console.log(endHeight);
+			// if(endHeight === 33){
+			// 	ta.style.height = 
+			// }
 			ta.style.height = endHeight + 'px';
-
-			if(endHeight > 34){
-				$(ta).css("max-height","none");
-			} else if(endHeight === 34){
-				$(ta).css("max-height","34px");
-			} else if(endHeight <= 25) {
-				$(ta).css("max-height","25px");
+			if(endHeight <  parseInt($(ta).css("max-height").replace("px",""), 10)) {
+				if(endHeight > 34){
+					$(ta).css("max-height","none");
+				} else if(endHeight === 34){
+					$(ta).css("max-height","34px");
+				} else if(endHeight <= 25) {
+					$(ta).css("max-height","25px");
+				}
+			} else {
+				$(ta).css("max-height", endHeight + "px");
 			}
 			// used to check if an update is actually necessary on window.resize
 			clientWidth = ta.clientWidth;
