@@ -135,7 +135,7 @@
 				ta.style.height = originalHeight;
 				return;
 			}
-
+console.log(endHeight);
 			ta.style.height = endHeight + 'px';
 
 			if(endHeight > 34){
