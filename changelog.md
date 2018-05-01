@@ -1,10 +1,13 @@
 ## Changelog
 
+##### v.4.0.2 - 2018-04-30
+* More specific detection of when to change overflow. Merges #361.
+
 ##### v.4.0.1 - 2018-03-23
-* Minor refactor & updated build depedencies
+* Minor refactor & updated build dependencies
 
 ##### v.4.0.0 - 2017-07-12
-* Changed how Autosize determines the inital height. Fixes #336.
+* Changed how Autosize determines the initial height. Fixes #336.
 
 ##### v.3.0.21 - 2017-05-19
 * Fixed bug with overflow detection which degraded performance of textareas that exceed their max-width. Fixes #333.
