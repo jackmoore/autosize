@@ -92,7 +92,7 @@
 
 ##### v.2.0.0 - 2015-02-25
 
-* Smaller, simplier code-base
+* Smaller, simpler code-base
 * New API.  Example usage: `autosize(document.querySelectorAll(textarea));`
 * Dropped jQuery dependency
 * Dropped IE7-IE8 support
