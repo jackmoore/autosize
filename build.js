@@ -40,8 +40,8 @@ function build(code) {
 		``
 	].join('\n');
 
-	fs.writeFile('dist/'+pkg.name+'.js', header+code);
-	fs.writeFile('dist/'+pkg.name+'.min.js', header+minified);
+	fs.writeFileSync('dist/'+pkg.name+'.js', header+code);
+	fs.writeFileSync('dist/'+pkg.name+'.min.js', header+minified);
 	console.log('dist built');
 }
 
