@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.4.0.4 - 2021-05-17
+* Rollback module field in package.json because is generating a bug in libs locally
+
 ##### v.4.0.3 - 2021-05-15
 * Add module field to package.json so autosize can be imported as an ES Module
 
