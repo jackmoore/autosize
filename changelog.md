@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.4.0.4 - 2021-05-17
+* Revert module field to package.json, will release as major version bump
+
 ##### v.4.0.3 - 2021-05-15
 * Add module field to package.json so autosize can be imported as an ES Module
 

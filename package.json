@@ -1,7 +1,7 @@
 {
   "name": "autosize",
   "description": "Autosize is a small, stand-alone script to automatically adjust textarea height to fit text.",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "keywords": [
     "textarea",
     "form",
@@ -17,7 +17,6 @@
     "email": "hello@jacklmoore.com"
   },
   "main": "dist/autosize.js",
-  "module": "src/autosize.js",
   "license": "MIT",
   "homepage": "http://www.jacklmoore.com/autosize",
   "demo": "http://www.jacklmoore.com/autosize",
