@@ -1,7 +1,7 @@
 {
   "name": "autosize",
   "description": "Autosize is a small, stand-alone script to automatically adjust textarea height to fit text.",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "keywords": [
     "textarea",
     "form",
@@ -16,8 +16,10 @@
     "url": "http://www.jacklmoore.com",
     "email": "hello@jacklmoore.com"
   },
+  "source": "src/autosize.js",
+  "module": "dist/autosize.esm.js",
+  "unpkg": "dist/autosize.min.js",
   "main": "dist/autosize.js",
-  "module": "src/autosize.js",
   "license": "MIT",
   "homepage": "http://www.jacklmoore.com/autosize",
   "demo": "http://www.jacklmoore.com/autosize",
@@ -25,17 +27,11 @@
     "type": "git",
     "url": "http://github.com/jackmoore/autosize.git"
   },
-  "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "gaze": "^1.1.2",
-    "jshint": "^2.9.5",
-    "uglify-js": "^3.3.16"
+    "microbundle": "^0.13.3"
   },
   "scripts": {
-    "build": "node build"
+    "build": "npx microbundle --no-sourcemap --no-pkg-main --no-compress -f umd -o dist/autosize.js && npx microbundle --no-sourcemap -f esm,umd",
+    "dev": "npx microbundle --no-sourcemap --no-pkg-main --no-compress -f umd -o dist/autosize.js watch"
   }
 }

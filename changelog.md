@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.5.0.1 - 2021-06-30
+* Changed module field to point to new ESM bundle. Fixes #391, closes #393
+
 ##### v.5.0.0 - 2021-05-17
 * Add module field to package.json so autosize can be imported as an ES Module
 
