@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+  <head>
+    <meta charset='utf-8'/>
+    <title>Textarea Autosize Demo for AngularJs</title>
+    <style>
+      textarea {
+        border:1px solid #ccc;
+      }
+
+      #animated {
+        vertical-align: top;
+        -webkit-transition: height 0.2s;
+        -moz-transition: height 0.2s;
+        transition: height 0.2s;
+      }
+    </style>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js'></script>
+    <!-- Put jQuery before angular load for replace angular jQLite. -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script src='../jquery.autosize.js'></script>
+    <script src='./directive.js'></script>
+  </head>
+  <body ng-controller="testCtrl">
+    <textarea jquery-autosize>Not animated.</textarea>
+    <textarea jquery-autosize="{append: '\n', callback: autosized}" id="animated">With CSS transition.</textarea>
+
+    <script>
+      var app = angular.module('demo', ['textarea-autosize']);
+      app.controller('testCtrl', function($scope) {
+          $scope.autosized = function() {
+            console.log("autosize callback called.")
+          }
+      })
+      // $(function(){
+      //   $('#normal').autosize();
+      //   $('#animated').autosize({append: "\n"});
+      // });
+    </script>
+  </body>
+</html>
