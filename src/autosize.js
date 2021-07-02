@@ -86,7 +86,8 @@ function assign(ta) {
 	function getParentOverflows(el) {
 		const arr = [];
 
-		while (el && el.parentNode && el.parentNode instanceof Element) {
+		// issue #343 It is needed to check if the current element is not the 'body' to avoid the bug on iOS with jumping scroll to the very top and keypad overlapping
+		while (el && el.parentNode && el.parentNode instanceof Element && el.parentNode !== document.body) {
 			if (el.parentNode.scrollTop) {
 				arr.push({
 					node: el.parentNode,
