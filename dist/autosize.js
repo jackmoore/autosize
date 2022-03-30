@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
 	(global = global || self, global.autosize = factory());
-}(this, (function () {
+})(this, (function () {
 	var map = typeof Map === "function" ? new Map() : function () {
 	  var keys = [];
 	  var values = [];
@@ -117,7 +117,9 @@
 	    var docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 	    ta.style.height = '';
-	    ta.style.height = ta.scrollHeight + heightOffset + 'px'; // used to check if an update is actually necessary on window.resize
+	    changeOverflow("scroll");
+	    ta.style.height = ta.scrollHeight + heightOffset + 'px';
+	    changeOverflow("hidden"); // used to check if an update is actually necessary on window.resize
 
 	    clientWidth = ta.clientWidth; // prevents scroll-position jumping
 
@@ -271,4 +273,4 @@
 
 	return autosize$1;
 
-})));
+}));
