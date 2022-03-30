@@ -109,7 +109,9 @@ function assign(ta) {
 		const docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
 
 		ta.style.height = '';
+        changeOverflow("scroll");
 		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
+        changeOverflow("hidden");
 
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
