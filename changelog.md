@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.5.0.2 - 2022-11-20
+* Avoid issue caused by using 'smooth' scroll-behavior
+
 ##### v.5.0.1 - 2021-06-30
 * Changed module field to point to new ESM bundle. Fixes #391, closes #393
 

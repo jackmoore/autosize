@@ -83,20 +83,21 @@ function assign(ta) {
 		ta.style.overflowY = value;
 	}
 
-	function getParentOverflows(el) {
+	function bookmarkOverflows(el) {
 		const arr = [];
 
 		while (el && el.parentNode && el.parentNode instanceof Element) {
 			if (el.parentNode.scrollTop) {
-				arr.push({
-					node: el.parentNode,
-					scrollTop: el.parentNode.scrollTop,
-				})
+				el.parentNode.style.scrollBehavior = 'auto';
+				arr.push([el.parentNode, el.parentNode.scrollTop]);
 			}
 			el = el.parentNode;
 		}
 
-		return arr;
+		return ()=> arr.forEach(([node, scrollTop]) => {
+			node.scrollTop = scrollTop;
+			node.style.scrollBehavior = null;
+		});
 	}
 
 	function resize() {
@@ -105,12 +106,8 @@ function assign(ta) {
 			return;
 		}
 
-		const overflows = getParentOverflows(ta);
-		const docTop = document.documentElement && document.documentElement.scrollTop; // Needed for Mobile IE (ticket #240)
-
-		if (docTop) {
-			document.documentElement.style.scrollBehavior = 'auto';
-		}
+		// remove smooth scroll & prevent scroll-position jumping by restoring original scroll position
+		const restoreOverflows = bookmarkOverflows(ta);
 
 		ta.style.height = '';
 		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
@@ -118,15 +115,7 @@ function assign(ta) {
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
 
-		// prevents scroll-position jumping
-		overflows.forEach(el => {
-			el.node.scrollTop = el.scrollTop
-		});
-
-		if (docTop) {
-			document.documentElement.scrollTop = docTop;
-			document.documentElement.style.scrollBehavior = null;
-		}
+		restoreOverflows();
 	}
 
 	function update() {
