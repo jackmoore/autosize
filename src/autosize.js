@@ -83,18 +83,18 @@ function assign(ta) {
 		ta.style.overflowY = value;
 	}
 
-	function bookmarkOverflows(el) {
+	function cacheScrollTops(el) {
 		const arr = [];
 
 		while (el && el.parentNode && el.parentNode instanceof Element) {
 			if (el.parentNode.scrollTop) {
-				el.parentNode.style.scrollBehavior = 'auto';
 				arr.push([el.parentNode, el.parentNode.scrollTop]);
 			}
 			el = el.parentNode;
 		}
 
 		return ()=> arr.forEach(([node, scrollTop]) => {
+			node.style.scrollBehavior = 'auto';
 			node.scrollTop = scrollTop;
 			node.style.scrollBehavior = null;
 		});
@@ -106,8 +106,8 @@ function assign(ta) {
 			return;
 		}
 
-		// remove smooth scroll & prevent scroll-position jumping by restoring original scroll position
-		const restoreOverflows = bookmarkOverflows(ta);
+		// ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
+		const restoreScrollTops = cacheScrollTops(ta);
 
 		ta.style.height = '';
 		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
@@ -115,7 +115,7 @@ function assign(ta) {
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
 
-		restoreOverflows();
+		restoreScrollTops();
 	}
 
 	function update() {
