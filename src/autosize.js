@@ -111,7 +111,7 @@ function assign(ta) {
 		// ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
 		const restoreScrollTops = cacheScrollTops(ta);
 
-		if (ta.style.height !== (ta.scrollHeight+heightOffset)+'px') {
+		if (ta.style.height !== getNewHeight()) {
 			refreshSize();
 		} else if (textLength > ta.textLength) {
 			if (resizeTimer != null) {
@@ -129,7 +129,11 @@ function assign(ta) {
 
 	function refreshSize() {
 		ta.style.height = '';
-		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
+		ta.style.height = getNewHeight();
+	}
+
+	function getNewHeight() {
+		return (ta.scrollHeight+heightOffset)+'px';
 	}
 
 	function update() {
