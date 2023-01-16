@@ -43,6 +43,8 @@ function assign(ta) {
 	let heightOffset = null;
 	let clientWidth = null;
 	let cachedHeight = null;
+	let textLength = null;
+	let resizeTimer = null;
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
@@ -109,13 +111,25 @@ function assign(ta) {
 		// ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
 		const restoreScrollTops = cacheScrollTops(ta);
 
-		ta.style.height = '';
-		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
+		if (ta.style.height !== (ta.scrollHeight+heightOffset)+'px') {
+			refreshSize();
+		} else if (textLength > ta.textLength) {
+			if (resizeTimer != null) {
+				clearTimeout(resizeTimer);
+			}
+			resizeTimer = setTimeout(refreshSize, 200);
+		}
+		textLength = ta.textLength;
 
 		// used to check if an update is actually necessary on window.resize
 		clientWidth = ta.clientWidth;
 
 		restoreScrollTops();
+	}
+
+	function refreshSize() {
+		ta.style.height = '';
+		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
 	}
 
 	function update() {
