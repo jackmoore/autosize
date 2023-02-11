@@ -1,6 +1,7 @@
 ## Changelog
 
 ##### v.6.0.0 - 2023-02-10
+* Reworked to remove use of cached (potentially stale) style values. Fixes #404
 * Dropped support for Internet Explorer
 
 ##### v.5.0.2 - 2022-11-20
