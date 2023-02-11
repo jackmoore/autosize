@@ -1,51 +1,14 @@
-const map = (typeof Map === "function") ? new Map() : (function () {
-	const keys = [];
-	const values = [];
-
-	return {
-		has(key) {
-			return keys.indexOf(key) > -1;
-		},
-		get(key) {
-			return values[keys.indexOf(key)];
-		},
-		set(key, value) {
-			if (keys.indexOf(key) === -1) {
-				keys.push(key);
-				values.push(value);
-			}
-		},
-		delete(key) {
-			const index = keys.indexOf(key);
-			if (index > -1) {
-				keys.splice(index, 1);
-				values.splice(index, 1);
-			}
-		},
-	}
-})();
-
-let createEvent = (name)=> new Event(name, {bubbles: true});
-try {
-	new Event('test');
-} catch(e) {
-	// IE does not support `new Event()`
-	createEvent = (name)=> {
-		const evt = document.createEvent('Event');
-		evt.initEvent(name, true, false);
-		return evt;
-	};
-}
+const assignedElements = new Map();
 
 function assign(ta) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || map.has(ta)) return;
+	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || assignedElements.has(ta)) return;
 
 	let heightOffset = null;
 	let clientWidth = null;
 	let cachedHeight = null;
 
 	function init() {
-		const style = window.getComputedStyle(ta, null);
+		const style = window.getComputedStyle(ta);
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -109,7 +72,7 @@ function assign(ta) {
 		// ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
 		const restoreScrollTops = cacheScrollTops(ta);
 
-		ta.style.height = '';
+		ta.style.height = ''; // this is necessary for getting an accurate scrollHeight on the next line
 		ta.style.height = (ta.scrollHeight+heightOffset)+'px';
 
 		// used to check if an update is actually necessary on window.resize
@@ -121,11 +84,10 @@ function assign(ta) {
 	function update() {
 		resize();
 
-		const styleHeight = Math.round(parseFloat(ta.style.height));
-		const computed = window.getComputedStyle(ta, null);
+		const styleHeight = parseFloat(ta.style.height);
+		const computed = window.getComputedStyle(ta);
 
-		// Using offsetHeight as a replacement for computed.height in IE, because IE does not account use of border-box
-		var actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(computed.height)) : ta.offsetHeight;
+		var actualHeight = parseFloat(computed.height);
 
 		// The actual height not matching the style height (set via the resize method) indicates that
 		// the max-height has been exceeded, in which case the overflow should be allowed.
@@ -133,26 +95,20 @@ function assign(ta) {
 			if (computed.overflowY === 'hidden') {
 				changeOverflow('scroll');
 				resize();
-				actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(window.getComputedStyle(ta, null).height)) : ta.offsetHeight;
+				actualHeight = parseFloat(window.getComputedStyle(ta).height);
 			}
 		} else {
 			// Normally keep overflow set to hidden, to avoid flash of scrollbar as the textarea expands.
 			if (computed.overflowY !== 'hidden') {
 				changeOverflow('hidden');
 				resize();
-				actualHeight = computed.boxSizing === 'content-box' ? Math.round(parseFloat(window.getComputedStyle(ta, null).height)) : ta.offsetHeight;
+				actualHeight = parseFloat(window.getComputedStyle(ta).height);
 			}
 		}
 
 		if (cachedHeight !== actualHeight) {
 			cachedHeight = actualHeight;
-			const evt = createEvent('autosize:resized');
-			try {
-				ta.dispatchEvent(evt);
-			} catch (err) {
-				// Firefox will throw an error on dispatchEvent for a detached element
-				// https://bugzilla.mozilla.org/show_bug.cgi?id=889376
-			}
+			ta.dispatchEvent(new Event('autosize:resized', {bubbles: true}));
 		}
 	}
 
@@ -173,7 +129,7 @@ function assign(ta) {
 			ta.style[key] = style[key];
 		});
 
-		map.delete(ta);
+		assignedElements.delete(ta);
 	}).bind(ta, {
 		height: ta.style.height,
 		resize: ta.style.resize,
@@ -184,20 +140,13 @@ function assign(ta) {
 
 	ta.addEventListener('autosize:destroy', destroy, false);
 
-	// IE9 does not fire onpropertychange or oninput for deletions,
-	// so binding to onkeyup to catch most of those events.
-	// There is no way that I know of to detect something like 'cut' in IE9.
-	if ('onpropertychange' in ta && 'oninput' in ta) {
-		ta.addEventListener('keyup', update, false);
-	}
-
 	window.addEventListener('resize', pageResize, false);
 	ta.addEventListener('input', update, false);
 	ta.addEventListener('autosize:update', update, false);
 	ta.style.overflowX = 'hidden';
 	ta.style.wordWrap = 'break-word';
 
-	map.set(ta, {
+	assignedElements.set(ta, {
 		destroy,
 		update,
 	});
@@ -206,14 +155,14 @@ function assign(ta) {
 }
 
 function destroy(ta) {
-	const methods = map.get(ta);
+	const methods = assignedElements.get(ta);
 	if (methods) {
 		methods.destroy();
 	}
 }
 
 function update(ta) {
-	const methods = map.get(ta);
+	const methods = assignedElements.get(ta);
 	if (methods) {
 		methods.update();
 	}
@@ -221,8 +170,8 @@ function update(ta) {
 
 let autosize = null;
 
-// Do nothing in Node.js environment and IE8 (or lower)
-if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
+// Do nothing in Node.js environment
+if (typeof window === 'undefined') {
 	autosize = el => el;
 	autosize.destroy = el => el;
 	autosize.update = el => el;
