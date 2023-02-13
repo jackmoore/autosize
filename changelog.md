@@ -1,5 +1,8 @@
 ## Changelog
 
+##### v.6.0.1 - 2023-02-13
+* Improved performance when appending text onto previous textarea value
+
 ##### v.6.0.0 - 2023-02-10
 * Reworked to remove use of cached (potentially stale) style values. Fixes #404
 * Dropped support for Internet Explorer

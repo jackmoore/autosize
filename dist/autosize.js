@@ -33,27 +33,32 @@
 
 	  var computed = window.getComputedStyle(ta);
 
-	  function update(cachedTextAlign) {
-	    if (cachedTextAlign === void 0) {
-	      cachedTextAlign = null;
-	    }
-
+	  function setHeight(_ref2) {
+	    var _ref2$restoreTextAlig = _ref2.restoreTextAlign,
+	        restoreTextAlign = _ref2$restoreTextAlig === void 0 ? null : _ref2$restoreTextAlig,
+	        _ref2$testForHeightRe = _ref2.testForHeightReduction,
+	        testForHeightReduction = _ref2$testForHeightRe === void 0 ? true : _ref2$testForHeightRe;
 	    var initialOverflowY = computed.overflowY;
 
 	    if (ta.scrollHeight === 0) {
 	      // If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
 	      return;
-	    } // ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
+	    } // disallow vertical resizing
 
-
-	    var restoreScrollTops = cacheScrollTops(ta);
-	    ta.style.height = ''; // this is necessary for to scrollHeight to accurately reflect situations where the textarea should shrink
-	    // disallow vertical resizing
 
 	    if (computed.resize === 'vertical') {
 	      ta.style.resize = 'none';
 	    } else if (computed.resize === 'both') {
 	      ta.style.resize = 'horizontal';
+	    }
+
+	    var restoreScrollTops; // remove inline height style to accurately measure situations where the textarea should shrink
+	    // however, skip this step if the new value appends to the previous value, as textarea height should only have grown
+
+	    if (testForHeightReduction) {
+	      // ensure the scrollTop values of parent elements are not modified as a consequence of shrinking the textarea height
+	      restoreScrollTops = cacheScrollTops(ta);
+	      ta.style.height = '';
 	    }
 
 	    var newHeight;
@@ -76,11 +81,13 @@
 
 	    ta.style.height = newHeight + 'px';
 
-	    if (cachedTextAlign) {
-	      ta.style.textAlign = cachedTextAlign;
+	    if (restoreTextAlign) {
+	      ta.style.textAlign = restoreTextAlign;
 	    }
 
-	    restoreScrollTops();
+	    if (restoreScrollTops) {
+	      restoreScrollTops();
+	    }
 
 	    if (previousHeight !== newHeight) {
 	      ta.dispatchEvent(new Event('autosize:resized', {
@@ -89,7 +96,7 @@
 	      previousHeight = newHeight;
 	    }
 
-	    if (initialOverflowY !== computed.overflow && !cachedTextAlign) {
+	    if (initialOverflowY !== computed.overflow && !restoreTextAlign) {
 	      var textAlign = computed.textAlign;
 
 	      if (computed.overflow === 'hidden') {
@@ -99,16 +106,39 @@
 	        ta.style.textAlign = textAlign === 'start' ? 'end' : 'start';
 	      }
 
-	      update(textAlign);
+	      setHeight({
+	        restoreTextAlign: textAlign,
+	        testForHeightReduction: true
+	      });
 	    }
 	  }
 
+	  function fullSetHeight() {
+	    setHeight({
+	      testForHeightReduction: true,
+	      restoreTextAlign: null
+	    });
+	  }
+
+	  var handleInput = function () {
+	    var previousValue = ta.value;
+	    return function () {
+	      setHeight({
+	        // if previousValue is '', check for height shrinkage because the placeholder may be taking up space instead
+	        // if new value is merely appending to previous value, skip checking for height deduction
+	        testForHeightReduction: previousValue === '' || !ta.value.startsWith(previousValue),
+	        restoreTextAlign: null
+	      });
+	      previousValue = ta.value;
+	    };
+	  }();
+
 	  var destroy = function (style) {
-	    window.removeEventListener('resize', update, false);
-	    ta.removeEventListener('input', update, false);
-	    ta.removeEventListener('keyup', update, false);
-	    ta.removeEventListener('autosize:destroy', destroy, false);
-	    ta.removeEventListener('autosize:update', update, false);
+	    ta.removeEventListener('autosize:destroy', destroy);
+	    ta.removeEventListener('autosize:update', fullSetHeight);
+	    ta.removeEventListener('input', handleInput);
+	    window.removeEventListener('resize', fullSetHeight); // future todo: consider replacing with ResizeObserver
+
 	    Object.keys(style).forEach(function (key) {
 	      return ta.style[key] = style[key];
 	    });
@@ -122,17 +152,18 @@
 	    wordWrap: ta.style.wordWrap
 	  });
 
-	  ta.addEventListener('autosize:destroy', destroy, false);
-	  window.addEventListener('resize', update, false);
-	  ta.addEventListener('input', update, false);
-	  ta.addEventListener('autosize:update', update, false);
+	  ta.addEventListener('autosize:destroy', destroy);
+	  ta.addEventListener('autosize:update', fullSetHeight);
+	  ta.addEventListener('input', handleInput);
+	  window.addEventListener('resize', fullSetHeight); // future todo: consider replacing with ResizeObserver
+
 	  ta.style.overflowX = 'hidden';
 	  ta.style.wordWrap = 'break-word';
 	  assignedElements.set(ta, {
 	    destroy: destroy,
-	    update: update
+	    update: fullSetHeight
 	  });
-	  update();
+	  fullSetHeight();
 	}
 
 	function destroy(ta) {

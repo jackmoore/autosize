@@ -24,7 +24,10 @@ function assign(ta) {
 
 	const computed = window.getComputedStyle(ta);
 
-	function update(cachedTextAlign = null) {
+	function setHeight({
+		restoreTextAlign = null,
+		testForHeightReduction = true,
+	}) {
 		let initialOverflowY = computed.overflowY;
 
 		if (ta.scrollHeight === 0) {
@@ -32,16 +35,21 @@ function assign(ta) {
 			return;
 		}
 
-		// ensure the scrollTop values of parent elements are not modified as a consequence of calculating the textarea height
-		const restoreScrollTops = cacheScrollTops(ta);
-
-		ta.style.height = ''; // this is necessary for to scrollHeight to accurately reflect situations where the textarea should shrink
-
 		// disallow vertical resizing
 		if (computed.resize === 'vertical') {
 			ta.style.resize = 'none';
 		} else if (computed.resize === 'both') {
 			ta.style.resize = 'horizontal';
+		}
+
+		let restoreScrollTops
+
+		// remove inline height style to accurately measure situations where the textarea should shrink
+		// however, skip this step if the new value appends to the previous value, as textarea height should only have grown
+		if (testForHeightReduction) {
+			// ensure the scrollTop values of parent elements are not modified as a consequence of shrinking the textarea height
+			restoreScrollTops = cacheScrollTops(ta);
+			ta.style.height = '';
 		}
 
 		let newHeight;
@@ -63,18 +71,20 @@ function assign(ta) {
 
 		ta.style.height = newHeight+'px';
 
-		if (cachedTextAlign) {
-			ta.style.textAlign = cachedTextAlign;
+		if (restoreTextAlign) {
+			ta.style.textAlign = restoreTextAlign;
 		}
 
-		restoreScrollTops();
+		if (restoreScrollTops) {
+			restoreScrollTops();
+		}
 
 		if (previousHeight !== newHeight) {
 			ta.dispatchEvent(new Event('autosize:resized', {bubbles: true}));
 			previousHeight = newHeight;
 		}
 
-		if (initialOverflowY !== computed.overflow && !cachedTextAlign) {
+		if (initialOverflowY !== computed.overflow && !restoreTextAlign) {
 			const textAlign = computed.textAlign;
 
 			if (computed.overflow === 'hidden') {
@@ -84,16 +94,40 @@ function assign(ta) {
 				ta.style.textAlign = textAlign === 'start' ? 'end' : 'start';
 			}
 
-			update(textAlign);
+			setHeight({
+				restoreTextAlign: textAlign,
+				testForHeightReduction: true,
+			});
 		}
 	}
 
+	function fullSetHeight() {
+		setHeight({
+			testForHeightReduction: true,
+			restoreTextAlign: null,
+		});
+	}
+
+	const handleInput = (function(){
+		let previousValue = ta.value;
+
+		return ()=> {
+			setHeight({
+				// if previousValue is '', check for height shrinkage because the placeholder may be taking up space instead
+				// if new value is merely appending to previous value, skip checking for height deduction
+				testForHeightReduction: previousValue === '' || !ta.value.startsWith(previousValue),
+				restoreTextAlign: null,
+			});
+
+			previousValue = ta.value;
+		}
+	}())
+
 	const destroy = (style => {
-		window.removeEventListener('resize', update, false);
-		ta.removeEventListener('input', update, false);
-		ta.removeEventListener('keyup', update, false);
-		ta.removeEventListener('autosize:destroy', destroy, false);
-		ta.removeEventListener('autosize:update', update, false);
+		ta.removeEventListener('autosize:destroy', destroy);
+		ta.removeEventListener('autosize:update', fullSetHeight);
+		ta.removeEventListener('input', handleInput);
+		window.removeEventListener('resize', fullSetHeight); // future todo: consider replacing with ResizeObserver
 		Object.keys(style).forEach(key => ta.style[key] = style[key]);
 		assignedElements.delete(ta);
 	}).bind(ta, {
@@ -105,20 +139,19 @@ function assign(ta) {
 		wordWrap: ta.style.wordWrap,
 	});
 
-	ta.addEventListener('autosize:destroy', destroy, false);
-
-	window.addEventListener('resize', update, false);
-	ta.addEventListener('input', update, false);
-	ta.addEventListener('autosize:update', update, false);
+	ta.addEventListener('autosize:destroy', destroy);
+	ta.addEventListener('autosize:update', fullSetHeight);
+	ta.addEventListener('input', handleInput);
+	window.addEventListener('resize', fullSetHeight); // future todo: consider replacing with ResizeObserver
 	ta.style.overflowX = 'hidden';
 	ta.style.wordWrap = 'break-word';
 
 	assignedElements.set(ta, {
 		destroy,
-		update,
+		update: fullSetHeight,
 	});
 
-	update();
+	fullSetHeight();
 }
 
 function destroy(ta) {
